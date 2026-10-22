@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>あお老师的日语专栏 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="あお老师写给日语学习者的文章：学习规划、五十音、词汇语法和 JLPT 考试。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* 专栏 · 资料 · 帮助页 */
+.crumb{font-size:.8125rem;color:var(--text-2);letter-spacing:.06em;display:flex;gap:8px;flex-wrap:wrap}
+.crumb a{color:var(--text-2)}
+.col-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:700px){.col-list{grid-template-columns:1fr}}
+.col-card{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:var(--r-l);background:linear-gradient(160deg,rgba(255,255,255,.97),rgba(255,255,255,.84));border:1px solid rgba(255,255,255,.9);box-shadow:0 20px 44px -28px rgba(30,60,140,.45);color:var(--text);text-decoration:none;min-width:0;transition:transform .3s}
+.col-card:hover{transform:translateY(-2px)}
+.col-card h3{font-family:var(--f-mincho);font-size:1.1875rem;font-weight:900;line-height:1.5}
+.col-card p{margin:0;color:var(--text-2);font-size:.9375rem}
+.col-meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:.8125rem;color:var(--text-2);letter-spacing:.04em}
+.col-card .more{margin-top:auto;color:#2F6FD6;font-size:.875rem;font-weight:700}
+.article{max-width:42em;display:flex;flex-direction:column;gap:16px;font-size:1.0625rem;line-height:1.95}
+.article p{margin:0}
+.article h2{font-family:var(--f-mincho);font-size:1.4rem;font-weight:900;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.article h3{font-family:var(--f-mincho);font-size:1.125rem;font-weight:700;margin-top:8px;color:var(--gold-ink)}
+.article ul,.article ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.article blockquote{margin:0;border-left:2px solid var(--gold);background:#FFF7EA;border-radius:0 var(--r-s) var(--r-s) 0;padding:12px 16px}
+.article .jp{line-height:inherit}
+.article ruby rt{font-family:var(--f-body);font-size:.5em;color:var(--rose-ink);font-weight:500}
+.article .tscroll{background:#fff}
+.article .vtable td{white-space:normal;min-width:5.5em;vertical-align:top;line-height:1.7}
+.article .vtable th{white-space:nowrap}
+.article strong{color:var(--text)}
+.sources{max-width:42em;font-size:.8125rem;color:var(--text-2);line-height:1.8}
+.sources ol{margin:6px 0 0;padding-left:1.4em}
+.sources a{color:var(--text-2);overflow-wrap:anywhere}
+.dl-card{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;align-items:start}
+.dl-card img{width:100%;max-width:100%;height:auto;border-radius:8px;border:1px solid var(--line);box-shadow:0 12px 26px -18px rgba(30,60,140,.5);background:#fff}
+@media (max-width:560px){.dl-card{grid-template-columns:96px minmax(0,1fr);gap:14px}}
+.dl-card h3{margin-bottom:2px}
+.dl-card p{margin:0}
+.dl-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.faq{display:flex;flex-direction:column;gap:10px;max-width:46em}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:var(--r-m);padding:0 18px}
+.faq summary{cursor:pointer;list-style:none;padding:15px 0;font-weight:700;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:#3D7BE0;font-weight:500;font-size:1.25rem;line-height:1}
+.faq details[open] summary::after{content:"−"}
+.faq summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.faq .a{padding:0 0 16px;color:var(--text);line-height:1.9}
+.faq .a p{margin:0 0 8px}
+.faq-group{font-family:var(--f-mincho);font-size:1.25rem;font-weight:900;margin:22px 0 4px}
+.dl-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:18px;padding:16px 20px;border-radius:var(--r-m);background:linear-gradient(160deg,#FFF6E6,#FFEFF3);border:1px solid rgba(255,205,130,.5)}
+.dl-strip p{margin:0}
+.dl-strip b{font-family:var(--f-mincho)}
+</style>
+</head>
+<body data-page="column">
+<header id="site-head"></header>
+<main>
+<section class="page-hero"><div class="wrap" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">コラム · Column</span><h1>あお老师的日语专栏</h1><p class="lead">学习规划、易错词、考试选择。都是我教课和自己学日语时，最常被问到的问题。</p></div></section><section class="band" style="padding-top:8px"><div class="wrap"><div class="col-list"><a class="col-card" href="col-kana-two-weeks.html"><div class="col-meta"><span class="tag open">学习规划</span><span>7 分钟读完</span></div><h3>零基础按天走，两周记住五十音</h3><p>一份按天排好的两周计划，讲清假名从哪些汉字来、易混字怎么分，以及为什么要边听边读边写。</p><span class="more">读全文 →</span></a><a class="col-card" href="col-study-time.html"><div class="col-meta"><span class="tag open">学习规划</span><span>7 分钟读完</span></div><h3>零基础学到 N1，每个阶段要多久</h3><p>从五十音到 N1 各阶段的时间参考，每级卡在哪里，每天一小时怎么分，以及汉字带来的优势和误区。</p><span class="more">读全文 →</span></a><a class="col-card" href="col-false-friends.html"><div class="col-meta"><span class="tag open">词汇语法</span><span>7 分钟读完</span></div><h3>这 16 个中日同形词，别按中文猜</h3><p>勉強、愛人、大丈夫……汉字一样、意思不同的 16 个常用词，附场景例句和系统避坑的方法。</p><span class="more">读全文 →</span></a><a class="col-card" href="col-n2-or-n1.html"><div class="col-meta"><span class="tag open">考试</span><span>7 分钟读完</span></div><h3>直接考 N1 还是先考 N2？按目标来选</h3><p>讲清 N2 和 N1 差在哪、及格线怎么算，再按求职、签证积分、留学、考研和兴趣，排好一年两次的考试节奏。</p><span class="more">读全文 →</span></a></div></div></section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

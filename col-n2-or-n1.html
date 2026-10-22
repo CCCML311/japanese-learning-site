@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>直接考 N1 还是先考 N2？按目标来选 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="讲清 N2 和 N1 差在哪、及格线怎么算，再按求职、签证积分、留学、考研和兴趣，排好一年两次的考试节奏。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* 专栏 · 资料 · 帮助页 */
+.crumb{font-size:.8125rem;color:var(--text-2);letter-spacing:.06em;display:flex;gap:8px;flex-wrap:wrap}
+.crumb a{color:var(--text-2)}
+.col-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:700px){.col-list{grid-template-columns:1fr}}
+.col-card{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:var(--r-l);background:linear-gradient(160deg,rgba(255,255,255,.97),rgba(255,255,255,.84));border:1px solid rgba(255,255,255,.9);box-shadow:0 20px 44px -28px rgba(30,60,140,.45);color:var(--text);text-decoration:none;min-width:0;transition:transform .3s}
+.col-card:hover{transform:translateY(-2px)}
+.col-card h3{font-family:var(--f-mincho);font-size:1.1875rem;font-weight:900;line-height:1.5}
+.col-card p{margin:0;color:var(--text-2);font-size:.9375rem}
+.col-meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:.8125rem;color:var(--text-2);letter-spacing:.04em}
+.col-card .more{margin-top:auto;color:#2F6FD6;font-size:.875rem;font-weight:700}
+.article{max-width:42em;display:flex;flex-direction:column;gap:16px;font-size:1.0625rem;line-height:1.95}
+.article p{margin:0}
+.article h2{font-family:var(--f-mincho);font-size:1.4rem;font-weight:900;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.article h3{font-family:var(--f-mincho);font-size:1.125rem;font-weight:700;margin-top:8px;color:var(--gold-ink)}
+.article ul,.article ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.article blockquote{margin:0;border-left:2px solid var(--gold);background:#FFF7EA;border-radius:0 var(--r-s) var(--r-s) 0;padding:12px 16px}
+.article .jp{line-height:inherit}
+.article ruby rt{font-family:var(--f-body);font-size:.5em;color:var(--rose-ink);font-weight:500}
+.article .tscroll{background:#fff}
+.article .vtable td{white-space:normal;min-width:5.5em;vertical-align:top;line-height:1.7}
+.article .vtable th{white-space:nowrap}
+.article strong{color:var(--text)}
+.sources{max-width:42em;font-size:.8125rem;color:var(--text-2);line-height:1.8}
+.sources ol{margin:6px 0 0;padding-left:1.4em}
+.sources a{color:var(--text-2);overflow-wrap:anywhere}
+.dl-card{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;align-items:start}
+.dl-card img{width:100%;max-width:100%;height:auto;border-radius:8px;border:1px solid var(--line);box-shadow:0 12px 26px -18px rgba(30,60,140,.5);background:#fff}
+@media (max-width:560px){.dl-card{grid-template-columns:96px minmax(0,1fr);gap:14px}}
+.dl-card h3{margin-bottom:2px}
+.dl-card p{margin:0}
+.dl-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.faq{display:flex;flex-direction:column;gap:10px;max-width:46em}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:var(--r-m);padding:0 18px}
+.faq summary{cursor:pointer;list-style:none;padding:15px 0;font-weight:700;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:#3D7BE0;font-weight:500;font-size:1.25rem;line-height:1}
+.faq details[open] summary::after{content:"−"}
+.faq summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.faq .a{padding:0 0 16px;color:var(--text);line-height:1.9}
+.faq .a p{margin:0 0 8px}
+.faq-group{font-family:var(--f-mincho);font-size:1.25rem;font-weight:900;margin:22px 0 4px}
+.dl-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:18px;padding:16px 20px;border-radius:var(--r-m);background:linear-gradient(160deg,#FFF6E6,#FFEFF3);border:1px solid rgba(255,205,130,.5)}
+.dl-strip p{margin:0}
+.dl-strip b{font-family:var(--f-mincho)}
+.toc{max-width:42em}
+.toc-list{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px;line-height:1.7}
+.toc-list a{color:var(--text)}
+.article h2{scroll-margin-top:84px}
+details.sources summary{cursor:pointer;list-style:none;display:flex;gap:8px;align-items:center;padding:6px 0}
+details.sources summary::-webkit-details-marker{display:none}
+details.sources summary::after{content:"展开";font-size:.75rem;color:#2F6FD6}
+details.sources[open] summary::after{content:"收起"}
+</style>
+</head>
+<body data-page="column" data-totop>
+<header id="site-head"></header>
+<main>
+<section class="page-hero"><div class="wrap" style="display:flex;flex-direction:column;gap:6px"><nav class="crumb" aria-label="位置"><a href="column.html">专栏</a><span>/</span><span>考试</span></nav><span class="eyebrow">コラム · 考试</span><h1>直接考 N1 还是先考 N2？按目标来选</h1><p class="lead">讲清 N2 和 N1 差在哪、及格线怎么算，再按求职、签证积分、留学、考研和兴趣，排好一年两次的考试节奏。</p></div></section><section class="band" style="padding-top:0"><div class="wrap" style="display:flex;flex-direction:column;gap:28px"><div class="col-meta"><span>あお老师</span><span>2026.10.19</span><span>7 分钟读完</span></div><details class="card fold toc"><summary><h3>本文目录</h3></summary><ol class="toc-list"><li><a href="#s1">N2 和 N1 差在哪</a></li><li><a href="#s2">及格线怎么算</a></li><li><a href="#s3">按目标来选</a></li><li><a href="#s4">一年两次，怎么排</a></li><li><a href="#s5">拿一套卷子来判断</a></li></ol></details><article class="article"><p>N2 刚过，或者 N2 的题已经做得挺顺，很多人会卡在一个问题上：下一次直接报 N1，还是稳一点先拿个 N2？</p><p>我的看法很简单。先想清楚你要这张证书拿去干什么、什么时候要用，再看自己现在的水平。目标定了，级别和时间表基本也就跟着定了。</p><h2 id="s1">N2 和 N1 差在哪</h2><p>官方对两级的描述，读的方面，N2 是能看懂报纸杂志上<span class="jp" lang="ja">論旨が明快</span>（论点清楚）的文章，N1 要能读懂逻辑更复杂、抽象度更高的文章，比如社论和评论。听的方面，N2 是接近自然语速，N1 是自然语速，还包括讲座这种一整段的内容。</p><p>落到备考上，差别主要在四块。</p><h3>词汇</h3><p>网上常说 N2 大约六千词、N1 大约一万词。这组数字来自旧版考试的参考标准，官方现在已经不公布词汇量了，只能当常见参考。我的体会是，N1 多出来的词很多是书面语和抽象词，比如<span class="jp" lang="ja"><ruby>是正<rt>ぜせい</rt></ruby></span>（纠正）、<span class="jp" lang="ja"><ruby>懸念<rt>けねん</rt></ruby></span>（担忧）这种，汉字看着眼熟，读音和用法却容易错。</p><h3>语法</h3><p>N2 的语法日常里还挺常用，比如：</p><blockquote><span class="jp" lang="ja">約束したから、行かないわけにはいかない。</span><br>答应过了，不能不去。</blockquote><p>N1 的语法偏书面、偏正式，平时说话很少用，考试却专门考：</p><blockquote><span class="jp" lang="ja">本日をもって<ruby>受付<rt>うけつけ</rt></ruby>を終了いたします。</span><br>受理到今天为止。</blockquote><p>这类句型单独背不难，难在放进长句里还能一眼认出来。</p><h3>阅读量</h3><p>官方的题型表里，N1 的阅读比 N2 多一种「长文」。考试时间上，N1 的语言知识加阅读是 110 分钟，N2 是 105 分钟，只多 5 分钟，可要读的东西明显多。我教过的学员里，N2 能从容做完，换成 N1 却读不完的情况很常见。</p><h3>听力语速</h3><p>N1 听解 55 分钟，N2 是 50 分钟。时长差得不多，真正拉开差距的是语速和信息密度。N1 的录音里，说话人会绕弯子、改主意，还有不少讲座式的独白，听漏一句后面就接不上。中文母语的同学看汉字占便宜，听力没有这个便宜，所以听解常常是 N1 最先卡住的一科。</p><h2 id="s2">及格线怎么算</h2><p>N1 和 N2 都分三科：语言知识（文字、词汇、语法）、读解、听解，每科 60 分，总分 180。合格要同时满足两条：</p><div class="tscroll"><table class="vtable"><thead><tr><th>级别</th><th>合格总分</th><th>每科基准分</th></tr></thead><tbody><tr><td>N1</td><td>100 / 180</td><td>19 / 60</td></tr><tr><td>N2</td><td>90 / 180</td><td>19 / 60</td></tr></tbody></table></div><p>只要有一科没到 19 分，总分再高也不合格。缺考任何一科也算不合格。</p><p>还有一点很多人不知道。从 2025 年 12 月的考试开始，成绩单上会给一个 CEFR 参考等级，只给合格的人。按官方的对照，N2 考到 112 分以上标 B2，N1 合格到 141 分标的也是 B2，142 分以上才是 C1。也就是说，一个压线过的 N1，和一个高分 N2，在这个参考等级上是同一档。如果对方看的是分数，N2 考高分也有它的价值。</p><p>另外，官方成绩是统计换算过的<ruby>尺度得点<rt>しゃくどとくてん</rt></ruby>，答对几题和最后几分并不能一一对应。证书本身官方不设有效期，但有的公司和学校会只认近几年的成绩，投之前问一下。</p><h2 id="s3">按目标来选</h2><h3>日企求职</h3><p>国内日企的招聘启事里，N2 是常见门槛，需要写邮件、开会、做翻译的岗位经常写「N1 优先」或直接要求 N1。去日本找工作的话，日本企业更看重面试时的实际日语能力。有人才服务机构做过企业调查，相当多的企业期待外国留学生达到「商务上级」的日语水平，多数企业的面试也是全程日语。证书是敲门砖，进门以后靠的还是说和听。</p><p>我的建议：离投简历还有一年以上，可以直接冲 N1；只剩半年左右，先保证手上有 N2，再一边求职一边准备 N1。</p><h3>工作签证和高度人才积分</h3><p>这块要分开说，以日本出入国在留管理厅的规定为准。</p><ul><li>常见的「技术・人文知识・国际业务」签证，审查重点在学历、专业和工作内容是否对口，JLPT 并非普遍要求。官方提到，在需要证明日语能力时，N2 以上可以作为依据。</li><li>高度人才积分制要求总分 70 分以上。日语这一项，N1（或 BJT 480 分以上）加 15 分，N2（或 BJT 400 分以上）加 10 分。在国外大学读日语专业毕业的，算在和 N1 同一项。N2 的 10 分，和日本大学毕业、N1 这两项不能重复加。</li><li>在日本读完大学或研究生，想做需要大量用日语沟通的工作，有一种面向日本大学毕业生的特定活动签证，日语要求是 N1 或 BJT 480 分以上。</li></ul><p>如果你的计划里有高度人才，N1 和 N2 差的 5 分可能正好卡在 70 分线上，值得为它多考一次。具体能拿几分，一定拿最新的积分表自己算一遍，或者问专业的行政书士。</p><h3>日本留学</h3><p>JLPT 官网的说法是，读语言学校，N5 以上可以作为日语能力证明；进大学等高等教育机构，N2 以上是一个参考标准。实际上本科申请很多学校看的是留考（EJU），JLPT 只是辅助材料，也有学校明确要求 N1。大学院（研究生）差别更大，文科专业要求 N1 的不少，理工科有的用英语授课，日语要求很低。</p><p>所以第一步是把目标学校的<span class="jp" lang="ja"><ruby>募集要項<rt>ぼしゅうようこう</rt></ruby></span>（招生简章）找出来，看清楚写的是 N1、N2 还是 EJU 多少分，以及成绩要在什么时候之前交。</p><h3>国内考研或工作</h3><p>国内考研的外语科目要参加统一考试，JLPT 一般代替不了。保研、夏令营和复试，有的学校会把 N1 当作语言能力证明，各校写法不同，以当年简章为准。日语专业的同学，N1 基本是默认要有的；非日语专业，N2 已经能说明你有一定基础。</p><h3>兴趣</h3><p>纯兴趣就别给自己太大压力。报一个努力一下能过的级别，考试的价值在于给你一个截止日期，逼着你系统复习一遍。N2 稳了再上 N1，学得更踏实，也不容易半路放弃。</p><h2 id="s4">一年两次，怎么排</h2><p>JLPT 每年考两次，通常在 7 月和 12 月，2026 年是 7 月 5 日和 12 月 6 日。国内由教育部教育考试院组织，每次只能报一个级别。</p><p>排时间表时最容易忽略的是两次考试之间的衔接。上一次的成绩公布和下一次的报名往往挨得很近，有时成绩还没出来，下一次的报名就已经开始了。具体日期以教育部教育考试院当次发布的通知为准。</p><p>所以别等上一次的成绩出来再想下一步，报名前就把「过了报什么、没过报什么」都想好。</p><p>常见的两种排法：</p><ol><li><strong>先 N2 再 N1。</strong>7 月考 N2，12 月接着考 N1，或者隔一年再考。适合离截止日期还远、想先拿一张保底证书的人。</li><li><strong>直接 N1，留一次余量。</strong>比如需要在明年秋天前拿到证书，就报今年 12 月的 N1，万一没过，还有明年 7 月可以补。</li></ol><p>不管哪种，都从你需要交证书的日期往回推，至少留出一次考试的余量。网上查成绩和拿到纸质证书之间还有一段时间，如果对方要原件，也要算进去。</p><h2 id="s5">拿一套卷子来判断</h2><p>说了这么多，最后还是要看你现在的实际水平。可以在本站的<a href="jlpt.html#mock">模拟试卷</a>里，按正式考试的时长做一整套 N1，听力不暂停、不回放，然后分科算分。</p><p>我自己常用的参考是：总分稳定在 110 以上、每科都在 25 分以上，可以直接报 N1；总分不到 85，或者有一科在 19 分附近，先报 N2 更稳。中间的情况，就看离考试还有多久、每天能学多少。这几个数字是我的经验建议，并非官方标准，模拟卷的估分本身也有误差，留点余量总没错。</p><p>如果连 N2 的卷子都做得吃力，先去 <a href="jlpt.html#quick">30 题快速测验</a>看看自己大概在哪一级。</p><p>想让我帮你看看模拟卷的分丢在哪、该报哪一级，可以约一节<a href="about.html#courses">免费试听</a>。</p></article><details class="sources"><summary><b>参考资料（16 条）</b></summary><ol><li><a href="https://www.jlpt.jp/about/levelsummary.html" target="_blank" rel="noopener">N1～N5：認定の目安（日本語能力試験 JLPT）</a></li><li><a href="https://www.jlpt.jp/guideline/results.html" target="_blank" rel="noopener">合否判定・結果通知（日本語能力試験 JLPT）</a></li><li><a href="https://www.jlpt.jp/e/guideline/testsections.html" target="_blank" rel="noopener">Test Sections and Test Times（JLPT）</a></li><li><a href="https://www.jlpt.jp/about/points.html" target="_blank" rel="noopener">尺度得点について（日本語能力試験 JLPT）</a></li><li><a href="https://jlpt.jp/e/about/cefr_reference.html" target="_blank" rel="noopener">CEFR reference levels（JLPT）</a></li><li><a href="https://www.jlpt.jp/faq/index.html" target="_blank" rel="noopener">よくある質問（日本語能力試験 JLPT）</a></li><li><a href="https://jlpt.jp/e/guideline/results_online.html" target="_blank" rel="noopener">Online test results（JLPT）</a></li><li><a href="https://www.jlpt.jp/about/merit.html" target="_blank" rel="noopener">日本語能力試験のメリット（日本語能力試験 JLPT）</a></li><li><a href="https://www.moj.go.jp/isa/applications/status/newimmiact_3_procedure_index.html" target="_blank" rel="noopener">高度人材ポイント制による出入国在留管理上の優遇制度（出入国在留管理庁）</a></li><li><a href="https://www.moj.go.jp/isa/content/930001658.pdf" target="_blank" rel="noopener">高度専門職 評価項目・配点（出入国在留管理庁）</a></li><li><a href="https://www.moj.go.jp/isa/content/930001656.pdf" target="_blank" rel="noopener">日本語能力に関する特別加算（出入国在留管理庁）</a></li><li><a href="https://www.moj.go.jp/isa/content/001413711.pdf" target="_blank" rel="noopener">留学生の就職支援に係る「特定活動」（本邦大学卒業者）についてのガイドライン（出入国在留管理庁）</a></li><li><a href="https://www.jasso.go.jp/ryugaku/eju/about/about_a/about_eju.html" target="_blank" rel="noopener">日本留学試験（EJU）とは（JASSO）</a></li><li><a href="https://job.career-tasu.jp/guide/howto/foreign-startup02/" target="_blank" rel="noopener">外国人留学生の採用と日本語レベル（キャリタス就活、DISCO 調査を引用）</a></li><li><a href="https://jlpt.neea.cn/" target="_blank" rel="noopener">日本语能力测试报名网站（教育部教育考试院）</a></li><li><a href="https://www.mison.cn/riyu/kaoshi/6157.html" target="_blank" rel="noopener">2026年12月日本语能力测试（JLPT）考试报名的通知（美森日语，转述）</a></li></ol></details><div class="card sun" style="max-width:42em;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px"><p style="margin:0"><b>想按自己的情况安排学习？</b><br><span class="muted small">先约一节 30 分钟免费试听，老师帮你看看从哪里开始。</span></p><a class="btn btn-sun btn-small" href="about.html?ask=1&amp;type=course" data-inquiry="course">预约免费试听 →</a></div><div><h2 style="font-size:1.375rem;margin-bottom:16px">更多专栏</h2><div class="col-list"><a class="col-card" href="col-kana-two-weeks.html"><div class="col-meta"><span class="tag open">学习规划</span><span>7 分钟读完</span></div><h3>零基础按天走，两周记住五十音</h3><p>一份按天排好的两周计划，讲清假名从哪些汉字来、易混字怎么分，以及为什么要边听边读边写。</p><span class="more">读全文 →</span></a><a class="col-card" href="col-study-time.html"><div class="col-meta"><span class="tag open">学习规划</span><span>7 分钟读完</span></div><h3>零基础学到 N1，每个阶段要多久</h3><p>从五十音到 N1 各阶段的时间参考，每级卡在哪里，每天一小时怎么分，以及汉字带来的优势和误区。</p><span class="more">读全文 →</span></a></div></div></div></section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/inquiry.js"></script>
+</body>
+</html>

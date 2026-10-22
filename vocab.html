@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>单词 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="N5 基础单词卡、动漫高频词、中日同形词：翻卡片记单词，点一下听发音，记住的自动标记。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+body[data-page=vocab] .page-hero{padding-bottom:12px}
+.fc-info{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.fc-listen{display:flex;gap:8px;margin-left:auto}
+.fc-listen .btn{min-height:38px;min-width:76px}
+.fc-two{flex-wrap:nowrap}
+.fc-two .btn{flex:1;min-height:48px;max-width:240px}
+/* 背单词（像百词斩：选意思 → 看详情 → 记住了 / 错题本） */
+.dr-set{display:flex;flex-direction:column;gap:14px}
+.dr-row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.dr-row > .lbl{font-size:.8125rem;color:var(--text-2);letter-spacing:.08em;min-width:4.5em}
+.dr-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.dr-stats div{background:#fff;border:1px solid var(--line);border-radius:var(--r-s);padding:10px 12px;text-align:center}
+.dr-stats b{display:block;font-family:var(--f-mincho);font-size:1.5rem;line-height:1.2}
+.dr-stats span{font-size:.75rem;color:var(--text-2)}
+.dr-go{display:flex;flex-wrap:wrap;gap:10px}
+.dr-go .btn{min-height:48px}
+.dr{display:flex;flex-direction:column;gap:14px;max-width:640px;margin:0 auto;width:100%}
+.dr-top{display:flex;align-items:center;gap:12px}
+.dr-top .bar{flex:1;height:6px}
+.dr-word{text-align:center;padding:22px 16px 18px;border-radius:var(--r-l);background:linear-gradient(160deg,#fff,#F4F8FF);border:1px solid var(--line);box-shadow:0 20px 44px -30px rgba(30,60,140,.45);display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
+.dr-word .w{font-family:var(--f-mincho);font-size:clamp(2.2rem,8vw,3.2rem);font-weight:700;line-height:1.2}
+.dr-word .k{font-family:var(--f-mincho);color:var(--rose-ink);letter-spacing:.1em}
+.dr-word .zhq{font-size:1.375rem;font-weight:700}
+.dr-word .say{position:absolute;right:12px;top:12px}
+.dr-word .wrongtag{position:absolute;left:12px;top:12px;font-size:.6875rem;color:var(--rose-ink);border:1px solid rgba(192,79,117,.35);border-radius:999px;padding:1px 8px}
+.dr .q-opts .opt{font-size:1.0625rem;letter-spacing:.02em;padding:14px 12px;line-height:1.5}
+.dr-skip{display:flex;gap:10px}
+.dr-skip .btn{flex:1;min-height:46px}
+.dr-detail{border-radius:var(--r-m);background:#fff;border:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.dr-detail.ok{border-color:rgba(23,143,116,.45);background:#F3FCF9}
+.dr-detail.ng{border-color:rgba(192,79,117,.4);background:#FFF5F8}
+.dr-detail .verdict{font-weight:900;font-family:var(--f-mincho)}
+.dr-detail.ok .verdict{color:var(--mint-ink)}.dr-detail.ng .verdict{color:var(--rose-ink)}
+.dr-detail .zh1{font-size:1.125rem;font-weight:700}
+.dr-detail .ex{font-family:var(--f-mincho);line-height:2.1}
+.dr-next{display:flex;gap:10px}
+.dr-next .btn{flex:1;min-height:48px}
+.wb-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.wb-list .witem .n{margin-left:auto;font-size:.75rem;color:var(--rose-ink);white-space:nowrap}
+@media (max-width:600px){.dr .q-opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="vocab">
+<header id="site-head"></header>
+<main>
+  <section class="page-hero band pale">
+    <div class="wrap">
+      <span class="eyebrow">単語 · Vocabulary</span>
+      <h1>单词</h1>
+      <p class="lead">N5 到 N1 共 8000 多个 JLPT 词汇，外加动漫高频词和中日同形词。每组可以选 5–30 个词：选对了可以直接点「记住了」，以后不再出现；选错的进错题本，下次优先再考，连续答对 2 次才移出。也可以去<a href="games.html#word-game">单词连连看</a>闯关。</p>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:20px">
+    <div class="wrap" style="display:flex;flex-direction:column;gap:18px">
+      <div class="chips" id="deck-tabs" role="group" aria-label="选择词库"></div>
+      <div class="card" style="gap:6px"><h3 id="deck-title"></h3><p class="muted small" id="deck-desc" style="margin:0"></p></div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+        <div class="seg" role="group" aria-label="学习方式"><button type="button" data-mode="drill" aria-pressed="true">背单词</button><button type="button" data-mode="wrong" aria-pressed="false">错题本 <span class="num" id="wb-n"></span></button><button type="button" data-mode="card" aria-pressed="false">翻卡片</button><button type="button" data-mode="list" aria-pressed="false">词表</button></div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+          <label class="field" style="flex-direction:row;align-items:center;gap:8px;margin:0"><span class="small muted">分类</span><select id="tag-filter" style="width:auto"></select></label>
+          <span class="small muted" id="known-count"></span>
+        </div>
+      </div>
+      <div id="stage"></div>
+    </div>
+  </section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="audio/v/index-vocab.js" async></script>
+<script src="js/study.js"></script>
+<script src="js/vocab-data.js"></script>
+<script>
+(function () {
+  var B = window.Breeze, $ = B.$, $$ = B.$$, esc = B.esc, S = B.study, D0 = window.VOCAB && window.VOCAB.decks;
+  if (!D0) return;
+  var LVN = { n5: 718, n4: 668, n3: 2134, n2: 1792, n1: 2697 };
+  var D = ['n5', 'n4', 'n3', 'n2', 'n1'].map(function (l) {
+    return { id: 'jlpt-' + l, lazy: l, title: l.toUpperCase() + ' 全部词汇', count: LVN[l],
+      desc: 'JLPT ' + l.toUpperCase() + ' 级别词汇（约 ' + LVN[l] + ' 个，不含更低级别已出现的词）。' + '每个词都配了原创例句。' + '词表基于 Jonathan Waller 整理的 JLPT 词表（CC BY），中文释义为本站编写。' };
+  }).concat(D0.map(function (d) { if (d.id === 'n5') { d.title = 'N5 入门精选'; } return d; }));
+  var ids = D.map(function (d) { return d.id; });
+  var deck = D[Math.max(0, ids.indexOf(location.hash.slice(1)))], mode = 'drill', tag = '', known = S.store('vocab-known', {});
+  function id(c) { return c.w + '|' + c.k; }
+  /* 旧版本按写法记的「已记住 / 错题」，迁移成「写法|读音」，同写法不同读音的词（九 きゅう/く）各算各的 */
+  function migrate() {
+    [known, wrongStore].forEach(function (st) {
+      var a = st.get(), m = a[deck.id]; if (!m) return; var ch = false;
+      Object.keys(m).forEach(function (key) { if (key.indexOf('|') >= 0) return; deck.cards.forEach(function (c) { if (c.w === key && !m[id(c)]) m[id(c)] = m[key]; }); delete m[key]; ch = true; });
+      if (ch) st.set(a);
+    });
+  }
+  function K() { var k = known.get(); return k[deck.id] || (k[deck.id] = {}); }
+  function setK(w, on) { var k = known.get(); k[deck.id] = k[deck.id] || {}; if (on) k[deck.id][w] = 1; else delete k[deck.id][w]; known.set(k); count(); }
+  function cards() { return deck.cards.filter(function (c) { return !tag || c.tag === tag; }); }
+  function count() { var c = cards(), k = K(); $('#known-count').textContent = '已记住 ' + c.filter(function (x) { return k[id(x)]; }).length + ' / ' + c.length; var n = deck.cards ? wrongCards().length : 0; $('#wb-n').textContent = n ? n : ''; }
+  /* 错题本：{deckId: {word: {n: 错的次数, ok: 之后连续答对次数, t: 最近一次}}} */
+  var wrongStore = S.store('vocab-wrong', {}), prefs = S.store('vocab-drill', { n: 10, dir: 'jz' });
+  function WB() { var a = wrongStore.get(); return a[deck.id] || {}; }
+  function setWB(w, v) { var a = wrongStore.get(); a[deck.id] = a[deck.id] || {}; if (v) a[deck.id][w] = v; else delete a[deck.id][w]; wrongStore.set(a); }
+
+  function tabs() {
+    $('#deck-tabs').innerHTML = D.map(function (d) { return '<button type="button" class="chip" data-tab="' + d.id + '" aria-pressed="' + (d === deck) + '">' + esc(d.title) + '</button>'; }).join('');
+    S.tabs($('#deck-tabs'), function (id) { deck = D[ids.indexOf(id)]; tag = ''; history.replaceState(null, '', '#' + id); render(); });
+  }
+  function render() {
+    tabs();
+    if (deck.lazy && !deck.cards) {
+      $('#deck-title').textContent = deck.title; $('#deck-desc').textContent = deck.desc; $('#stage').innerHTML = '<div class="placeholder">正在载入 ' + deck.count + ' 个单词……</div>';
+      var d = deck, sc = document.createElement('script'); sc.src = 'js/vocab/' + d.lazy + '.js';
+      sc.onload = function () { d.cards = (window.VOCAB_LV[d.lazy] || []).map(function (a) { return { w: a[0], k: a[1] || a[0], zh: a[2], pos: a[3], tag: a[3], ex: a[4] || '', exRuby: a[5] || '', exZh: a[6] || '' }; }); if (deck === d) render(); };
+      sc.onerror = function () { $('#stage').innerHTML = '<div class="placeholder">词表载入失败，请刷新重试。</div>'; };
+      document.body.appendChild(sc); return;
+    }
+    migrate();
+    $('#deck-title').textContent = deck.title + '（' + deck.cards.length + ' 个）'; $('#deck-desc').textContent = deck.desc;
+    var tags = []; deck.cards.forEach(function (c) { if (c.tag && tags.indexOf(c.tag) < 0) tags.push(c.tag); });
+    $('#tag-filter').innerHTML = '<option value="">全部</option>' + tags.map(function (t) { return '<option' + (t === tag ? ' selected' : '') + '>' + esc(t) + '</option>'; }).join('');
+    count();
+    ({ drill: drillHome, wrong: wrongBook, card: flash, list: list })[mode]();
+  }
+  $('#tag-filter').onchange = function () { tag = this.value; render(); };
+  $$('[data-mode]').forEach(function (b) { b.onclick = function () { mode = b.getAttribute('data-mode'); $$('[data-mode]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); render(); }; });
+
+  /* 翻卡片：没记住的排在前面 */
+  function flash() {
+    var k = K(), c = cards();
+    var order = B.shuffle(c.filter(function (x) { return !k[id(x)]; })).concat(B.shuffle(c.filter(function (x) { return k[id(x)]; })));
+    var i = 0, seen = 0;
+    function draw() {
+      if (!order.length) { $('#stage').innerHTML = '<div class="placeholder">这个分类没有单词。</div>'; return; }
+      var w = order[i % order.length], isK = !!K()[id(w)];
+      $('#stage').innerHTML = '<div class="fc-wrap">' +
+        '<div class="fc-meta"><span class="fc-info"><span class="tag">' + esc(w.pos) + (w.tag && w.tag !== w.pos ? ' · ' + esc(w.tag) : '') + '</span><span class="small muted num">' + (i % order.length + 1) + ' / ' + order.length + (isK ? '　<span class="done-mark">✓ 已记住</span>' : '') + '</span></span>' +
+          '<span class="fc-listen"><button class="btn btn-ghost btn-small" type="button" data-say="' + esc(S.plain(w.k)) + '" data-key="' + esc(B.wordKey(w.w, w.k)) + '">▶ 单词</button>' + (w.ex ? '<button class="btn btn-ghost btn-small" type="button" data-say="' + esc(S.plain(w.ex)) + '">▶ 例句</button>' : '') + '</span></div>' +
+        '<button type="button" class="fc" id="fc" aria-label="点击翻面"><div class="fc-in">' +
+          '<div class="fc-face"><div class="fc-w" lang="ja">' + esc(w.w) + '</div><p class="muted small" style="margin:0">先想一想意思，点卡片翻面</p></div>' +
+          '<div class="fc-face fc-back"><div class="fc-w" lang="ja" style="font-size:2rem">' + esc(w.w) + '</div>' + (w.k !== w.w ? '<div class="fc-k" lang="ja">' + esc(w.k) + '</div>' : '') +
+            '<div class="fc-zh">' + esc(w.zh) + '</div>' + (w.cn ? '<div class="fc-cn">中文里的「' + esc(w.w) + '」：' + esc(w.cn) + '</div>' : '') +
+            '<div class="fc-ex" lang="ja">' + w.exRuby + '</div><div class="zh small">' + esc(w.exZh) + '</div>' + (w.note ? '<div class="fc-note">' + esc(w.note) + '</div>' : '') + '</div>' +
+        '</div></button>' +
+        '<div class="fc-ctrl fc-two">' +
+          '<button class="btn btn-ghost" type="button" id="fc-no">还没记住</button><button class="btn btn-sun" type="button" id="fc-yes">记住了</button></div></div>';
+      var fc = $('#fc');
+      fc.onclick = function () { fc.classList.toggle('flip'); if (fc.classList.contains('flip')) B.speak(w.k, B.wordKey(w.w, w.k)); };
+      $('#fc-yes').onclick = function () { if (!K()[id(w)]) { setK(id(w), true); B.addXP(1); } setWB(id(w), null); count(); next(); };
+      $('#fc-no').onclick = function () { setK(id(w), false); next(); };
+    }
+    function next() { i++; seen++; if (seen % 10 === 0 && B.onceToday('vocab10-' + deck.id)) B.addXP(5, '今天背了 10 个词'); draw(); }
+    draw();
+  }
+
+  /* ---------- 背单词：一组 N 个词，错题本优先 ---------- */
+  var NS = [5, 10, 15, 20, 25, 30];
+  function byW() { var m = {}; deck.cards.forEach(function (c) { m[id(c)] = c; }); return m; }
+  function wrongCards() { var wb = WB(), m = byW(); return Object.keys(wb).sort(function (a, b) { return (wb[a].t || 0) - (wb[b].t || 0); }).map(function (w) { return m[w]; }).filter(Boolean).filter(function (c) { return (!tag || c.tag === tag) && !K()[id(c)]; }); }
+  function drillHome() {
+    var pf = prefs.get(), k = K(), c = cards(), wc = wrongCards();
+    var fresh = c.filter(function (x) { return !k[id(x)]; }).length;
+    $('#stage').innerHTML = '<div class="card dr-set">' +
+      '<div class="dr-stats"><div><b class="num">' + fresh + '</b><span>还没记住</span></div><div><b class="num">' + wc.length + '</b><span>错题本里</span></div><div><b class="num">' + (c.length - fresh) + '</b><span>已记住</span></div></div>' +
+      '<div class="dr-row"><span class="lbl">每组</span><div class="chips" id="dr-n">' + NS.map(function (n) { return '<button type="button" class="chip" data-n="' + n + '" aria-pressed="' + (n === pf.n) + '">' + n + ' 个</button>'; }).join('') + '</div></div>' +
+      '<div class="dr-row"><span class="lbl">题型</span><div class="seg" id="dr-dir"><button type="button" data-d="jz" aria-pressed="' + (pf.dir !== 'zj') + '">看日语选意思</button><button type="button" data-d="zj" aria-pressed="' + (pf.dir === 'zj') + '">看意思选日语</button></div></div>' +
+      '<p class="muted small" style="margin:0">错题本里的词会先出（这一组最多一半是错题），剩下的从还没记住的词里随机抽。答对后点「记住了」，这个词以后就不再出现。</p>' +
+      '<div class="dr-go"><button class="btn btn-sun" type="button" id="dr-start">开始背 ' + pf.n + ' 个</button>' + (wc.length ? '<button class="btn btn-coral" type="button" id="dr-wrong">只练错题（' + wc.length + '）</button>' : '') + '</div></div>';
+    $$('#dr-n [data-n]').forEach(function (b) { b.onclick = function () { var p = prefs.get(); p.n = +b.getAttribute('data-n'); prefs.set(p); drillHome(); }; });
+    $$('#dr-dir [data-d]').forEach(function (b) { b.onclick = function () { var p = prefs.get(); p.dir = b.getAttribute('data-d'); prefs.set(p); drillHome(); }; });
+    $('#dr-start').onclick = function () { startDrill(false); };
+    if ($('#dr-wrong')) $('#dr-wrong').onclick = function () { startDrill(true); };
+  }
+  function startDrill(onlyWrong) {
+    var pf = prefs.get(), n = pf.n, k = K(), c = cards();
+    if (c.length < 4) { $('#stage').innerHTML = '<div class="placeholder">单词太少，换个分类试试。</div>'; return; }
+    var wc = wrongCards(), pick;
+    if (onlyWrong) pick = wc.slice(0, n);
+    else {
+      pick = wc.slice(0, Math.ceil(n / 2));
+      var have = {}; pick.forEach(function (x) { have[id(x)] = 1; });
+      var pool = B.shuffle(c.filter(function (x) { return !k[id(x)] && !have[id(x)]; }));
+      pick = pick.concat(pool.slice(0, n - pick.length));
+            pick = B.shuffle(pick);
+    }
+    if (!pick.length) { B.toast(onlyWrong ? '错题本是空的' : '这个分类的词都记住了，换个词库或分类吧'); return drillHome(); }
+    runDrill(pick, pf.dir, c);
+    var st = $('#stage'); window.scrollTo({ top: st.getBoundingClientRect().top + window.scrollY - 76 });
+  }
+  function runDrill(list, dir, pool) {
+    var queue = list.slice(), total = list.length, done = {}, firstOk = {}, stat = { ok: 0, known: 0, wrong: 0 }, wrongNow = {};
+    function opts(w) {
+      var key = dir === 'jz' ? 'zh' : 'w', seen = {}; seen[w[key]] = 1;
+      var seenW = {}; seenW[w.w] = 1; seen[w.zh] = 1;
+      var others = B.shuffle(pool).filter(function (x) { if (seenW[x.w] || seen[x[key]] || seen[x.zh]) return false; seenW[x.w] = 1; seen[x[key]] = 1; seen[x.zh] = 1; return true; }).slice(0, 3);
+      return B.shuffle([w].concat(others));
+    }
+    function draw() {
+      if (!queue.length) return finish();
+      var w = queue[0], os = opts(w), wb = WB()[id(w)], nDone = Object.keys(done).length;
+      var face = dir === 'jz'
+        ? '<div class="w" lang="ja">' + esc(w.w) + '</div>' + (w.k !== w.w ? '<div class="k" lang="ja">' + esc(w.k) + '</div>' : '')
+        : '<div class="zhq">' + esc(w.zh) + '</div>';
+      $('#stage').innerHTML = '<div class="dr">' +
+        '<div class="dr-top"><button class="btn btn-ghost btn-small" type="button" id="dr-quit">← 结束</button><div class="bar" aria-hidden="true"><i style="width:' + Math.round(nDone / total * 100) + '%"></i></div><span class="small muted num">' + nDone + ' / ' + total + '</span></div>' +
+        '<div class="dr-word">' + (wb ? '<span class="wrongtag">错题 · 错过 ' + wb.n + ' 次</span>' : '') + (dir === 'jz' ? S.sayBtn(w.k, '听读音', B.wordKey(w.w, w.k)) : '') + face + '</div>' +
+        '<div class="q-opts text">' + os.map(function (o) { return '<button type="button" class="opt"' + (dir === 'zj' ? ' lang="ja"' : '') + ' data-w="' + esc(id(o)) + '">' + esc(dir === 'jz' ? o.zh : o.w) + '</button>'; }).join('') + '</div>' +
+        '<div class="dr-skip"><button class="btn btn-ghost" type="button" id="dr-idk">不认识</button><button class="btn btn-ghost" type="button" id="dr-kill" title="太熟了，直接标记记住">太简单，记住了</button></div>' +
+        '<div id="dr-after"></div></div>';
+      if (dir === 'jz') B.speak(w.k, B.wordKey(w.w, w.k));
+      $('#dr-quit').onclick = function () { finish(true); };
+      $$('.dr .opt').forEach(function (b) { b.onclick = function () { answer(w, b.getAttribute('data-w') === id(w), b); }; });
+      $('#dr-idk').onclick = function () { answer(w, false, null); };
+      $('#dr-kill').onclick = function () { markKnown(w); stat.known++; done[id(w)] = 1; queue.shift(); draw(); };
+    }
+    function markKnown(w) { if (!K()[id(w)]) { setK(id(w), true); B.addXP(1); } setWB(id(w), null); count(); }
+    function answer(w, ok, btn) {
+      $$('.dr .opt').forEach(function (x) { x.disabled = true; if (x.getAttribute('data-w') === id(w)) x.classList.add('right'); });
+      if (btn && !ok) btn.classList.add('wrong');
+      $('#dr-idk').disabled = true; $('#dr-kill').disabled = true;
+      var wb = WB()[id(w)], wid = id(w);
+      if (ok) {
+        if (!(wid in firstOk)) firstOk[wid] = true;
+        stat.ok += wrongNow[wid] ? 0 : 1; B.addXP(1);
+        if (wb && !wrongNow[wid]) { wb.ok = (wb.ok || 0) + 1; if (wb.ok >= 2) setWB(wid, null); else setWB(wid, wb); }
+      } else {
+        firstOk[wid] = false;
+        if (!wrongNow[wid]) { wrongNow[wid] = 1; stat.wrong++; }
+        setWB(wid, { n: (wb ? wb.n : 0) + 1, ok: 0, t: Date.now() });
+      }
+      count();
+      if (dir === 'zj' || !ok) B.speak(w.k, B.wordKey(w.w, w.k));
+      var leaves = wb && ok && !WB()[wid];
+      $('#dr-after').innerHTML = '<div class="dr-detail ' + (ok ? 'ok' : 'ng') + '">' +
+        '<span class="verdict">' + (ok ? (leaves ? '答对了！这个词已移出错题本' : '答对了！') : '已加入错题本，这一组结束前还会再考一次') + '</span>' +
+        '<div><span class="w" lang="ja" style="font-family:var(--f-mincho);font-size:1.25rem;font-weight:700">' + esc(w.w) + '</span>' + (w.k !== w.w ? '　<span class="k" lang="ja" style="color:var(--rose-ink)">' + esc(w.k) + '</span>' : '') + '　' + S.sayBtn(w.k, '听读音', B.wordKey(w.w, w.k)) + '</div>' +
+        '<div class="zh1">' + esc(w.zh) + '</div>' +
+        (w.cn ? '<div class="small" style="color:var(--rose-ink)">中文里的「' + esc(w.w) + '」：' + esc(w.cn) + '</div>' : '') +
+        (w.exRuby ? '<div class="ex" lang="ja">' + w.exRuby + ' ' + S.sayBtn(w.ex, '听例句') + '</div><div class="zh small">' + esc(w.exZh) + '</div>' : '') +
+        '</div><div class="dr-next">' + (ok ? '<button class="btn btn-ghost" type="button" id="dr-known">记住了，以后不出现</button>' : '') + '<button class="btn btn-sky" type="button" id="dr-nx">下一个 →</button></div>';
+      var nx = $('#dr-nx');
+      nx.onclick = function () {
+        queue.shift();
+        if (ok) done[wid] = 1; else queue.splice(Math.min(3, queue.length), 0, w); /* 错的词隔几个再考一次 */
+        draw();
+      };
+      if ($('#dr-known')) $('#dr-known').onclick = function () { markKnown(w); stat.known++; nx.onclick(); };
+      nx.focus({ preventScroll: true });
+      $('#dr-after').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+    function finish(quit) {
+      var nDone = Object.keys(done).length;
+      if (!quit && nDone === total) { B.addXP(5, '背完一组单词'); if (stat.wrong === 0 && total >= 5) B.addXP(5, '一组全对'); }
+      var wc = wrongCards();
+      $('#stage').innerHTML = '<div class="card dr-set" style="max-width:640px;margin:0 auto;width:100%;align-items:center;text-align:center">' +
+        B.jelly(stat.wrong ? 'happy' : 'right').replace('<svg', '<svg style="width:80px;height:112px"') +
+        '<h3 style="font-size:1.375rem">' + (quit ? '这一组先到这里' : '这一组背完了！') + '</h3>' +
+        '<div class="dr-stats" style="width:100%"><div><b class="num">' + stat.ok + '</b><span>一次答对</span></div><div><b class="num">' + stat.known + '</b><span>标记记住</span></div><div><b class="num">' + stat.wrong + '</b><span>进了错题本</span></div></div>' +
+        '<div class="dr-go" style="justify-content:center"><button class="btn btn-sun" type="button" id="dr-again">再来一组</button>' + (wc.length ? '<button class="btn btn-coral" type="button" id="dr-w2">练错题（' + wc.length + '）</button>' : '') + '<button class="btn btn-ghost" type="button" id="dr-home">换个设置</button></div></div>';
+      $('#dr-again').onclick = function () { startDrill(false); };
+      if ($('#dr-w2')) $('#dr-w2').onclick = function () { startDrill(true); };
+      $('#dr-home').onclick = drillHome;
+    }
+    draw();
+  }
+
+  /* ---------- 错题本 ---------- */
+  function wrongBook() {
+    var wc = wrongCards(), wb = WB();
+    if (!wc.length) { $('#stage').innerHTML = '<div class="placeholder">错题本是空的。背单词时选错或点「不认识」的词会自动进来，之后连续答对 2 次就会移出。</div>'; return; }
+    $('#stage').innerHTML = '<div class="card" style="gap:14px"><div class="dr-row" style="justify-content:space-between"><p class="muted small" style="margin:0">共 ' + wc.length + ' 个词。下次背单词时会优先出现，连续答对 2 次自动移出；也可以点「记住了」直接移出。</p><button class="btn btn-coral" type="button" id="wb-go">练错题</button></div>' +
+      '<div class="wb-list">' + wc.map(function (w) {
+        var r = wb[id(w)];
+        return '<div class="witem">' + S.sayBtn(w.k, '', B.wordKey(w.w, w.k)) + '<div style="min-width:0;flex:1"><div><span class="w" lang="ja">' + esc(w.w) + '</span> ' + (w.k !== w.w ? '<span class="k" lang="ja">' + esc(w.k) + '</span>' : '') + '</div><div class="m">' + esc(w.zh) + '</div></div>' +
+          '<span class="n">错 ' + r.n + ' 次' + (r.ok ? ' · 已对 ' + r.ok : '') + '</span><button class="chip" type="button" data-rm="' + esc(id(w)) + '" style="padding:4px 10px">记住了</button></div>';
+      }).join('') + '</div></div>';
+    $('#wb-go').onclick = function () { mode = 'drill'; $$('[data-mode]').forEach(function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-mode') === 'drill'); }); startDrill(true); };
+    $$('[data-rm]').forEach(function (b) { b.onclick = function () { var w = b.getAttribute('data-rm'); setWB(w, null); setK(w, true); wrongBook(); }; });
+  }
+
+  /* 词表 */
+  var q = '', shown = 300;
+  function list() {
+    var k = K(), all = cards().filter(function (w) { return !q || w.w.indexOf(q) >= 0 || w.k.indexOf(q) >= 0 || w.zh.indexOf(q) >= 0; });
+    $('#stage').innerHTML = '<div class="field" style="max-width:420px;margin-bottom:12px"><label for="v-q">搜索（日语、假名或中文）</label><input id="v-q" type="search" value="' + esc(q) + '" placeholder="例如：たべる、学习"></div>' +
+      '<p class="small muted" style="margin:0 0 10px">共 ' + all.length + ' 个' + (all.length > shown ? '，先显示前 ' + shown + ' 个' : '') + '</p><div class="wlist">' + all.slice(0, shown).map(function (w) {
+      return '<div class="witem' + (k[id(w)] ? ' known' : '') + '">' + S.sayBtn(w.k, '', B.wordKey(w.w, w.k)) + '<div style="min-width:0"><div><span class="w" lang="ja">' + esc(w.w) + '</span> ' + (w.k !== w.w ? '<span class="k" lang="ja">' + esc(w.k) + '</span>' : '') + '</div><div class="m">' + esc(w.zh) + (w.cn ? '　<span style="color:var(--rose-ink)">≠ ' + esc(w.cn) + '</span>' : '') + '</div></div></div>';
+    }).join('') + '</div>' + (all.length > shown ? '<div style="text-align:center;margin-top:14px"><button class="btn btn-ghost" type="button" id="v-more">再显示 300 个</button></div>' : '');
+    var inp = $('#v-q'), t; inp.oninput = function () { clearTimeout(t); t = setTimeout(function () { q = inp.value.trim(); shown = 300; list(); var i2 = $('#v-q'); i2.focus(); i2.setSelectionRange(i2.value.length, i2.value.length); }, 250); };
+    if ($('#v-more')) $('#v-more').onclick = function () { shown += 300; list(); };
+  }
+
+  window.addEventListener('hashchange', function () { var n = ids.indexOf(location.hash.slice(1)); if (n >= 0 && D[n] !== deck) { deck = D[n]; tag = ''; render(); } });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "profile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "日语学习站 · あお老师 云函数 profile",
+  "main": "index.js",
+  "engines": { "node": ">=16" },
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.18.3"
+  }
+}

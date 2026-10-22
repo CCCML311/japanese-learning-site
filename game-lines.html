@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>台词拼拼看 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="把动漫台词切成几块打乱，按日语语序拼回去。拼对后看注音、罗马音和语法点，按 N5–N1 分级练习。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="games">
+<header id="site-head"></header>
+<main>
+<style>
+/* ---------- 台词拼拼看（类名前缀 ll-） ---------- */
+.ll-hero{padding-block:40px 8px}
+.ll-hero h1{font-family:var(--f-mincho);font-weight:900;font-size:clamp(2rem,5vw,3rem);letter-spacing:.02em;margin-top:8px}
+.ll-hero .lead{margin:10px 0 0;color:var(--text-2);max-width:34em}
+.ll-setup{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:stretch}
+@media (max-width:860px){.ll-setup{grid-template-columns:1fr}}
+.ll-seg{display:flex;flex-wrap:nowrap;width:100%;border-radius:22px}
+.ll-seg button{flex:1 1 0;min-width:0}
+.ll-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.ll-seg button{flex:1 1 auto;min-height:44px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.25;padding:6px 14px;text-align:center;border-radius:18px}
+.ll-seg button small{font-size:.6875rem;letter-spacing:.04em;font-weight:500;opacity:.85}
+.ll-seg button[disabled]{cursor:not-allowed;opacity:.45}
+.ll-meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;font-size:.875rem;color:var(--text-2)}
+.ll-meta b{color:var(--text);font-variant-numeric:tabular-nums}
+.ll-note{margin:0;font-size:.8125rem;color:var(--text-2)}
+
+/* 示例题 */
+.ll-demo{overflow:hidden}
+.ll-demo .ll-tate{position:absolute;right:14px;top:16px;writing-mode:vertical-rl;font-family:var(--f-mincho);font-size:.8125rem;letter-spacing:.4em;color:var(--violet-ink);opacity:.55;pointer-events:none}
+.ll-demo .ll-zh{font-size:1.0625rem;padding-right:28px}
+.ll-demo-row{display:flex;flex-wrap:wrap;gap:8px}
+.ll-demo .ll-chip{min-height:40px;font-size:1.05rem;cursor:default}
+.ll-arrow{display:flex;align-items:center;gap:8px;font-size:.8125rem;color:var(--text-2)}
+.ll-arrow svg{flex:none}
+
+/* 词块 */
+.ll-chip{all:unset;box-sizing:border-box;position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:52px;min-width:52px;padding:8px 16px;border-radius:14px;font-family:var(--f-mincho);font-size:clamp(1.15rem,3.6vw,1.375rem);font-weight:700;letter-spacing:.02em;line-height:1.3;color:var(--text);background:#fff;border:1.5px solid var(--line-strong);box-shadow:0 6px 16px -10px rgba(30,60,140,.45);cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s;overflow-wrap:anywhere;max-width:100%}
+.ll-chip:hover{transform:translateY(-1px);border-color:#8C9BD8}
+.ll-chip:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.ll-chip .ll-k{position:absolute;left:6px;top:2px;font-family:var(--f-body);font-size:.625rem;font-weight:500;color:var(--text-2);letter-spacing:0}
+.ll-chip.ghost{background:transparent;border-style:dashed;border-color:var(--line-strong);box-shadow:none;color:transparent;cursor:default}
+.ll-chip.ghost:hover{transform:none}
+.ll-chip.in{background:linear-gradient(160deg,#EEF4FF,#F3EFFF);border-color:rgba(125,107,224,.45)}
+.ll-chip.bad{border-color:var(--rose-ink);background:#FFF0F4;color:var(--rose-ink)}
+.ll-chip.bad::after{content:"从这里开始不对";position:absolute;left:50%;bottom:calc(100% + 4px);transform:translateX(-50%);white-space:nowrap;font-family:var(--f-body);font-size:.6875rem;font-weight:500;color:#fff;background:var(--rose-ink);padding:1px 8px;border-radius:999px}
+.ll-chip.ok{border-color:rgba(23,143,116,.5);background:#ECFBF6}
+
+/* 游戏区 */
+.ll-play{gap:16px;scroll-margin-top:84px}
+#ll-setup{scroll-margin-top:84px}
+.ll-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.ll-prog{display:flex;align-items:center;gap:10px;font-size:.875rem;color:var(--text-2);font-variant-numeric:tabular-nums}
+.ll-bar{width:120px;height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+.ll-bar i{display:block;height:100%;background:linear-gradient(90deg,#5B9BF5,#8C7CF0);transition:width .3s}
+.ll-q{display:flex;gap:14px;align-items:flex-start}
+.ll-q .ll-jelly{width:56px;flex:none}
+.ll-q .ll-jelly svg{width:100%;height:auto;display:block}
+.ll-qzh{font-size:clamp(1.125rem,3.2vw,1.375rem);font-weight:700;margin:0;line-height:1.5}
+.ll-src{margin:2px 0 0;font-size:.875rem;color:var(--text-2)}
+.ll-src span[lang]{font-family:var(--f-mincho)}
+.ll-say{min-height:44px}
+.ll-say svg{flex:none}
+.ll-ans{position:relative;min-height:84px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:10px;padding:26px 14px 14px;border:2px dashed rgba(91,155,245,.45);border-radius:var(--r-m);background:rgba(240,246,255,.7);transition:border-color .2s,background .2s}
+.ll-ans .ll-empty{align-self:center;color:var(--text-2);font-size:.9375rem;padding-top:0}
+.ll-ans.wrong{border-color:var(--rose-ink);animation:ll-shake .42s}
+.ll-ans.done{border-style:solid;border-color:rgba(23,143,116,.45);background:linear-gradient(160deg,#ECFBF6,#F2FAFF);display:block;padding:16px}
+@keyframes ll-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+.ll-full{font-family:var(--f-mincho);font-size:clamp(1.375rem,4.4vw,1.875rem);font-weight:700;line-height:2.1;margin:0;overflow-wrap:anywhere}
+.ll-full rt,.ll-list rt{font-family:var(--f-body);font-size:.48em;font-weight:500;color:var(--rose-ink);letter-spacing:.06em}
+.ll-romaji{margin:2px 0 0;color:var(--text-2);font-style:italic;font-size:.9375rem}
+.ll-pool{display:flex;flex-wrap:wrap;gap:10px}
+.ll-label{font-size:.75rem;letter-spacing:.2em;color:var(--text-2);margin:0 0 -6px}
+.ll-ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ll-ctrl .btn{min-height:44px}
+.ll-status{margin:0;min-height:1.6em;font-weight:500}
+.ll-status.good{color:var(--mint-ink)}
+.ll-status.bad{color:var(--rose-ink)}
+.ll-keys{margin:0;font-size:.8125rem;color:var(--text-2)}
+.ll-keys kbd{font-family:var(--f-body);font-size:.75rem;padding:1px 6px;border-radius:6px;border:1px solid var(--line-strong);background:#fff}
+@media (pointer:coarse){.ll-keys,.ll-chip .ll-k{display:none}}
+.ll-explain{display:grid;gap:10px}
+.ll-explain .ll-box{background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:var(--r-s);padding:12px 14px}
+.ll-explain h4{margin:0 0 4px;font-size:.75rem;letter-spacing:.2em;color:var(--gold-ink);font-weight:700}
+.ll-explain p{margin:0}
+.ll-ex{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ll-ex span[lang]{font-family:var(--f-mincho);font-weight:500}
+.ll-mini{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:36px;min-width:44px;padding:4px 12px;border-radius:999px;font-size:.8125rem;font-weight:700;color:#2F6FD6;box-shadow:inset 0 0 0 1px rgba(47,111,214,.35);background:#fff}
+.ll-mini:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.ll-confirm{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;border-radius:var(--r-s);background:#FFF6E6;border:1px solid rgba(255,205,130,.6);font-size:.875rem}
+
+/* 成绩 */
+.ll-res-head{display:flex;gap:16px;align-items:center}
+.ll-res-head .ll-jelly{width:84px;flex:none}
+.ll-res-head .ll-jelly svg{width:100%;height:auto;display:block}
+.ll-score{font-family:var(--f-mincho);font-size:clamp(1.75rem,5vw,2.4rem);font-weight:900;margin:0;line-height:1.3}
+.ll-score .num{color:var(--violet-ink)}
+.ll-rewards{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:.9375rem}
+.ll-rewards li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:8px;vertical-align:middle}
+.ll-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ll-list button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 12px;border-radius:var(--r-s);background:rgba(255,255,255,.85);border:1px solid var(--line);min-height:56px}
+.ll-list button:hover{border-color:var(--line-strong)}
+.ll-list button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.ll-list .ll-ico{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#5B9BF5,#8C7CF0);color:#fff}
+.ll-list .ll-jp{font-family:var(--f-mincho);font-weight:700;font-size:1.0625rem;line-height:1.9;overflow-wrap:anywhere}
+.ll-list .ll-z{display:block;font-size:.8125rem;color:var(--text-2);line-height:1.5}
+.ll-list .tag{align-self:center}
+.ll-list .tag.ok{border-color:rgba(23,143,116,.4);color:var(--mint-ink)}
+.ll-list .tag.no{border-color:rgba(192,79,117,.4);color:var(--rose-ink)}
+.ll-copy{margin:0;font-size:.8125rem;color:var(--text-2)}
+@media (max-width:480px){
+  .ll-seg button{padding:6px 2px;font-size:.8125rem;letter-spacing:0}
+  .ll-demo .ll-chip{font-size:1rem;min-height:40px;padding:6px 12px}
+  .ll-list button{grid-template-columns:auto minmax(0,1fr)}
+  .ll-list .tag{grid-column:2;justify-self:start}
+  .ll-q .ll-jelly{width:44px}
+}
+@media (prefers-reduced-motion: reduce){
+  .ll-ans.wrong{animation:none}
+  .ll-chip,.ll-bar i,.ll-ans{transition:none}
+  .ll-chip:hover{transform:none}
+}
+</style>
+
+<section class="ll-hero">
+  <div class="wrap">
+    <span class="eyebrow">セリフ並べ</span>
+    <h1>台词拼拼看</h1>
+    <p class="lead">一句动漫台词被切成几块打乱了，按日语的语序点一点，把它拼回原样。拼对后能看到注音、罗马音和语法点。</p>
+  </div>
+</section>
+
+<section class="band" style="padding-block:24px 64px">
+  <div class="wrap" style="display:flex;flex-direction:column;gap:18px">
+
+    <div class="ll-setup" id="ll-setup">
+      <div class="card sky" style="gap:14px">
+        <h3>选一个级别</h3>
+        <div class="seg ll-seg" role="group" aria-label="台词级别" id="ll-levels"></div>
+        <p class="ll-note" id="ll-lvnote"></p>
+        <p class="ll-meta" id="ll-meta"></p>
+        <div class="ll-ctrl">
+          <button class="btn btn-coral" type="button" id="ll-start">开始一轮</button>
+          <span class="muted small" id="ll-startnote"></span>
+        </div>
+        <p class="ll-note">每题第一次就拼对 +2 经验值；完成一轮 +5，全部一次拼对再 +5。没做过和拼错过的台词会优先出现。</p>
+      </div>
+
+      <div class="card ll-demo" aria-label="示例题">
+        <span class="ll-tate" aria-hidden="true" lang="ja">ならべてみよう</span>
+        <span class="tag">示例</span>
+        <p class="ll-zh" style="margin:0"><b>请让我在这里工作！</b><br><span class="muted small">出自《千与千寻》 <span lang="ja">千と千尋の神隠し</span></span></p>
+        <div class="ll-demo-row" lang="ja" aria-label="打乱的词块">
+          <span class="ll-chip">ください！</span><span class="ll-chip">ここで</span><span class="ll-chip">働かせて</span>
+        </div>
+        <div class="ll-arrow"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>按顺序点：ここで → 働かせて → ください！</div>
+        <div class="ll-demo-row" lang="ja" aria-label="拼好的句子">
+          <span class="ll-chip ok">ここで</span><span class="ll-chip ok">働かせて</span><span class="ll-chip ok">ください！</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card ll-play" id="ll-play" hidden></div>
+    <div class="card ll-play" id="ll-result" hidden></div>
+
+    <div class="ll-foot">
+      <a class="btn btn-ghost btn-small" href="games.html">← 更多小游戏</a>
+      <p class="ll-copy">台词版权归原作者所有，本页每题只引用一句台词，仅用于日语学习说明。朗读为浏览器合成语音或站内录音，并非原作配音。</p>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/lines.js"></script>
+<script>
+/* 台词拼拼看：把台词词块（chunks）打乱，按语序拼回去 */
+(function () {
+  'use strict';
+  var B = window.Breeze;
+  var esc = B.esc;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var ROUND = 8;
+  var LEVELS = [
+    { k: 'N5', name: 'N5', has: ['N5'] },
+    { k: 'N4', name: 'N4', has: ['N4'] },
+    { k: 'N3', name: 'N3', has: ['N3'] },
+    { k: 'N2N1', name: 'N2–N1', has: ['N2', 'N1'] },
+    { k: 'all', name: '全部', has: null }
+  ];
+
+  /* 只用带合格 chunks 的台词（数量不固定，以后合并进来的新台词也会自动出现） */
+  var ALL = (Array.isArray(window.DAILY_LINES) ? window.DAILY_LINES : []).filter(function (l) {
+    return l && typeof l.jp === 'string' && Array.isArray(l.chunks) && l.chunks.length >= 2 && l.chunks.join('') === l.jp;
+  });
+  function linesOf(lv) { return ALL.filter(function (l) { return !lv.has || lv.has.indexOf(l.level) >= 0; }); }
+
+  /* ---------- 存储 ----------
+     现在只存在浏览器 localStorage。接腾讯云开发时只需替换这里的 load() / save()，
+     数据结构保持不变：{ m: { 台词原文: {c: 一次拼对次数, w: 没能一次拼对的次数, last: 1|0} },
+                        best: { 级别: {s: 一次拼对题数, n: 本轮题数} }, lv: 上次选的级别 } */
+  var KEY = 'breeze-game-lines-v1';
+  function load() {
+    var d = null;
+    try { d = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object') d = {};
+    if (!d.m || typeof d.m !== 'object') d.m = {};
+    if (!d.best || typeof d.best !== 'object') d.best = {};
+    return d;
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* 隐私模式等：本次照常玩，只是不保存 */ }
+  }
+  var S = load();
+
+  /* ---------- 工具 ---------- */
+  function rubyHTML(r, jp) {
+    // 只放行 <ruby> <rt> 标签，其余一律转义
+    if (typeof r !== 'string' || !r) return esc(jp);
+    return esc(r).replace(/&lt;(\/?)(ruby|rt)&gt;/g, '<$1$2>');
+  }
+  function srcHTML(l) {
+    var s = '';
+    if (l.workZh) s += '出自《' + esc(l.workZh) + '》';
+    if (l.work) s += ' <span lang="ja">' + esc(l.work) + '</span>';
+    return s;
+  }
+  var SPK = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  function exampleJP(ex) { return String(ex || '').split(/[（(]/)[0].trim(); }
+
+  // 已放好的词块里，第一个让句子对不上的位置；全对返回 -1
+  function firstWrong(placed, jp) {
+    var acc = '';
+    for (var i = 0; i < placed.length; i++) {
+      if (jp.indexOf(acc + placed[i]) !== 0) return i;
+      acc += placed[i];
+    }
+    return -1;
+  }
+  // 从已对的前缀出发，在剩下的词块里找一种能拼完整句的顺序（词块最多 6 块，直接搜索）
+  function solve(prefix, rest, jp) {
+    if (prefix === jp) return [];
+    for (var i = 0; i < rest.length; i++) {
+      var t = rest[i].t;
+      if (jp.indexOf(prefix + t) === 0) {
+        var r = solve(prefix + t, rest.slice(0, i).concat(rest.slice(i + 1)), jp);
+        if (r) return [rest[i]].concat(r);
+      }
+    }
+    return null;
+  }
+
+  /* ---------- 级别选择 ---------- */
+  var curLv = null;
+  function lvByKey(k) { for (var i = 0; i < LEVELS.length; i++) if (LEVELS[i].k === k) return LEVELS[i]; return null; }
+  function usable(lv) { return linesOf(lv).length >= 3; }
+
+  function renderSetup() {
+    if (!curLv || !usable(curLv)) {
+      curLv = lvByKey(S.lv);
+      if (!curLv || !usable(curLv)) curLv = LEVELS.filter(usable)[0] || null;
+    }
+    var box = $('#ll-levels');
+    box.innerHTML = LEVELS.map(function (lv) {
+      var n = linesOf(lv).length, ok = n >= 3;
+      return '<button type="button" data-lv="' + lv.k + '" aria-pressed="' + (curLv === lv) + '"' + (ok ? '' : ' disabled') + '>' +
+        esc(lv.name) + '<small>' + (ok ? n + ' 句' : '不足 3 句') + '</small></button>';
+    }).join('');
+    var off = LEVELS.filter(function (lv) { return !usable(lv); });
+    $('#ll-lvnote').textContent = off.length ? off.map(function (l) { return l.name; }).join('、') + ' 的台词还不到 3 句，暂时不能选，收集够了会自动开放。' : '';
+    var start = $('#ll-start');
+    if (!curLv) {
+      start.disabled = true;
+      $('#ll-meta').textContent = '台词数据没有加载出来，请刷新页面再试。';
+      $('#ll-startnote').textContent = '';
+      return;
+    }
+    var pool = linesOf(curLv), done = 0;
+    pool.forEach(function (l) { var r = S.m[l.jp]; if (r && r.c > 0) done++; });
+    var b = S.best[curLv.k];
+    $('#ll-meta').innerHTML = '<span>最佳成绩：' + (b ? '一次拼对 <b>' + b.s + ' / ' + b.n + '</b> 题' : '还没玩过') + '</span>' +
+      '<span>一次拼对过的台词：<b>' + done + ' / ' + pool.length + '</b></span>';
+    start.disabled = false;
+    var n = Math.min(ROUND, pool.length);
+    start.textContent = '开始一轮（' + n + ' 句）';
+    $('#ll-startnote').textContent = curLv.name === '全部' ? '各级别混在一起' : '';
+  }
+  $('#ll-levels').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-lv]'); if (!b || b.disabled) return;
+    curLv = lvByKey(b.getAttribute('data-lv')); S.lv = curLv.k; save(); renderSetup();
+    var nb = $('#ll-levels button[data-lv="' + curLv.k + '"]'); if (nb) nb.focus();
+  });
+
+  /* ---------- 出题：没做过 > 上次没一次拼对 > 拼对次数少的 ---------- */
+  function pick(lv) {
+    var pool = B.shuffle(linesOf(lv)).map(function (l) {
+      var r = S.m[l.jp];
+      var rank = !r ? 0 : (r.last === 0 ? 1 : 2 + (r.c || 0));
+      return { l: l, rank: rank };
+    });
+    pool.sort(function (a, b) { return a.rank - b.rank; });
+    return B.shuffle(pool.slice(0, ROUND).map(function (x) { return x.l; }));
+  }
+
+  /* ---------- 一轮 ---------- */
+  var R = null;   // 本轮 {lv, list, i, results[]}
+  var Q = null;   // 当前题 {l, pool[{i,t,used}], placed[], wrong, hint, reveal, solved, bad}
+
+  function startRound(lv) {
+    R = { lv: lv, list: pick(lv), i: 0, results: [] };
+    $('#ll-setup').hidden = true; $('#ll-result').hidden = true; $('#ll-play').hidden = false;
+    newQ();
+    $('#ll-play').scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+  function newQ() {
+    var l = R.list[R.i];
+    var items = l.chunks.map(function (t, i) { return { t: t, o: i }; });
+    var sh = items;
+    for (var k = 0; k < 8; k++) { sh = B.shuffle(items); if (sh.map(function (x) { return x.t; }).join('') !== l.jp) break; }
+    Q = { l: l, pool: sh.map(function (x, i) { return { i: i, t: x.t, used: false }; }), placed: [], wrong: 0, hint: false, reveal: false, solved: false, bad: -1, msg: '', msgType: '', confirm: false };
+    renderPlay(true);
+  }
+
+  function place(p) {
+    if (Q.solved || !p || p.used) return;
+    p.used = true; Q.placed.push(p); Q.bad = -1; Q.msg = '';
+    afterChange();
+  }
+  function unplace(idx) {
+    if (Q.solved || idx < 0 || idx >= Q.placed.length) return;
+    var p = Q.placed.splice(idx, 1)[0]; p.used = false; Q.bad = -1; Q.msg = '';
+    renderPlay();
+  }
+  function afterChange() {
+    if (Q.placed.every(Boolean) && Q.pool.every(function (p) { return p.used; })) judge();
+    else renderPlay();
+  }
+  function judge() {
+    var got = Q.placed.map(function (p) { return p.t; });
+    if (got.join('') === Q.l.jp) return win();
+    Q.wrong++;
+    Q.bad = firstWrong(got, Q.l.jp);
+    Q.msgType = 'bad';
+    Q.msg = '还不对：第 ' + (Q.bad + 1) + ' 块开始顺序有问题，点它退回再试。' + (Q.wrong >= 2 ? '也可以直接看答案。' : '');
+    renderPlay();
+    var a = $('#ll-ans');
+    if (a) { a.classList.remove('wrong'); void a.offsetWidth; a.classList.add('wrong'); }
+  }
+  function hint() {
+    if (Q.solved) return;
+    var got = Q.placed.map(function (p) { return p.t; });
+    var k = firstWrong(got, Q.l.jp); if (k < 0) k = Q.placed.length;
+    // 放错的块先退回
+    Q.placed.splice(k).forEach(function (p) { p.used = false; });
+    var prefix = Q.placed.map(function (p) { return p.t; }).join('');
+    var rest = Q.pool.filter(function (p) { return !p.used; });
+    var seq = solve(prefix, rest, Q.l.jp);
+    if (!seq) { // 前缀走进死路：全部退回，从头放
+      Q.placed.forEach(function (p) { p.used = false; }); Q.placed = [];
+      seq = solve('', Q.pool.slice(), Q.l.jp) || [];
+    }
+    Q.hint = true; Q.bad = -1;
+    Q.msgType = ''; Q.msg = '已帮你放好下一块。用了提示，这题不加经验值。';
+    if (seq[0]) { seq[0].used = true; Q.placed.push(seq[0]); }
+    afterChange();
+  }
+  function reveal() {
+    if (Q.solved) return;
+    Q.reveal = true;
+    Q.pool.forEach(function (p) { p.used = false; });
+    Q.placed = solve('', Q.pool.slice(), Q.l.jp) || [];
+    Q.placed.forEach(function (p) { p.used = true; });
+    win();
+  }
+  function win() {
+    Q.solved = true; Q.bad = -1;
+    var first = Q.wrong === 0 && !Q.hint && !Q.reveal;
+    var rec = S.m[Q.l.jp] || { c: 0, w: 0 };
+    if (first) { rec.c = (rec.c || 0) + 1; rec.last = 1; } else { rec.w = (rec.w || 0) + 1; rec.last = 0; }
+    S.m[Q.l.jp] = rec; save();
+    R.results.push({ l: Q.l, first: first, how: Q.reveal ? 'reveal' : (Q.hint ? 'hint' : (Q.wrong ? 'retry' : 'first')) });
+    if (first) B.addXP(2);
+    Q.msgType = Q.reveal ? '' : 'good';
+    Q.msg = first ? '一次拼对！+2 经验值' : Q.reveal ? '这是正确答案，下次再见到它会优先出现。' : Q.hint ? '拼好了。用了提示，这题不加经验值。' : '拼对了！试了 ' + (Q.wrong + 1) + ' 次，这句以后会再出现。';
+    renderPlay();
+    B.speak(Q.l.jp);
+    var nx = $('#ll-next'); if (nx) nx.focus();
+  }
+  function next() {
+    if (!Q || !Q.solved) return;
+    R.i++;
+    if (R.i >= R.list.length) finish(); else newQ();
+  }
+
+  /* ---------- 渲染：答题 ---------- */
+  function renderPlay(fresh) {
+    var box = $('#ll-play'), l = Q.l, n = R.list.length;
+    var focusKey = fresh ? null : (document.activeElement && document.activeElement.getAttribute && document.activeElement.getAttribute('data-f'));
+    var expr = Q.solved ? (Q.reveal ? 'think' : 'right') : (Q.bad >= 0 ? 'wrong' : 'happy');
+    var h = '';
+    h += '<div class="ll-top"><div class="ll-prog"><span class="tag">' + esc(R.lv.name) + '</span><span>第 ' + (R.i + 1) + ' / ' + n + ' 题</span>' +
+      '<span class="ll-bar" aria-hidden="true"><i style="width:' + Math.round(R.i / n * 100) + '%"></i></span></div>' +
+      '<button class="btn btn-ghost btn-small" type="button" id="ll-quit" data-f="quit">换个级别</button></div>';
+    if (Q.confirm) h += '<div class="ll-confirm" role="group" aria-label="确认退出"><span>退出后这一轮不计成绩（已答的题会记进掌握情况）。</span>' +
+      '<button class="btn btn-coral btn-small" type="button" id="ll-quit-yes" data-f="qy">退出本轮</button>' +
+      '<button class="btn btn-ghost btn-small" type="button" id="ll-quit-no" data-f="qn">继续答题</button></div>';
+    h += '<div class="ll-q"><div class="ll-jelly">' + B.jelly(expr, '水母ふわり') + '</div><div style="min-width:0;flex:1">' +
+      '<p class="ll-qzh">' + esc(l.zh || '') + '</p><p class="ll-src">' + srcHTML(l) + '</p></div></div>';
+    h += '<div class="ll-ctrl"><button class="btn btn-sky ll-say" type="button" id="ll-say" data-f="say">' + SPK + '听一听</button></div>';
+
+    if (Q.solved) {
+      h += '<div class="ll-ans done" id="ll-ans"><p class="ll-full" lang="ja">' + rubyHTML(l.ruby, l.jp) + '</p>' +
+        (l.romaji ? '<p class="ll-romaji" lang="ja-Latn">' + esc(l.romaji) + '</p>' : '') + '</div>';
+    } else {
+      h += '<p class="ll-label">你的答案（点词块可以退回）</p>';
+      h += '<div class="ll-ans" id="ll-ans" lang="ja" aria-label="答案栏">' + (Q.placed.length ? Q.placed.map(function (p, i) {
+        return '<button type="button" class="ll-chip in' + (i === Q.bad ? ' bad' : '') + '" data-a="' + i + '" data-f="a' + p.i + '" aria-label="第 ' + (i + 1) + ' 块：' + esc(p.t) + '，点击退回">' + esc(p.t) + '</button>';
+      }).join('') : '<span class="ll-empty">点下面的词块，按顺序放到这里</span>') + '</div>';
+      h += '<p class="ll-label">词块</p>';
+      h += '<div class="ll-pool" lang="ja">' + Q.pool.map(function (p, i) {
+        if (p.used) return '<span class="ll-chip ghost" aria-hidden="true">' + esc(p.t) + '</span>';
+        return '<button type="button" class="ll-chip" data-p="' + i + '" data-f="p' + p.i + '" aria-label="词块 ' + (i + 1) + '：' + esc(p.t) + '">' +
+          (i < 9 ? '<span class="ll-k" aria-hidden="true">' + (i + 1) + '</span>' : '') + esc(p.t) + '</button>';
+      }).join('') + '</div>';
+    }
+
+    h += '<p class="ll-status ' + Q.msgType + '" role="status" aria-live="polite">' + esc(Q.msg) + '</p>';
+
+    if (Q.solved) {
+      var ex = exampleJP(l.example);
+      h += '<div class="ll-explain">';
+      if (l.point) h += '<div class="ll-box"><h4>语法点</h4><p>' + esc(l.point) + '</p></div>';
+      if (l.example) h += '<div class="ll-box"><h4>例句</h4><p class="ll-ex"><span>' + esc(l.example).replace(esc(ex), '<span lang="ja">' + esc(ex) + '</span>') + '</span>' +
+        (ex ? '<button class="ll-mini" type="button" id="ll-say-ex" data-f="sayex">' + SPK + '听例句</button>' : '') + '</p></div>';
+      h += '</div>';
+      h += '<div class="ll-ctrl"><button class="btn btn-coral" type="button" id="ll-next" data-f="next">' + (R.i + 1 >= n ? '看本轮成绩' : '下一题') + '</button></div>';
+    } else {
+      h += '<div class="ll-ctrl">' +
+        '<button class="btn btn-ghost" type="button" id="ll-hint" data-f="hint">提示：放好下一块</button>' +
+        (Q.wrong >= 2 ? '<button class="btn btn-ghost" type="button" id="ll-reveal" data-f="reveal">看答案</button>' : '') +
+        '</div>';
+      h += '<p class="ll-keys">键盘：<kbd>1</kbd>–<kbd>9</kbd> 选对应词块，<kbd>Backspace</kbd> 退回最后一块，<kbd>Enter</kbd> 下一题</p>';
+    }
+    box.innerHTML = h;
+
+    // 重新渲染后把焦点放回原处，键盘操作不丢位置
+    if (focusKey) {
+      var el = box.querySelector('[data-f="' + focusKey + '"]');
+      if (!el && /^[pa]/.test(focusKey)) el = box.querySelector('.ll-pool button') || box.querySelector('.ll-ans button') || $('#ll-hint');
+      if (el) el.focus();
+    }
+  }
+
+  $('#ll-play').addEventListener('click', function (e) {
+    var t = e.target.closest('button'); if (!t || !Q) return;
+    if (t.hasAttribute('data-p')) return place(Q.pool[+t.getAttribute('data-p')]);
+    if (t.hasAttribute('data-a')) return unplace(+t.getAttribute('data-a'));
+    switch (t.id) {
+      case 'll-say': B.speak(Q.l.jp); break;
+      case 'll-say-ex': B.speak(exampleJP(Q.l.example)); break;
+      case 'll-hint': hint(); break;
+      case 'll-reveal': reveal(); break;
+      case 'll-next': next(); break;
+      case 'll-quit': Q.confirm = true; renderPlay(); var y = $('#ll-quit-no'); if (y) y.focus(); break;
+      case 'll-quit-no': Q.confirm = false; renderPlay(); var q = $('#ll-quit'); if (q) q.focus(); break;
+      case 'll-quit-yes': backToSetup(); break;
+    }
+  });
+
+  /* ---------- 渲染：成绩 ---------- */
+  function finish() {
+    var n = R.results.length, s = R.results.filter(function (r) { return r.first; }).length;
+    var all = s === n;
+    B.addXP(5, '台词拼拼看');
+    if (all) B.addXP(5, '全部一次拼对');
+    var old = S.best[R.lv.k], rec = false;
+    if (!old || s / n > old.s / old.n || (s / n === old.s / old.n && n > old.n)) { S.best[R.lv.k] = { s: s, n: n }; rec = !!old || s > 0; }
+    save();
+
+    var how = { first: ['一次拼对', 'ok'], retry: ['多试了几次', 'no'], hint: ['用了提示', 'no'], reveal: ['看了答案', 'no'] };
+    var h = '<div class="ll-res-head"><div class="ll-jelly">' + B.jelly(all ? 'right' : s >= n / 2 ? 'happy' : 'think', '水母ふわり') + '</div><div>' +
+      '<span class="eyebrow">結果</span><p class="ll-score">一次拼对 <span class="num">' + s + '</span> / ' + n + ' 题</p>' +
+      '<p class="muted small" style="margin:0">' + esc(R.lv.name) + (rec ? ' · 刷新了这个级别的最佳成绩' : (old ? ' · 最佳成绩 ' + old.s + ' / ' + old.n : '')) + '</p></div></div>';
+    h += '<ul class="ll-rewards" aria-label="本轮奖励">' +
+      (s ? '<li>答题时一次拼对：+' + (s * 2) + ' 经验值（' + s + ' 题 × 2）</li>' : '') +
+      '<li>完成一轮：+5 经验值</li>' +
+      (all ? '<li>全部一次拼对：再 +5 经验值</li>' : '<li>全部一次拼对还能再 +5，没拼对的句子下一轮会优先出现</li>') + '</ul>';
+    h += '<h3 style="margin-top:6px">本轮台词 <span class="muted small" style="font-weight:500">点一句可以再听一遍</span></h3>';
+    h += '<ul class="ll-list">' + R.results.map(function (r, i) {
+      var t = how[r.how];
+      return '<li><button type="button" data-say="' + i + '" aria-label="朗读：' + esc(r.l.jp) + '"><span class="ll-ico" aria-hidden="true">' + SPK + '</span>' +
+        '<span style="min-width:0"><span class="ll-jp" lang="ja">' + rubyHTML(r.l.ruby, r.l.jp) + '</span><span class="ll-z">' + esc(r.l.zh || '') + (r.l.workZh ? ' · 《' + esc(r.l.workZh) + '》' : '') + '</span></span>' +
+        '<span class="tag ' + t[1] + '">' + t[0] + '</span></button></li>';
+    }).join('') + '</ul>';
+    h += '<div class="ll-ctrl"><button class="btn btn-coral" type="button" id="ll-again">再来一轮</button><button class="btn btn-ghost" type="button" id="ll-change">换个级别</button></div>';
+    var box = $('#ll-result');
+    box.innerHTML = h;
+    $('#ll-play').hidden = true; box.hidden = false;
+    Q = null;
+    box.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    $('#ll-again').focus({ preventScroll: true });
+  }
+  $('#ll-result').addEventListener('click', function (e) {
+    var t = e.target.closest('button'); if (!t || !R) return;
+    if (t.hasAttribute('data-say')) { var r = R.results[+t.getAttribute('data-say')]; if (r) B.speak(r.l.jp); return; }
+    if (t.id === 'll-again') startRound(R.lv);
+    if (t.id === 'll-change') backToSetup();
+  });
+
+  function backToSetup() {
+    B.stopAudio && B.stopAudio();
+    Q = null;
+    $('#ll-play').hidden = true; $('#ll-result').hidden = true; $('#ll-setup').hidden = false;
+    renderSetup();
+    var b = $('#ll-levels button[aria-pressed="true"]'); if (b) b.focus({ preventScroll: true });
+    $('#ll-setup').scrollIntoView({ block: 'start' });
+  }
+
+  $('#ll-start').addEventListener('click', function () { if (curLv) startRound(curLv); });
+
+  /* ---------- 键盘 ---------- */
+  document.addEventListener('keydown', function (e) {
+    if (!Q || $('#ll-play').hidden || e.ctrlKey || e.metaKey || e.altKey) return;
+    var tg = e.target, tn = tg && tg.tagName;
+    if (tn === 'INPUT' || tn === 'TEXTAREA' || tn === 'SELECT' || (tg && tg.isContentEditable)) return;
+    if (/^[1-9]$/.test(e.key)) {
+      var p = Q.pool[+e.key - 1];
+      if (p && !p.used && !Q.solved) { e.preventDefault(); place(p); }
+    } else if (e.key === 'Backspace') {
+      if (!Q.solved && Q.placed.length) { e.preventDefault(); unplace(Q.placed.length - 1); }
+    } else if (e.key === 'Enter') {
+      // 焦点在朗读、退出这类按钮上时交给按钮自己；其余情况下 Enter = 下一题
+      if (tn === 'A' || (tn === 'BUTTON' && /^ll-(say|say-ex|quit|quit-yes|quit-no)$/.test(tg.id))) return;
+      if (Q.solved) { e.preventDefault(); next(); }
+    }
+  });
+
+  renderSetup();
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ふわり的海 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="把学习得到的经验值变成光：水母 ふわり 在海里慢慢长大，海里陆续出现 20 种海洋生物，每一种都是一个日语单词。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="games">
+<header id="site-head"></header>
+<main>
+<style>
+/* ---------- ふわり的海（前缀 sea-） ---------- */
+.sea-top{padding-block:36px 8px}
+.sea-top h1{font-family:var(--f-mincho);font-weight:900;font-size:clamp(2rem,5vw,3rem);letter-spacing:.02em;margin-top:8px}
+.sea-top .lead{margin:10px 0 0;color:var(--text-2);max-width:40em}
+.sea-preview{margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:10px 16px;border-radius:var(--r-m);background:linear-gradient(135deg,#FFF6E6,#F2EEFF);border:1px solid rgba(255,205,130,.55);font-size:.875rem}
+.sea-preview a{font-weight:700}
+
+.sea-main{padding-block:16px 40px}
+.sea-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}
+.sea-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-size:.8125rem;color:var(--text-2);white-space:nowrap}
+.sea-chip b{color:var(--text);font-weight:700}
+.sea-chip .sea-dot{width:10px;height:10px;border-radius:50%;background:var(--sea-c,#2F94D4);box-shadow:0 0 0 2px #fff}
+
+/* 场景 */
+.sea-scene{--sea-a:#D4F3FF;--sea-b:#78CDF2;--sea-c:#2F94D4;--sea-d:#1C5FA6;--sea-sand:#F6E3C0;--sea-sand2:#E8CF9F;--sea-glow:rgba(255,255,255,.65);--sea-ray:rgba(255,255,255,.16);
+  container:sea / inline-size;position:relative;overflow:hidden;border-radius:var(--r-l);aspect-ratio:2/1;min-height:420px;
+  background:linear-gradient(180deg,var(--sea-a) 0%,var(--sea-b) 20%,var(--sea-c) 58%,var(--sea-d) 100%);
+  box-shadow:0 24px 50px -28px rgba(20,60,140,.55),inset 0 0 0 1px rgba(255,255,255,.5);isolation:isolate;transition:background .8s}
+.sea-scene[data-time="asa"]{--sea-a:#FFE6D2;--sea-b:#A9DDF0;--sea-c:#4FA6D6;--sea-d:#2C6FAE;--sea-sand:#F3D9B5;--sea-sand2:#E2BF96;--sea-glow:rgba(255,214,170,.7);--sea-ray:rgba(255,236,210,.18)}
+.sea-scene[data-time="yuu"]{--sea-a:#FFC9A3;--sea-b:#F2A0A8;--sea-c:#9A7FCB;--sea-d:#3E4A9A;--sea-sand:#E9C7A8;--sea-sand2:#CFA488;--sea-glow:rgba(255,196,150,.7);--sea-ray:rgba(255,200,170,.14)}
+.sea-scene[data-time="yoru"]{--sea-a:#3B4F9C;--sea-b:#26357A;--sea-c:#172257;--sea-d:#0D1438;--sea-sand:#3A4677;--sea-sand2:#2B3563;--sea-glow:rgba(190,210,255,.45);--sea-ray:rgba(170,190,255,.07)}
+.sea-glowtop{position:absolute;left:50%;top:-30%;width:90%;aspect-ratio:2/1;translate:-50% 0;background:radial-gradient(closest-side,var(--sea-glow),transparent);pointer-events:none;z-index:0}
+.sea-rays{position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(105deg,transparent 0 6%,var(--sea-ray) 6% 9%,transparent 9% 15%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 75%);mask-image:linear-gradient(180deg,#000,transparent 75%);animation:sea-rays 14s ease-in-out infinite alternate}
+@keyframes sea-rays{from{transform:translateX(-2%)}to{transform:translateX(2%)}}
+.sea-surface{position:absolute;left:0;right:0;top:0;height:26px;width:100%;pointer-events:none;z-index:1}
+.sea-floor{position:absolute;left:0;right:0;bottom:0;height:24%;width:100%;pointer-events:none;z-index:1}
+.sea-bubbles span{position:absolute;bottom:-20px;width:var(--b,10px);height:var(--b,10px);border-radius:50%;border:1.5px solid rgba(255,255,255,.65);background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.8),rgba(255,255,255,.08) 60%);animation:sea-rise var(--d,9s) linear infinite;animation-delay:var(--dl,0s);pointer-events:none;z-index:1}
+@keyframes sea-rise{0%{transform:translate(0,0);opacity:0}10%{opacity:.9}100%{transform:translate(12px,-480px);opacity:0}}
+.sea-specks{position:absolute;inset:0;pointer-events:none;z-index:1;display:none}
+.sea-scene[data-time="yoru"] .sea-specks{display:block}
+.sea-specks i{position:absolute;width:3px;height:3px;border-radius:50%;background:#DDE8FF;box-shadow:0 0 6px 2px rgba(190,215,255,.7);animation:sea-tw 3.2s ease-in-out infinite alternate}
+@keyframes sea-tw{from{opacity:.25}to{opacity:1}}
+
+/* ふわり */
+.sea-fu{--js:1;--jw:clamp(96px,12cqw,140px);position:absolute;left:50%;top:47%;width:calc(var(--jw) * var(--js));translate:-50% -50%;z-index:3;transition:width .8s}
+.sea-fu-btn{all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;border-radius:40%;position:relative}
+.sea-fu-btn:focus-visible{outline:3px solid #fff;outline-offset:4px;box-shadow:0 0 0 6px rgba(255,205,130,.9)}
+.sea-fu-float{animation:sea-float 6s ease-in-out infinite;position:relative}
+@keyframes sea-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4%)}}
+.sea-fu-float svg{display:block;width:100%;height:auto;position:relative;z-index:1}
+.sea-halo{position:absolute;left:50%;top:26%;width:210%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,var(--ha,.4)),rgba(200,235,255,calc(var(--ha,.4) * .5)) 45%,transparent 72%);pointer-events:none;animation:sea-halo 4s ease-in-out infinite alternate}
+@keyframes sea-halo{from{transform:scale(.94)}to{transform:scale(1.04)}}
+.sea-spark{position:absolute;width:6px;height:6px;border-radius:50%;background:#FFF6D8;box-shadow:0 0 8px 3px rgba(255,236,180,.85);pointer-events:none;animation:sea-tw 2.4s ease-in-out infinite alternate}
+.sea-bub{position:absolute;left:50%;bottom:calc(100% - 8%);translate:-50% 0;z-index:6;min-width:9em;max-width:min(18em,80cqw);background:rgba(255,255,255,.95);color:var(--text);border-radius:16px;padding:8px 14px;font-family:var(--f-mincho);font-weight:700;font-size:1rem;line-height:1.5;text-align:center;box-shadow:0 10px 24px -12px rgba(20,40,100,.5);pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+.sea-bub::after{content:"";position:absolute;left:50%;top:100%;translate:-50% 0;border:8px solid transparent;border-top-color:rgba(255,255,255,.95)}
+.sea-bub.on{opacity:1;transform:none}
+.sea-fu-tip{position:absolute;left:50%;top:100%;translate:-50% 0;margin-top:-18%;white-space:nowrap;font-size:.75rem;letter-spacing:.06em;color:#fff;background:rgba(20,35,80,.38);padding:2px 10px;border-radius:999px;pointer-events:none}
+
+/* 生物 */
+.sea-c{all:unset;box-sizing:border-box;position:absolute;left:calc(var(--x) * 1%);top:calc(var(--y) * 1%);width:max(44px,calc(var(--s) * 1cqw));aspect-ratio:1;translate:-50% -50%;cursor:pointer;z-index:2;border-radius:30%;
+  animation:var(--anim,none) var(--d,8s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+.sea-c:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 5px rgba(255,205,130,.9)}
+.sea-c .sea-in{display:block;width:100%;height:100%;animation:var(--ianim,none) var(--d,8s) linear infinite;animation-delay:var(--dl,0s);transform-origin:50% 90%}
+.sea-c svg{display:block;width:100%;height:100%;filter:drop-shadow(0 3px 6px rgba(10,30,80,.25));transition:transform .2s}
+.sea-c:hover svg{transform:scale(1.08)}
+.sea-c.big{z-index:1}
+.sea-c .sea-new{position:absolute;left:50%;top:-6px;translate:-50% -100%;font-size:.625rem;font-weight:700;letter-spacing:.1em;line-height:1;padding:3px 7px;border-radius:999px;background:#FFF4D6;color:var(--gold-ink);box-shadow:0 0 0 1px rgba(181,101,31,.3),0 0 10px rgba(255,220,150,.9);white-space:nowrap}
+.sea-c.tb-d .sea-new{top:auto;bottom:-4px;translate:-50% 100%}
+@container sea (max-width:600px){
+  .sea-c{left:calc(var(--mx,var(--x)) * 1%);top:calc(var(--my,var(--y)) * 1%)}
+  .sea-c.tb-d .sea-new{top:-6px;bottom:auto;translate:-50% -100%}
+  .sea-c.tb-m .sea-new{top:auto;bottom:-4px;translate:-50% 100%}
+}
+.sea-scene .sea-anim-swim .sea-in{animation-timing-function:step-end}
+.sea-scene .sea-anim-swim{--anim:sea-swimx;--ianim:sea-flip}
+.sea-scene .sea-anim-walk{--anim:sea-walk}
+.sea-scene .sea-anim-bob{--anim:sea-bob}
+.sea-scene .sea-anim-sway{--ianim:sea-sway}
+.sea-scene .sea-anim-breathe{--ianim:sea-breathe}
+@keyframes sea-swimx{0%,100%{transform:translateX(0)}48%,52%{transform:translateX(calc(var(--sw,4) * 1cqw))}}
+@keyframes sea-flip{0%{transform:scaleX(var(--f,1))}50%{transform:scaleX(calc(var(--f,1) * -1))}100%{transform:scaleX(var(--f,1))}}
+@keyframes sea-walk{0%,100%{transform:translateX(0)}50%{transform:translateX(calc(var(--sw,2) * 1cqw))}}
+@keyframes sea-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.4cqw)}}
+@keyframes sea-sway{0%,100%{transform:skewX(-5deg)}50%{transform:skewX(5deg)}}
+@keyframes sea-breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.95)}}
+@media (max-width:640px){.sea-scene{aspect-ratio:auto;height:460px;min-height:0}}
+
+/* 下方面板 */
+.sea-under{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;margin-top:18px;align-items:start}
+@media (max-width:820px){.sea-under{grid-template-columns:1fr}}
+.sea-under .card:hover{transform:none}
+.sea-talk-head{display:flex;gap:14px;align-items:center}
+.sea-talk-head .sea-mini{width:52px;flex:none}
+.sea-say{font-family:var(--f-mincho);font-weight:900;font-size:1.375rem;line-height:1.45;margin:0}
+.sea-say-zh{margin:2px 0 0;color:var(--text-2);font-size:.9375rem}
+.sea-q{margin:0;font-weight:700}
+.sea-opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.sea-opts{grid-template-columns:1fr}}
+.sea-opt{all:unset;box-sizing:border-box;cursor:pointer;min-height:56px;padding:8px 12px;border-radius:var(--r-s);background:#fff;box-shadow:inset 0 0 0 1px var(--line-strong);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;transition:background .2s,box-shadow .2s}
+.sea-opt:hover{background:#F4F8FF}
+.sea-opt:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sea-opt .ja{font-family:var(--f-mincho);font-weight:700;font-size:1.0625rem;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}
+.sea-opt .ro{font-size:.75rem;color:var(--text-2);letter-spacing:.04em}
+.sea-opt.ok{background:#E3FAF2;box-shadow:inset 0 0 0 2px var(--mint-ink)}
+.sea-opt.bad{background:#FFEEF3;box-shadow:inset 0 0 0 2px var(--rose-ink)}
+.sea-opt[disabled]{cursor:default}
+.sea-fb{margin:0;padding:10px 14px;border-radius:var(--r-s);font-size:.9375rem}
+.sea-fb.ok{background:#E3FAF2;color:#0F5E4C}
+.sea-fb.bad{background:#FFEEF3;color:#8C2F4F}
+.sea-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.sea-row .btn{min-height:44px}
+.sea-state{font-size:.8125rem}
+
+.sea-stage-ja{font-family:var(--f-mincho);font-weight:900;font-size:1.5rem;line-height:1.3;margin:0}
+.sea-meter{height:12px;border-radius:999px;background:rgba(27,35,66,.08);overflow:hidden}
+.sea-meter i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#8ED1FF,#B9A8FF 60%,#FFCD82);box-shadow:0 0 12px rgba(255,220,150,.8);transition:width .8s}
+.sea-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.sea-steps li{text-align:center;font-size:.6875rem;line-height:1.35;color:var(--text-2)}
+.sea-steps li::before{content:"";display:block;width:14px;height:14px;margin:0 auto 4px;border-radius:50%;background:rgba(27,35,66,.12)}
+.sea-steps li.on::before{background:radial-gradient(circle,#fff,#8ED1FF 70%);box-shadow:0 0 10px rgba(142,209,255,.95)}
+.sea-steps li.cur{color:var(--text);font-weight:700}
+.sea-steps li.cur::before{background:radial-gradient(circle,#fff,#FFCD82 70%);box-shadow:0 0 12px rgba(255,205,130,1)}
+.sea-guide{border-radius:var(--r-s);padding:12px 14px;background:linear-gradient(135deg,#FFF6E6,#FFEFF3);border:1px solid rgba(255,205,130,.55);display:flex;flex-direction:column;gap:10px}
+.sea-guide p{margin:0;font-size:.9375rem}
+
+/* 图鉴 */
+.sea-dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;list-style:none;margin:0;padding:0}
+@media (max-width:520px){.sea-dex{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+.sea-cell{position:relative;width:100%;min-height:168px;box-sizing:border-box;border-radius:var(--r-m);padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;background:linear-gradient(170deg,#EAF6FF,#fff 70%);border:1px solid rgba(142,190,255,.45)}
+button.sea-cell{all:unset;box-sizing:border-box;position:relative;width:100%;min-height:168px;border-radius:var(--r-m);padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;background:linear-gradient(170deg,#EAF6FF,#fff 70%);border:1px solid rgba(142,190,255,.45);cursor:pointer;transition:transform .2s,box-shadow .2s}
+button.sea-cell:hover{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(30,60,140,.5)}
+button.sea-cell:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sea-cell .pic{width:72px;height:72px}
+.sea-cell .pic svg{width:100%;height:100%;display:block}
+.sea-cell .nm{font-family:var(--f-mincho);font-weight:900;font-size:1.0625rem;line-height:1.3}
+.sea-cell .zh{font-size:.8125rem;color:var(--text-2);line-height:1.4}
+.sea-cell .no{position:absolute;left:10px;top:8px;font-size:.6875rem;color:var(--text-2);font-variant-numeric:tabular-nums}
+.sea-cell .tag.new{position:absolute;right:8px;top:8px;background:#FFF4D6}
+.sea-cell.lock{background:rgba(255,255,255,.6);border:1px dashed var(--line-strong)}
+.sea-cell.lock .pic svg{filter:brightness(0);opacity:.16}
+.sea-cell.lock .nm{color:var(--text-2);letter-spacing:.2em}
+
+/* 生物卡片 */
+.sea-card{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));translate:-50% 0;z-index:55;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 100px);overflow:auto;background:linear-gradient(165deg,#fff,#F1F7FF);border:1px solid rgba(142,190,255,.6);border-radius:var(--r-l);box-shadow:0 24px 60px -20px rgba(20,40,110,.55);padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px}
+.sea-card-top{display:flex;gap:14px;align-items:center}
+.sea-card-top .pic{width:84px;height:84px;flex:none;border-radius:22px;background:linear-gradient(180deg,#D4F3FF,#78CDF2);padding:8px}
+.sea-card-top .pic svg{width:100%;height:100%;display:block}
+.sea-card h3{font-family:var(--f-mincho);font-weight:900;font-size:1.75rem;line-height:1.2;margin:0}
+.sea-card h3:focus{outline:none}
+.sea-card h3:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sea-card .meta{margin:2px 0 0;font-size:.875rem;color:var(--text-2);line-height:1.6}
+.sea-card .meta b{color:var(--text)}
+.sea-ex{margin:0;padding:10px 12px;border-radius:var(--r-s);background:rgba(142,209,255,.14)}
+.sea-ex .ja{font-family:var(--f-mincho);font-weight:700;font-size:1.0625rem;display:block;line-height:1.6}
+.sea-ex .zh{font-size:.875rem;color:var(--text-2)}
+.sea-x{all:unset;box-sizing:border-box;position:absolute;right:8px;top:8px;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2)}
+.sea-x:hover{background:rgba(27,35,66,.06)}
+.sea-x:focus-visible{outline:2px solid var(--gold)}
+
+/* 获得光 */
+.sea-more{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;padding-top:14px;border-top:1px solid var(--line)}
+.sea-more .btn{min-height:44px}
+/* 两张卡等高 */
+.sea-under{align-items:stretch}
+#sea-talk{display:flex;flex-direction:column;align-self:start}
+/* 新来的生物：用发光小圆点代替 new 文字 */
+.sea-c .sea-new{width:12px;height:12px;padding:0;font-size:0;border-radius:50%;background:#FFC24B;border:2px solid #fff;box-shadow:0 0 0 3px rgba(255,194,75,.35),0 0 12px rgba(255,194,75,.9)}
+.sea-cell .tag.new{width:10px;height:10px;padding:0;font-size:0;border-radius:50%;background:#FFC24B;border:0;box-shadow:0 0 0 3px rgba(255,194,75,.3),0 0 10px rgba(255,194,75,.8)}
+.sheet-body .band-head h2,.sheet-body .band-head .eyebrow{display:none}
+.sheet-body .band-head{margin:0}
+.sheet-body .sea-ways{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:560px){.sheet-body .sea-ways{grid-template-columns:1fr}}
+.sea-ways{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.sea-ways{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.sea-ways{grid-template-columns:1fr}}
+.sea-ways .card p{margin:0}
+.sea-ways .card .btn{align-self:flex-start;margin-top:auto;min-height:44px}
+.sea-ways .xp{font-size:.8125rem;color:var(--gold-ink);font-weight:700}
+
+@media (prefers-reduced-motion: reduce){
+  .sea-bubbles{display:none}
+  .sea-c,.sea-c .sea-in,.sea-fu-float,.sea-halo,.sea-rays{animation:none!important}
+}
+</style>
+
+<section class="sea-top">
+  <div class="wrap">
+    <span class="eyebrow" lang="ja">ふわりのうみ</span>
+    <h1>ふわり的海</h1>
+    <p class="lead">你在网站上做题、读每日一句、玩小游戏得到的经验值，会变成这片海里的「光」。光越多，ふわり 长得越大，海里也会来新的朋友，每一位都是一个日语单词。点 ふわり 打个招呼，点海里的生物听它的日语名字。</p>
+    <div class="sea-preview" id="sea-preview" hidden></div>
+  </div>
+</section>
+
+<section class="sea-main">
+  <div class="wrap">
+    <div class="sea-bar" aria-label="海的状态">
+      <span class="sea-chip" id="sea-time-chip"><span class="sea-dot" aria-hidden="true"></span><span id="sea-time">昼</span></span>
+      <span class="sea-chip">光 <b class="num" id="sea-xp">0</b></span>
+      <span class="sea-chip">海里的朋友 <b class="num" id="sea-count">1 / 20</b></span>
+    </div>
+
+    <div class="sea-scene" id="sea-scene" role="group" aria-label="ふわり的海。点 ふわり 打招呼，点海里的生物听它的日语名字">
+      <div class="sea-glowtop" aria-hidden="true"></div>
+      <div class="sea-rays" aria-hidden="true"></div>
+      <svg class="sea-surface" viewBox="0 0 400 26" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 6 Q25 0 50 6 T100 6 T150 6 T200 6 T250 6 T300 6 T350 6 T400 6 V0 H0Z" fill="#fff" opacity=".35"/>
+        <path d="M0 10 Q25 4 50 10 T100 10 T150 10 T200 10 T250 10 T300 10 T350 10 T400 10" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.5"/>
+      </svg>
+      <div class="sea-specks" id="sea-specks" aria-hidden="true"></div>
+      <div class="sea-bubbles" id="sea-bubbles" aria-hidden="true"></div>
+      <svg class="sea-floor" viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 46 C40 30 80 36 120 44 C170 54 210 30 260 34 C310 38 350 52 400 40 V100 H0Z" fill="var(--sea-sand2)" opacity=".8"/>
+        <path d="M0 66 C50 52 100 58 150 64 C200 70 240 54 300 56 C350 58 380 66 400 62 V100 H0Z" fill="var(--sea-sand)"/>
+        <g fill="#fff" opacity=".35"><circle cx="40" cy="80" r="1.6"/><circle cx="118" cy="88" r="1.2"/><circle cx="196" cy="78" r="1.4"/><circle cx="262" cy="90" r="1.2"/><circle cx="340" cy="82" r="1.6"/></g>
+      </svg>
+      <div id="sea-creatures"></div>
+      <div class="sea-fu" id="sea-fu">
+        <div class="sea-bub" id="sea-bub" aria-hidden="true"></div>
+        <button type="button" class="sea-fu-btn" id="sea-fu-btn" aria-label="ふわり：点一下和它打招呼">
+          <span class="sea-fu-float" id="sea-fu-float"><span class="sea-halo" id="sea-halo" aria-hidden="true"></span><span id="sea-fu-svg"></span></span>
+        </button>
+        <span class="sea-fu-tip" id="sea-fu-tip" aria-hidden="true">点我打招呼</span>
+      </div>
+    </div>
+
+    <div class="sea-under">
+      <div class="card sky" id="sea-talk" aria-labelledby="sea-talk-h">
+        <span class="eyebrow" id="sea-talk-h" lang="ja">ふわりと あいさつ</span>
+        <div class="sea-talk-head">
+          <div class="sea-mini" id="sea-mini" aria-hidden="true"></div>
+          <div aria-live="polite">
+            <p class="sea-say" lang="ja" id="sea-say">こんにちは！</p>
+            <p class="sea-say-zh" id="sea-say-zh"></p>
+          </div>
+        </div>
+        <div id="sea-quiz" aria-live="polite"></div>
+        <div class="sea-row" id="sea-talk-btns"></div>
+        <p class="muted sea-state" id="sea-greet-state" style="margin:0"></p>
+        <div class="sea-more">
+          <button type="button" class="btn btn-sky btn-small" data-sea-open="sea-zukan">海洋生物图鉴 <span class="num" id="sea-dex-mini"></span></button>
+          <button type="button" class="btn btn-ghost btn-small" data-sea-open="sea-ways">怎么获得更多光</button>
+        </div>
+      </div>
+
+      <div class="card" id="sea-grow" aria-labelledby="sea-grow-h">
+        <span class="eyebrow" id="sea-grow-h">成长阶段</span>
+        <div>
+          <p class="sea-stage-ja" lang="ja" id="sea-stage-ja">ちいさなふわり</p>
+          <p class="muted" style="margin:0" id="sea-stage-zh">小小的ふわり · 第 1 / 5 阶段</p>
+        </div>
+        <div class="sea-meter" role="progressbar" aria-label="长到下一阶段的进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="sea-meter"><i id="sea-meter-i"></i></div>
+        <p style="margin:0" id="sea-need"></p>
+        <ol class="sea-steps" id="sea-steps" aria-label="5 个成长阶段"></ol>
+        <p class="muted small" style="margin:0" id="sea-next-friend"></p>
+        <div class="sea-guide" id="sea-guide" hidden>
+          <p>ふわり 现在还很小。去玩游戏、做测验，得到的经验值会变成光，ふわり 就会长大，海里也会来新朋友。</p>
+          <a class="btn btn-sun btn-small" href="game-kana-rain.html" style="align-self:flex-start;min-height:44px">去玩假名雨，获得光</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="sea-zukan" style="padding-top:40px" hidden>
+  <div class="wrap">
+    <div class="band-head"><div><span class="eyebrow" lang="ja">うみのずかん</span><h2 style="margin-top:8px">海洋生物图鉴</h2><p class="lead">一共 20 种。光够了就会自己游进海里，点一下听读音、看例句。还没点开看过的带一个小黄点。</p></div><span class="tag" id="sea-dex-count">已解锁 1 / 20</span></div>
+    <ul class="sea-dex" id="sea-dex"></ul>
+  </div>
+</section>
+
+<section class="band sun" id="sea-ways" hidden>
+  <div class="wrap">
+    <div class="band-head"><div><span class="eyebrow">ひかりを あつめる</span><h2 style="margin-top:8px">怎么获得更多光</h2><p class="lead">全站的学习都会加经验值，经验值就是这片海里的光。每天和 ふわり 打招呼答对一题，也能得到 3 点光。</p></div></div>
+    <div class="sea-ways">
+      <div class="card"><h3>假名雨</h3><p class="muted">玩游戏学五十音：接住落下来的假名，边玩边记。</p><span class="xp">边玩边得经验值</span><a class="btn btn-sun" href="game-kana-rain.html">去玩假名雨</a></div>
+      <div class="card"><h3>每日挑战</h3><p class="muted">每天 5 道五十音小题，连续打卡，晴天娃娃会让天放晴。</p><span class="xp">完成 +15，全对再 +10</span><a class="btn btn-coral" href="index.html#challenge">去做每日挑战</a></div>
+      <div class="card"><h3>五十音测验</h3><p class="muted">每轮 10 题，可以选平假名、片假名或听音选字。</p><span class="xp">每答对 1 题 +2</span><a class="btn btn-sky" href="kana.html#quiz">去做五十音测验</a></div>
+      <div class="card"><h3>台词拼拼看</h3><p class="muted">把打散的词块拼回一句日语台词，练语序和听力。</p><span class="xp">拼对能得经验值</span><a class="btn btn-ghost" href="game-lines.html">去玩台词拼拼看</a></div>
+    </div>
+    <p class="muted small" style="margin:20px 0 0">海里的记录（看过哪些生物、哪天打过招呼）只保存在这台设备的浏览器里；经验值跟随你的学习进度，登录后会同步。</p>
+  </div>
+</section>
+
+<div class="sea-card" id="sea-card" role="dialog" aria-modal="false" aria-labelledby="sea-card-h" hidden></div>
+
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* ふわり的海：把全站经验值变成「光」，水母 ふわり 长大，海里陆续出现海洋生物（每种一个日语单词） */
+(function () {
+  var B = window.Breeze;
+  if (!B) return;
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = B.esc;
+
+  /* ---------- 预览参数（只影响显示，不写入任何存储） ----------
+     ?xp=1500   按 1500 经验值显示
+     ?time=asa|hiru|yuu|yoru   预览某个时段的海色 */
+  var QS = (function () { try { return new URLSearchParams(location.search); } catch (e) { return { get: function () { return null; } }; } })();
+  var PREVIEW = null;
+  (function () { var v = QS.get('xp'); if (v != null && /^\d{1,6}$/.test(v)) PREVIEW = parseInt(v, 10); })();
+  var TIME_OVERRIDE = (function () { var t = QS.get('time'); return /^(asa|hiru|yuu|yoru)$/.test(t || '') ? t : null; })();
+
+  /* ---------- 数据：成长阶段 ---------- */
+  var STAGES = [
+    { xp: 0, ja: 'ちいさなふわり', zh: '小小的ふわり', scale: 1, halo: .28 },
+    { xp: 100, ja: 'ゆらゆらふわり', zh: '轻轻摇晃的ふわり', scale: 1.12, halo: .42 },
+    { xp: 400, ja: 'きらきらふわり', zh: '闪闪发光的ふわり', scale: 1.24, halo: .56 },
+    { xp: 1000, ja: 'おおきなふわり', zh: '长大了的ふわり', scale: 1.36, halo: .7 },
+    { xp: 2000, ja: 'うみのひかり', zh: '海里的光', scale: 1.5, halo: .88 }
+  ];
+
+  /* ---------- 数据：海洋生物（xp = 解锁需要的累计经验值；以后改门槛、加生物只改这里） ----------
+     kind：swim 来回游（会转身）/ walk 横着走 / bob 上下漂 / sway 摇摆 / breathe 呼吸 / still 不动
+     x,y：电脑上的位置（场景的百分比）；mx,my：手机上的位置；s：大小（场景宽度的百分比）；sw：游动距离（负数＝先往左） */
+  var CREATURES = [
+    { id: 'sakana', kana: 'さかな', kanji: '魚', ro: 'sakana', zh: '鱼', xp: 0, ex: 'さかなが およいで います。', exZh: '鱼在游泳。', kind: 'swim', x: 24, y: 56, mx: 21, my: 50, s: 6.5, sw: 5, d: 10 },
+    { id: 'kai', kana: 'かい', kanji: '貝', ro: 'kai', zh: '贝壳', xp: 20, ex: 'はまで きれいな かいを ひろいました。', exZh: '我在海边捡到了漂亮的贝壳。', kind: 'still', x: 30, y: 89, mx: 24, my: 90, s: 5 },
+    { id: 'kani', kana: 'かに', kanji: '蟹', ro: 'kani', zh: '螃蟹', xp: 60, ex: 'かには よこに あるきます。', exZh: '螃蟹横着走。', kind: 'walk', x: 58, y: 89, mx: 56, my: 91, s: 6, sw: 2.5, d: 7 },
+    { id: 'hitode', kana: 'ひとで', kanji: '海星', ro: 'hitode', zh: '海星', xp: 120, ex: 'ひとでは ほしの かたちを して います。', exZh: '海星是星星的形状。', kind: 'still', x: 86, y: 89, mx: 88, my: 90, s: 5.5 },
+    { id: 'ebi', kana: 'えび', kanji: '海老', ro: 'ebi', zh: '虾', xp: 190, ex: 'えびの てんぷらが すきです。', exZh: '我喜欢炸虾天妇罗。', kind: 'swim', x: 87, y: 64, mx: 90, my: 58, s: 5.5, sw: -3, d: 8 },
+    { id: 'tako', kana: 'たこ', kanji: '蛸', ro: 'tako', zh: '章鱼', xp: 270, ex: 'たこには あしが はっぽん あります。', exZh: '章鱼有八条腿。', kind: 'bob', x: 14, y: 75, mx: 10, my: 61, s: 7, d: 6 },
+    { id: 'ika', kana: 'いか', kanji: '烏賊', ro: 'ika', zh: '乌贼 · 鱿鱼', xp: 360, ex: 'いかは すみを はきます。', exZh: '乌贼会喷墨。', kind: 'bob', x: 91, y: 44, mx: 90, my: 39, s: 5.5, d: 5 },
+    { id: 'sango', kana: 'さんご', kanji: '珊瑚', ro: 'sango', zh: '珊瑚', xp: 460, ex: 'さんごの うみは とても きれいです。', exZh: '有珊瑚的海非常美。', kind: 'still', x: 5, y: 85, mx: 8, my: 86, s: 7 },
+    { id: 'wakame', kana: 'わかめ', kanji: '若布', ro: 'wakame', zh: '裙带菜', xp: 570, ex: 'わかめの みそしるが すきです。', exZh: '我喜欢裙带菜味噌汤。', kind: 'sway', x: 95, y: 77, mx: 91, my: 73, s: 7.5, d: 5 },
+    { id: 'kurage', kana: 'くらげ', kanji: '海月', ro: 'kurage', zh: '水母', xp: 690, ex: 'くらげが ふわふわ ういて います。', exZh: '水母轻飘飘地浮着。', kind: 'bob', x: 65, y: 15, mx: 52, my: 8, s: 5.5, d: 7 },
+    { id: 'hotate', kana: 'ほたて', kanji: '帆立', ro: 'hotate', zh: '扇贝', xp: 820, ex: 'ほたては ほっかいどうの めいぶつです。', exZh: '扇贝是北海道的特产。', kind: 'still', x: 44, y: 91, mx: 40, my: 90, s: 5 },
+    { id: 'fugu', kana: 'ふぐ', kanji: '河豚', ro: 'fugu', zh: '河豚', xp: 960, ex: 'ふぐは おこると まるく ふくらみます。', exZh: '河豚一生气就鼓成圆圆的球。', kind: 'bob', x: 73, y: 52, mx: 78, my: 49, s: 6, d: 6.5 },
+    { id: 'tatsu', kana: 'たつのおとしご', kanji: '竜の落とし子', ro: 'tatsu no otoshigo', zh: '海马', xp: 1110, ex: 'たつのおとしごは たったまま およぎます。', exZh: '海马是立着身子游泳的。', kind: 'bob', x: 6, y: 58, mx: 8, my: 43, s: 5.5, d: 8 },
+    { id: 'umigame', kana: 'うみがめ', kanji: '海亀', ro: 'umigame', zh: '海龟', xp: 1280, ex: 'うみがめは すなはまに たまごを うみます。', exZh: '海龟在沙滩上产卵。', kind: 'swim', x: 30, y: 71, mx: 25, my: 70, s: 8, sw: 4, d: 16 },
+    { id: 'penguin', kana: 'ペンギン', kanji: '', ro: 'pengin', zh: '企鹅', xp: 1460, ex: 'ペンギンは とべませんが、およぐのが じょうずです。', exZh: '企鹅不会飞，但很会游泳。', kind: 'bob', x: 8, y: 36, mx: 9, my: 26, s: 6, d: 5.5 },
+    { id: 'azarashi', kana: 'あざらし', kanji: '海豹', ro: 'azarashi', zh: '海豹', xp: 1660, ex: 'あざらしが こおりの うえで ねて います。', exZh: '海豹在冰上睡觉。', kind: 'breathe', x: 72, y: 87, mx: 72, my: 88, s: 9, d: 4 },
+    { id: 'rakko', kana: 'ラッコ', kanji: '', ro: 'rakko', zh: '海獭', xp: 1880, ex: 'ラッコは おなかの うえで かいを わります。', exZh: '海獭在肚子上把贝壳敲开。', kind: 'bob', x: 82, y: 9, mx: 85, my: 8, s: 8, d: 6 },
+    { id: 'same', kana: 'さめ', kanji: '鮫', ro: 'same', zh: '鲨鱼', xp: 2150, ex: 'さめは おおきな くちを あけました。', exZh: '鲨鱼张开了大嘴。', kind: 'swim', x: 30, y: 36, mx: 21, my: 31, s: 12, sw: -4, d: 14, big: 1 },
+    { id: 'iruka', kana: 'いるか', kanji: '海豚', ro: 'iruka', zh: '海豚', xp: 2550, ex: 'いるかは とても あたまが いいです。', exZh: '海豚非常聪明。', kind: 'swim', x: 84, y: 29, mx: 85, my: 23, s: 10, sw: -5, d: 12, big: 1 },
+    { id: 'kujira', kana: 'くじら', kanji: '鯨', ro: 'kujira', zh: '鲸鱼', xp: 3000, ex: 'くじらは せかいで いちばん おおきい どうぶつです。', exZh: '鲸鱼是世界上最大的动物。', kind: 'swim', x: 19, y: 15, mx: 17, my: 11, s: 16, sw: 3, d: 22, big: 1 }
+  ];
+
+  /* ---------- 数据：问候小题（t：只在这个时段出；不写＝任何时候） ---------- */
+  var RO = {
+    'おはよう': 'ohayou', 'おはようございます': 'ohayou gozaimasu', 'こんにちは': 'konnichiwa', 'こんばんは': 'konbanwa',
+    'おやすみ': 'oyasumi', 'おやすみなさい': 'oyasumi nasai', 'ありがとう': 'arigatou', 'ごめんなさい': 'gomen nasai',
+    'いただきます': 'itadakimasu', 'ごちそうさまでした': 'gochisousama deshita', 'いってきます': 'ittekimasu',
+    'いってらっしゃい': 'itterasshai', 'ただいま': 'tadaima', 'おかえりなさい': 'okaeri nasai', 'はじめまして': 'hajimemashite',
+    'おひさしぶりです': 'ohisashiburi desu', 'またね': 'mata ne', 'すみません': 'sumimasen', 'よろしくおねがいします': 'yoroshiku onegaishimasu'
+  };
+  var QUIZ = [
+    { t: ['asa'], q: '早上 ふわり 对你说「おはよう！」，你怎么回？', a: 'おはよう', o: ['こんばんは', 'おやすみ'], n: '早上见面互相说「おはよう」。对老师、长辈要说完整的「おはようございます」。' },
+    { t: ['asa'], q: '早上在学校遇到老师，最有礼貌的说法是？', a: 'おはようございます', o: ['おはよう', 'おやすみなさい'], n: '加上「ございます」更礼貌，对老师、上司都用这句。' },
+    { t: ['hiru'], q: '白天见到朋友，打招呼说什么？', a: 'こんにちは', o: ['おはよう', 'こんばんは'], n: '「こんにちは」用在白天。最后的「は」读作 wa，不读 ha。' },
+    { t: ['yuu', 'yoru'], q: '晚上见面该说什么？', a: 'こんばんは', o: ['こんにちは', 'おはよう'], n: '天黑以后见面说「こんばんは」，最后的「は」同样读 wa。' },
+    { t: ['yoru'], q: '睡觉前跟家人说「晚安」，是哪一句？', a: 'おやすみなさい', o: ['こんばんは', 'いってきます'], n: '「おやすみなさい」是睡前说的晚安；「こんばんは」是晚上见面时的问候，不是晚安。' },
+    { q: '收到朋友送的礼物，想说「谢谢」？', a: 'ありがとう', o: ['ごめんなさい', 'いただきます'], n: '「ありがとう」是谢谢，更礼貌的说法是「ありがとうございます」。' },
+    { q: '不小心碰掉了朋友的笔，想说「对不起」？', a: 'ごめんなさい', o: ['ありがとう', 'ただいま'], n: '「ごめんなさい」用来道歉，对陌生人或正式场合常说「すみません」。' },
+    { q: '吃饭前双手合十，说「我开动了」？', a: 'いただきます', o: ['ごちそうさまでした', 'いってきます'], n: '吃饭前说「いただきます」，表示感谢食物和做饭的人。' },
+    { q: '吃完饭，说「我吃好了，谢谢款待」？', a: 'ごちそうさまでした', o: ['いただきます', 'おかえりなさい'], n: '吃完说「ごちそうさまでした」，和家人朋友之间说「ごちそうさま」就行。' },
+    { q: '早上出门上学，对家里人说「我出门了」？', a: 'いってきます', o: ['いってらっしゃい', 'ただいま'], n: '出门的人说「いってきます」，送行的人回「いってらっしゃい」。' },
+    { q: '家人要出门，你送他时说「路上小心，早点回来」？', a: 'いってらっしゃい', o: ['いってきます', 'おかえりなさい'], n: '「いってらっしゃい」是对要出门的人说的。' },
+    { q: '放学回到家，一进门说「我回来了」？', a: 'ただいま', o: ['おかえりなさい', 'いってきます'], n: '回到家的人说「ただいま」，家里的人回「おかえりなさい」。' },
+    { q: '家人回到家，你迎上去说「你回来啦」？', a: 'おかえりなさい', o: ['ただいま', 'いただきます'], n: '「おかえりなさい」用来迎接回家的人，也可以简单说「おかえり」。' },
+    { q: '第一次见面做自我介绍，开头先说？', a: 'はじめまして', o: ['おひさしぶりです', 'またね'], n: '「はじめまして」＝初次见面，后面接自己的名字。' },
+    { q: '自我介绍的最后，说「请多关照」？', a: 'よろしくおねがいします', o: ['ごちそうさまでした', 'おやすみなさい'], n: '「よろしくおねがいします」在自我介绍、拜托别人做事时都很常用。' },
+    { q: '很久没见的朋友，见面说「好久不见」？', a: 'おひさしぶりです', o: ['はじめまして', 'いってらっしゃい'], n: '「おひさしぶりです」＝好久不见，朋友之间说「ひさしぶり」就行。' },
+    { q: '在店里想叫店员过来，先说「不好意思」？', a: 'すみません', o: ['ありがとう', 'ただいま'], n: '「すみません」可以用来叫人、打扰别人，也能表示轻微的道歉。' },
+    { q: '和朋友分开时，随口说「回头见」？', a: 'またね', o: ['はじめまして', 'いただきます'], n: '「またね」是朋友之间轻松的「回头见」。' }
+  ];
+
+  /* ---------- 数据：时段与寒暄 ---------- */
+  var TIMES = {
+    asa: { name: '朝', kana: 'あさ', zh: '清晨', hi: 'おはよう！', hiZh: '早上好！' },
+    hiru: { name: '昼', kana: 'ひる', zh: '白天', hi: 'こんにちは！', hiZh: '你好！' },
+    yuu: { name: '夕方', kana: 'ゆうがた', zh: '傍晚', hi: 'こんばんは！', hiZh: '晚上好！' },
+    yoru: { name: '夜', kana: 'よる', zh: '夜晚', hi: 'こんばんは！', hiZh: '晚上好！' }
+  };
+  var CHAT = {
+    asa: [['おはよう！きょうも いい いちにちに しようね。', '早上好！今天也一起好好过吧。'], ['あさの うみは きらきら して いるよ。', '早上的海闪闪发亮哦。']],
+    hiru: [['こんにちは！うみの なかは きもちいいよ。', '你好！海里很舒服哦。'], ['おひるごはん、もう たべた？', '午饭吃了吗？']],
+    yuu: [['ゆうひが きれいだね。', '夕阳真美啊。'], ['きょうも おつかれさま！', '今天也辛苦了！']],
+    yoru: [['こんばんは！よるの うみは しずかだね。', '晚上好！夜晚的海好安静。'], ['そろそろ ねる じかんかな。おやすみなさい。', '差不多该睡觉了吧。晚安。']],
+    all: [['いつも ひかりを ありがとう！', '谢谢你一直给我光！'], ['いっしょに がんばろうね。', '我们一起加油吧。'], ['また あそびに きてね。', '下次再来玩哦。'], ['きょうも あえて うれしい！', '今天也见到你了，好开心！']]
+  };
+  function timeKey() {
+    if (TIME_OVERRIDE) return TIME_OVERRIDE;
+    var h = new Date().getHours();
+    if (h >= 5 && h < 10) return 'asa';
+    if (h >= 10 && h < 17) return 'hiru';
+    if (h >= 17 && h < 19) return 'yuu';
+    return 'yoru';
+  }
+
+  /* ---------- 存储 ----------
+     现在后端没接，海的状态只存在本机浏览器（localStorage，键名 breeze-game-sea-v1）。
+     接腾讯云开发时只需替换这里的 load() / save() 两个函数（例如改成读写云数据库），其余代码不用动。
+     经验值不存在这里，一律走 Breeze.addXP。预览模式（?xp=）下不写入。 */
+  var KEY = 'breeze-game-sea-v1';
+  function blank() { return { seen: [], lastGreet: null, greets: 0, lastQ: -1 }; }
+  function load() {
+    var s = blank();
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var o = JSON.parse(raw);
+        if (o && typeof o === 'object') {
+          if (Array.isArray(o.seen)) s.seen = o.seen.filter(function (x) { return typeof x === 'string'; });
+          if (typeof o.lastGreet === 'string') s.lastGreet = o.lastGreet;
+          if (typeof o.greets === 'number') s.greets = o.greets;
+          if (typeof o.lastQ === 'number') s.lastQ = o.lastQ;
+        }
+      }
+    } catch (e) { }
+    return s;
+  }
+  function save() {
+    if (PREVIEW != null) return;
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { }
+  }
+  var S = load();
+
+  /* ---------- 小工具 ---------- */
+  function xpNow() { if (PREVIEW != null) return PREVIEW; var p = B.P(); return (p && p.xp) || 0; }
+  function stageIdx(xp) { var i = 0; while (i + 1 < STAGES.length && xp >= STAGES[i + 1].xp) i++; return i; }
+  function unlocked(c, xp) { return xp >= c.xp; }
+  function isNew(c, xp) { return unlocked(c, xp) && S.seen.indexOf(c.id) < 0; }
+  function greetedToday() {
+    var t = B.today(), p = B.P();
+    return S.lastGreet === t || !!(p && p.flags && p.flags['sea-greet'] === t);
+  }
+  var reduceMotion = false;
+  try { reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { }
+
+  /* ---------- 原创生物造型（统一：圆润、少量颜色、无描边） ---------- */
+  var INK = '#1B2342';
+  function eye(x, y, r) { r = r || 3.2; return '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + INK + '"/><circle cx="' + (x + r * .35).toFixed(1) + '" cy="' + (y - r * .4).toFixed(1) + '" r="' + (r * .38).toFixed(1) + '" fill="#fff"/>'; }
+  function blush(x, y) { return '<ellipse cx="' + x + '" cy="' + y + '" rx="4.2" ry="2.4" fill="#FF8FAE" opacity=".45"/>'; }
+  function smile(x, y, w) { w = w || 3; return '<path d="M' + (x - w) + ' ' + y + ' Q' + x + ' ' + (y + w) + ' ' + (x + w) + ' ' + y + '" fill="none" stroke="' + INK + '" stroke-width="1.6" stroke-linecap="round"/>'; }
+  function shine(x, y, rx, ry, rot) { return '<ellipse cx="' + x + '" cy="' + y + '" rx="' + rx + '" ry="' + ry + '" fill="#fff" opacity=".5"' + (rot ? ' transform="rotate(' + rot + ' ' + x + ' ' + y + ')"' : '') + '/>'; }
+  function star(cx, cy, R, r) {
+    var p = [];
+    for (var i = 0; i < 10; i++) { var a = (-90 + i * 36) * Math.PI / 180, rr = i % 2 ? r : R; p.push((cx + Math.cos(a) * rr).toFixed(1) + ',' + (cy + Math.sin(a) * rr).toFixed(1)); }
+    return p.join(' ');
+  }
+  function spikes(cx, cy, r, len, n, col) {
+    var out = '';
+    for (var i = 0; i < n; i++) {
+      var a = i / n * Math.PI * 2, d = .16;
+      var p1 = [cx + Math.cos(a - d) * r, cy + Math.sin(a - d) * r], p2 = [cx + Math.cos(a + d) * r, cy + Math.sin(a + d) * r], t = [cx + Math.cos(a) * (r + len), cy + Math.sin(a) * (r + len)];
+      out += '<polygon points="' + [p1, t, p2].map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ') + '" fill="' + col + '" stroke="' + col + '" stroke-width="2" stroke-linejoin="round"/>';
+    }
+    return out;
+  }
+  var ART = {
+    sakana: function () {
+      return '<path d="M30 50 C20 40 13 34 7 31 C10 44 10 56 7 69 C13 66 20 60 30 50Z" fill="#FF8466"/>' +
+        '<path d="M42 32 C47 20 60 19 65 31Z" fill="#FF8466"/>' +
+        '<ellipse cx="54" cy="50" rx="31" ry="21" fill="#FFA07A"/>' +
+        '<path d="M28 54 C40 66 66 70 83 57 C70 64 46 63 28 54Z" fill="#FFD2B8"/>' +
+        '<path d="M50 32 C45 42 45 58 50 68" stroke="#FFC4A6" stroke-width="4" fill="none" stroke-linecap="round" opacity=".8"/>' +
+        '<path d="M52 58 C56 62 56 66 50 68 C50 64 50 61 52 58Z" fill="#FF8466"/>' +
+        shine(42, 40, 9, 3.5, -14) + eye(70, 46, 3.6) + blush(72, 55) + smile(80, 53, 2.2);
+    },
+    kai: function () {
+      return '<path d="M18 76 C12 58 28 36 50 26 C64 19 78 14 88 10 C86 20 81 32 74 46 C64 64 46 80 30 82 C24 83 20 80 18 76Z" fill="#FFB8C6"/>' +
+        '<path d="M30 64 C44 56 58 44 72 26" stroke="#FFDCE4" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+        '<path d="M40 76 C54 66 66 52 78 34" stroke="#F79AB0" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+        '<path d="M24 52 C36 46 50 36 62 22" stroke="#F79AB0" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/>' +
+        '<ellipse cx="27" cy="73" rx="10" ry="7.5" fill="#FFE9EE" transform="rotate(-30 27 73)"/>' +
+        '<circle cx="76" cy="20" r="2.5" fill="#fff" opacity=".8"/>';
+    },
+    kani: function () {
+      var claw = '<path d="M30 50 L22 38" stroke="#E0605A" stroke-width="5" stroke-linecap="round"/><path d="M12 36 C9 25 17 18 24 20 L20 28 L29 27 C30 35 24 42 18 42 C14 42 12 40 12 36Z" fill="#F2776B"/>';
+      return '<g stroke="#E0605A" stroke-width="5" stroke-linecap="round" fill="none"><path d="M27 62 L13 69"/><path d="M29 68 L17 80"/><path d="M33 73 L26 86"/><path d="M73 62 L87 69"/><path d="M71 68 L83 80"/><path d="M67 73 L74 86"/></g>' +
+        claw + '<g transform="translate(100 0) scale(-1 1)">' + claw + '</g>' +
+        '<path d="M42 44 L40 32 M58 44 L60 32" stroke="#E0605A" stroke-width="3.5" stroke-linecap="round"/>' +
+        '<circle cx="40" cy="30" r="6" fill="#F2776B"/><circle cx="60" cy="30" r="6" fill="#F2776B"/>' + eye(40, 30, 3.4) + eye(60, 30, 3.4) +
+        '<ellipse cx="50" cy="58" rx="27" ry="18" fill="#F2776B"/>' + shine(42, 50, 9, 3.5, -10) +
+        blush(36, 62) + blush(64, 62) + smile(50, 62, 3.5);
+    },
+    hitode: function () {
+      return '<polygon points="' + star(50, 53, 40, 19) + '" fill="#FFB35C" stroke="#FFB35C" stroke-width="12" stroke-linejoin="round"/>' +
+        '<g fill="#FFD9A0"><circle cx="50" cy="24" r="2.4"/><circle cx="50" cy="32" r="2"/><circle cx="76" cy="45" r="2.4"/><circle cx="24" cy="45" r="2.4"/><circle cx="66" cy="76" r="2.4"/><circle cx="34" cy="76" r="2.4"/></g>' +
+        eye(43, 51, 3) + eye(57, 51, 3) + blush(38, 58) + blush(62, 58) + smile(50, 58, 3);
+    },
+    ebi: function () {
+      return '<path d="M74 24 C82 12 90 9 97 11 M72 22 C75 10 80 5 88 3" stroke="#FF8A7A" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+        '<path d="M34 64 L16 55 L21 67 L14 76 L34 70Z" fill="#FF8A7A" stroke="#FF8A7A" stroke-width="3" stroke-linejoin="round"/>' +
+        '<g stroke="#F06F62" stroke-width="2.5" stroke-linecap="round"><path d="M52 74 L50 82"/><path d="M60 72 L60 81"/><path d="M68 68 L70 77"/></g>' +
+        '<path d="M68 34 C80 44 78 62 64 70 C52 76 40 72 34 64" stroke="#FF8A7A" stroke-width="20" fill="none" stroke-linecap="round"/>' +
+        '<path d="M68 34 C80 44 78 62 64 70 C52 76 40 72 34 64" stroke="#FFB3A6" stroke-width="20" fill="none" stroke-dasharray="2.5 9" opacity=".7"/>' +
+        '<circle cx="68" cy="31" r="13" fill="#FF8A7A"/>' + shine(64, 26, 5, 2.5, -20) + eye(73, 28, 3.2) + blush(66, 37);
+    },
+    tako: function () {
+      return '<g stroke="#F57F8E" stroke-width="9" fill="none" stroke-linecap="round"><path d="M30 56 C24 68 30 78 20 85"/><path d="M42 60 C40 72 46 80 40 89"/><path d="M58 60 C60 72 54 80 60 89"/><path d="M70 56 C76 68 70 78 80 85"/></g>' +
+        '<g fill="#FFC1CA"><circle cx="21" cy="83" r="1.8"/><circle cx="41" cy="87" r="1.8"/><circle cx="59" cy="87" r="1.8"/><circle cx="79" cy="83" r="1.8"/></g>' +
+        '<ellipse cx="50" cy="40" rx="27" ry="25" fill="#F57F8E"/>' + shine(40, 26, 9, 4.5, -25) +
+        eye(41, 44, 3.4) + eye(59, 44, 3.4) + blush(33, 52) + blush(67, 52) +
+        '<ellipse cx="50" cy="55" rx="4.5" ry="3.6" fill="#E25F73"/><ellipse cx="50" cy="55" rx="2" ry="1.6" fill="#B8455A"/>';
+    },
+    ika: function () {
+      return '<g stroke="#E2D2FA" stroke-width="5" fill="none" stroke-linecap="round"><path d="M40 66 C38 76 42 82 38 90"/><path d="M46 68 L45 88"/><path d="M54 68 L55 88"/><path d="M60 66 C62 76 58 82 62 90"/></g>' +
+        '<path d="M43 68 C40 80 34 86 30 94 M57 68 C60 80 66 86 70 94" stroke="#E2D2FA" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+        '<path d="M40 16 L22 30 L38 36Z M60 16 L78 30 L62 36Z" fill="#E2D2FA" stroke="#E2D2FA" stroke-width="5" stroke-linejoin="round"/>' +
+        '<path d="M50 6 C63 16 67 34 65 60 L35 60 C33 34 37 16 50 6Z" fill="#EBDDFF"/>' +
+        '<ellipse cx="50" cy="62" rx="16" ry="8" fill="#EBDDFF"/>' +
+        '<g fill="#FFB8D0"><circle cx="46" cy="24" r="2"/><circle cx="55" cy="32" r="2.4"/><circle cx="44" cy="40" r="1.8"/><circle cx="56" cy="46" r="1.8"/></g>' +
+        shine(43, 22, 3, 8, 8) + eye(43, 58, 3) + eye(57, 58, 3) + blush(38, 64) + blush(62, 64);
+    },
+    sango: function () {
+      return '<g stroke="#FF9BB0" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M50 90 L50 28"/><path d="M50 72 C40 64 33 56 31 40"/><path d="M33 52 C25 48 22 40 22 30"/><path d="M50 64 C60 56 66 48 67 34"/><path d="M66 46 C74 42 78 34 78 24"/><path d="M50 46 C44 40 42 32 41 22"/></g>' +
+        '<g fill="#FFC6D3"><circle cx="50" cy="28" r="3"/><circle cx="31" cy="40" r="2.6"/><circle cx="22" cy="30" r="2.6"/><circle cx="67" cy="34" r="2.6"/><circle cx="78" cy="24" r="2.6"/><circle cx="41" cy="22" r="2.6"/></g>' +
+        '<ellipse cx="50" cy="91" rx="24" ry="6" fill="#F4C7A6"/>';
+    },
+    wakame: function () {
+      return '<path d="M30 96 C22 80 34 68 27 52 C21 40 30 28 24 16 C34 26 38 40 34 54 C40 70 32 84 36 96Z" fill="#4FAE83"/>' +
+        '<path d="M48 96 C40 76 54 64 46 46 C40 32 50 18 44 4 C56 16 60 32 54 46 C62 64 52 80 56 96Z" fill="#6CC79A"/>' +
+        '<path d="M66 96 C60 82 72 72 66 58 C61 46 70 36 66 26 C76 34 78 48 74 60 C80 74 72 86 74 96Z" fill="#8ED8AE"/>' +
+        '<path d="M48 40 C50 30 48 22 46 14" stroke="#B7EBCD" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/>';
+    },
+    kurage: function () {
+      return '<g stroke="#C2AFFF" stroke-width="3" fill="none" stroke-linecap="round"><path d="M32 54 C28 66 36 74 30 88"/><path d="M44 56 C42 68 48 76 44 92"/><path d="M56 56 C58 68 52 76 56 92"/><path d="M68 54 C72 66 64 74 70 88"/></g>' +
+        '<path d="M22 50 C22 28 36 16 50 16 C64 16 78 28 78 50Z" fill="#D2C2FF"/>' +
+        '<path d="M22 50 Q28 59 34 50 Q40 59 46 50 Q52 59 58 50 Q64 59 70 50 Q76 59 78 50Z" fill="#E6DCFF"/>' +
+        shine(38, 28, 8, 4, -25) + eye(42, 38, 2.8) + eye(58, 38, 2.8) + blush(36, 44) + blush(64, 44) + smile(50, 43, 2.4);
+    },
+    hotate: function () {
+      var r = '';
+      for (var i = 0; i <= 8; i++) { var a = (200 + i * 17.5) * Math.PI / 180; r += '<path d="M50 80 L' + (50 + Math.cos(a) * 40).toFixed(1) + ' ' + (80 + Math.sin(a) * 40).toFixed(1) + '"/>'; }
+      return '<path d="M50 82 L14 48 C18 24 34 14 50 14 C66 14 82 24 86 48Z" fill="#FFC07A" stroke="#FFC07A" stroke-width="6" stroke-linejoin="round"/>' +
+        '<g stroke="#FFE0B5" stroke-width="3" stroke-linecap="round" opacity=".9">' + r + '</g>' +
+        '<path d="M36 78 L32 90 L68 90 L64 78Z" fill="#F5A55C" stroke="#F5A55C" stroke-width="4" stroke-linejoin="round"/>' +
+        shine(38, 28, 7, 3, -30);
+    },
+    fugu: function () {
+      return spikes(50, 52, 28, 8, 14, '#F2C14E') +
+        '<ellipse cx="20" cy="56" rx="6" ry="9" fill="#F2C14E" transform="rotate(-20 20 56)"/><ellipse cx="80" cy="56" rx="6" ry="9" fill="#F2C14E" transform="rotate(20 80 56)"/>' +
+        '<circle cx="50" cy="52" r="29" fill="#FFE08A"/>' +
+        '<ellipse cx="50" cy="66" rx="20" ry="13" fill="#FFF5D1"/>' +
+        '<g fill="#E8B64A"><circle cx="40" cy="30" r="2"/><circle cx="52" cy="27" r="2.2"/><circle cx="63" cy="32" r="2"/></g>' +
+        shine(38, 38, 7, 3.5, -30) + eye(41, 47, 3.4) + eye(59, 47, 3.4) + blush(34, 56) + blush(66, 56) +
+        '<ellipse cx="50" cy="60" rx="3.2" ry="2.6" fill="#E89A5B"/>';
+    },
+    tatsu: function () {
+      return '<path d="M46 70 C40 84 46 94 56 92 C64 90 63 80 56 81 C52 82 52 87 56 87" fill="none" stroke="#FFB46B" stroke-width="8" stroke-linecap="round"/>' +
+        '<path d="M37 50 C27 52 27 64 36 67Z" fill="#FFD9A8"/>' +
+        '<path d="M40 30 C37 40 39 44 41 48 L59 46 C59 40 56 36 58 32Z" fill="#FFB46B"/>' +
+        '<ellipse cx="50" cy="57" rx="14" ry="19" fill="#FFB46B"/>' +
+        '<ellipse cx="56" cy="58" rx="7.5" ry="14" fill="#FFD9A8"/>' +
+        '<g stroke="#FFB46B" stroke-width="1.6" fill="none" stroke-linecap="round"><path d="M50 50 Q56 52 62 50"/><path d="M50 57 Q56 59 63 57"/><path d="M50 64 Q56 66 62 64"/></g>' +
+        '<path d="M42 18 L44 10 L48 16 L51 8 L54 16 L57 11 L58 20Z" fill="#FF9E50" stroke="#FF9E50" stroke-width="2" stroke-linejoin="round"/>' +
+        '<rect x="56" y="25" width="23" height="9" rx="4.5" fill="#FFB46B" transform="rotate(14 56 29)"/>' +
+        '<circle cx="50" cy="28" r="13" fill="#FFB46B"/>' + shine(45, 22, 4.5, 2.5, -30) + eye(52, 27, 3.2) + blush(46, 34);
+    },
+    umigame: function () {
+      return '<ellipse cx="32" cy="68" rx="12" ry="5.5" fill="#4FA27B" transform="rotate(28 32 68)"/>' +
+        '<ellipse cx="70" cy="69" rx="14" ry="6" fill="#4FA27B" transform="rotate(-26 70 69)"/>' +
+        '<path d="M18 60 L10 64 L19 66Z" fill="#8ED3A8" stroke="#8ED3A8" stroke-width="2" stroke-linejoin="round"/>' +
+        '<path d="M76 56 C80 46 88 44 93 48 C98 52 96 60 88 61 C84 61 80 60 76 58Z" fill="#8ED3A8"/>' +
+        '<path d="M18 60 C18 38 34 26 52 26 C70 26 82 40 82 60Z" fill="#5FB58A"/>' +
+        '<rect x="15" y="56" width="70" height="8" rx="4" fill="#8ED3A8"/>' +
+        '<g fill="none" stroke="#8ED3A8" stroke-width="2.5" stroke-linejoin="round"><polygon points="44,36 56,36 61,45 56,54 44,54 39,45"/><path d="M39 45 L26 47 M61 45 L74 47 M44 36 L40 29 M56 36 L60 29"/></g>' +
+        shine(34, 36, 6, 2.5, -35) + eye(87, 51, 2.8) + blush(86, 57);
+    },
+    penguin: function () {
+      return '<ellipse cx="42" cy="88" rx="7" ry="3.5" fill="#FFB347"/><ellipse cx="58" cy="88" rx="7" ry="3.5" fill="#FFB347"/>' +
+        '<ellipse cx="25" cy="58" rx="6" ry="16" fill="#3D4F86" transform="rotate(16 25 58)"/><ellipse cx="75" cy="58" rx="6" ry="16" fill="#3D4F86" transform="rotate(-16 75 58)"/>' +
+        '<ellipse cx="50" cy="54" rx="26" ry="34" fill="#3D4F86"/>' +
+        '<ellipse cx="50" cy="62" rx="18" ry="24" fill="#fff"/><ellipse cx="50" cy="42" rx="15" ry="11" fill="#fff"/>' +
+        shine(40, 26, 6, 2.5, -30) + eye(44, 40, 2.8) + eye(56, 40, 2.8) + blush(40, 48) + blush(60, 48) +
+        '<path d="M46 45 L54 45 L50 51Z" fill="#FFB347" stroke="#FFB347" stroke-width="2" stroke-linejoin="round"/>';
+    },
+    azarashi: function () {
+      return '<path d="M14 72 L3 63 L5 81Z" fill="#BCCADA" stroke="#BCCADA" stroke-width="3" stroke-linejoin="round"/>' +
+        '<path d="M10 74 C10 56 30 44 54 44 C72 44 86 54 88 66 C90 78 78 84 62 84 L22 84 C14 84 10 80 10 74Z" fill="#D7E2EE"/>' +
+        '<g fill="#BCCADA"><ellipse cx="34" cy="58" rx="3" ry="2"/><ellipse cx="44" cy="52" rx="2.4" ry="1.6"/><ellipse cx="28" cy="68" rx="2.4" ry="1.6"/></g>' +
+        '<ellipse cx="54" cy="83" rx="9" ry="4" fill="#BCCADA"/>' +
+        shine(40, 50, 8, 2.5, -10) +
+        '<ellipse cx="72" cy="70" rx="9" ry="5.5" fill="#EEF3F8"/>' + eye(66, 61, 4) + eye(79, 61, 4) +
+        '<ellipse cx="72" cy="67.5" rx="3" ry="2.2" fill="' + INK + '"/>' +
+        '<g fill="#9AA9BC"><circle cx="67" cy="71" r=".9"/><circle cx="69" cy="73" r=".9"/><circle cx="75" cy="73" r=".9"/><circle cx="77" cy="71" r=".9"/></g>' +
+        blush(61, 69) + blush(84, 69);
+    },
+    rakko: function () {
+      return '<path d="M4 66 Q16 60 28 66 T52 66 T76 66 T100 66" stroke="#fff" stroke-opacity=".75" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+        '<ellipse cx="14" cy="46" rx="6" ry="9" fill="#9A6B4C" transform="rotate(-30 14 46)"/>' +
+        '<ellipse cx="46" cy="58" rx="34" ry="13" fill="#B5835F"/><ellipse cx="50" cy="54" rx="22" ry="6" fill="#C99A76"/>' +
+        '<circle cx="73" cy="36" r="4" fill="#9A6B4C"/><circle cx="89" cy="38" r="4" fill="#9A6B4C"/>' +
+        '<circle cx="81" cy="46" r="14" fill="#B5835F"/><ellipse cx="82" cy="49" rx="10" ry="8.5" fill="#EED7C0"/>' +
+        eye(77, 46, 2.4) + eye(87, 46, 2.4) + '<ellipse cx="82" cy="51" rx="2.2" ry="1.6" fill="' + INK + '"/>' + blush(75, 52) + blush(89, 52) +
+        '<path d="M52 46 L46 36 C50 32 58 32 62 36Z" fill="#FFC9D6" stroke="#FFC9D6" stroke-width="2" stroke-linejoin="round"/>' +
+        '<circle cx="48" cy="45" r="4" fill="#9A6B4C"/><circle cx="60" cy="45" r="4" fill="#9A6B4C"/>';
+    },
+    same: function () {
+      return '<path d="M14 54 L3 34 Q9 48 7 54 Q9 62 3 74Z" fill="#7F98BE" stroke="#7F98BE" stroke-width="3" stroke-linejoin="round"/>' +
+        '<path d="M44 37 C48 23 56 16 61 14 C60 24 60 30 63 36Z" fill="#7F98BE"/>' +
+        '<path d="M8 54 C24 36 56 30 80 40 C90 44 96 50 96 54 C90 62 70 70 46 68 C30 67 18 62 8 54Z" fill="#7F98BE"/>' +
+        '<path d="M28 60 C50 70 78 66 95 56 C82 64 56 70 28 60Z" fill="#E8EEF7"/>' +
+        '<path d="M56 62 L50 77 L67 64Z" fill="#6A84AC" stroke="#6A84AC" stroke-width="2" stroke-linejoin="round"/>' +
+        '<g stroke="#6A84AC" stroke-width="1.8" stroke-linecap="round"><path d="M68 47 L67 55"/><path d="M72 47 L71 55"/><path d="M76 47 L75 54"/></g>' +
+        shine(46, 42, 10, 2.5, -8) + eye(84, 47, 2.8) + blush(85, 53) + smile(89, 56, 2.4);
+    },
+    iruka: function () {
+      return '<path d="M15 62 L3 51 Q9 60 5 73Z" fill="#6A9FD8" stroke="#6A9FD8" stroke-width="3" stroke-linejoin="round"/>' +
+        '<path d="M48 35 C52 23 58 18 63 18 C60 24 60 30 63 35Z" fill="#6A9FD8"/>' +
+        '<path d="M10 62 C20 40 50 30 74 38 C84 41 90 46 97 46 C97 50 93 52 86 54 C74 64 44 70 22 66Z" fill="#7FB3E8"/>' +
+        '<path d="M28 64 C50 68 72 62 86 54 C72 60 50 64 28 64Z" fill="#E6F2FF"/>' +
+        '<path d="M54 62 L48 76 L62 64Z" fill="#6A9FD8" stroke="#6A9FD8" stroke-width="2" stroke-linejoin="round"/>' +
+        shine(46, 42, 10, 2.5, -10) + eye(77, 44, 2.8) + blush(78, 50) +
+        '<path d="M84 50 Q90 51 95 48" fill="none" stroke="' + INK + '" stroke-width="1.5" stroke-linecap="round"/>';
+    },
+    kujira: function () {
+      return '<g stroke="#BFE6FF" stroke-width="3" fill="none" stroke-linecap="round"><path d="M62 24 C62 16 58 12 52 10"/><path d="M62 24 C62 16 66 12 72 10"/><path d="M62 24 L62 9"/></g>' +
+        '<g fill="#BFE6FF"><circle cx="50" cy="12" r="2.4"/><circle cx="74" cy="12" r="2.4"/><circle cx="62" cy="7" r="2.4"/></g>' +
+        '<path d="M22 62 C14 56 9 46 4 37 C11 39 15 39 19 34 C19 43 22 51 28 58Z" fill="#5B7FCB"/>' +
+        '<path d="M14 56 C14 36 36 25 60 25 C82 25 95 39 95 56 C95 72 81 80 59 80 C41 80 29 74 21 66Z" fill="#5B7FCB"/>' +
+        '<path d="M30 70 C46 78 72 80 93 64 C89 74 73 80 59 80 C45 80 37 76 30 70Z" fill="#DCE7FA"/>' +
+        '<g stroke="#B9CDF2" stroke-width="1.5" stroke-linecap="round"><path d="M46 76 L48 72"/><path d="M56 78 L57 74"/><path d="M66 78 L66 74"/><path d="M76 76 L75 72"/></g>' +
+        '<ellipse cx="55" cy="69" rx="10" ry="4.5" fill="#4A6DB8" transform="rotate(22 55 69)"/>' +
+        shine(46, 36, 12, 4, -15) + eye(79, 52, 3.2) + blush(81, 60) + smile(87, 63, 2.6);
+    }
+  };
+  function art(id) { return '<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + ART[id]() + '</svg>'; }
+
+  /* ---------- 场景装饰 ---------- */
+  (function deco() {
+    var bb = $('#sea-bubbles'), sp = $('#sea-specks'), h = '';
+    var bub = [[8, 10, 11, 0], [18, 7, 9, -4], [33, 12, 13, -8], [47, 6, 10, -2], [61, 9, 12, -6], [72, 14, 14, -10], [86, 8, 10, -3], [94, 11, 12, -7]];
+    bub.forEach(function (b) { h += '<span style="left:' + b[0] + '%;--b:' + b[1] + 'px;--d:' + b[2] + 's;--dl:' + b[3] + 's"></span>'; });
+    bb.innerHTML = h; h = '';
+    for (var i = 0; i < 22; i++) { h += '<i style="left:' + ((i * 37 + 11) % 97 + 1) + '%;top:' + ((i * 53 + 7) % 70 + 6) + '%;animation-delay:-' + (i % 7) * .5 + 's"></i>'; }
+    sp.innerHTML = h;
+  })();
+
+  /* ---------- 渲染：时段 ---------- */
+  function renderTime() {
+    var k = timeKey(), t = TIMES[k];
+    $('#sea-scene').setAttribute('data-time', k);
+    $('#sea-time').innerHTML = '<b lang="ja">' + t.name + '</b> <span lang="ja">' + t.kana + '</span> · ' + t.zh;
+    $('#sea-time-chip').style.setProperty('--sea-c', { asa: '#4FA6D6', hiru: '#2F94D4', yuu: '#9A7FCB', yoru: '#172257' }[k]);
+  }
+
+  /* ---------- 渲染：ふわり ---------- */
+  var lastStage = -1;
+  function renderFuwari(expr) {
+    var xp = xpNow(), si = stageIdx(xp), st = STAGES[si];
+    var fu = $('#sea-fu');
+    fu.style.setProperty('--js', st.scale);
+    $('#sea-halo').style.setProperty('--ha', st.halo);
+    if (expr || lastStage !== si) {
+      var h = B.jelly(expr || 'happy', 'ふわり（' + st.zh + '）');
+      for (var i = 0; i < si * 2; i++) {
+        var a = (i / (si * 2)) * Math.PI * 2 + .4;
+        h += '<span class="sea-spark" aria-hidden="true" style="left:' + (50 + Math.cos(a) * 62).toFixed(1) + '%;top:' + (30 + Math.sin(a) * 40).toFixed(1) + '%;animation-delay:-' + (i * .37).toFixed(2) + 's"></span>';
+      }
+      $('#sea-fu-svg').innerHTML = h;
+    }
+    lastStage = si;
+  }
+
+  /* ---------- 渲染：海里的生物 ---------- */
+  var shownKey = '';
+  function renderCreatures() {
+    var xp = xpNow(), list = CREATURES.filter(function (c) { return unlocked(c, xp); });
+    var key = list.map(function (c) { return c.id + (isNew(c, xp) ? '*' : ''); }).join(',');
+    if (key === shownKey) return;
+    shownKey = key;
+    var act = document.activeElement, focusId = act && act.getAttribute && act.getAttribute('data-c');
+    var h = '';
+    list.forEach(function (c, i) {
+      var f = (c.sw || 0) < 0 ? -1 : 1;
+      var st = '--x:' + c.x + ';--y:' + c.y + ';--mx:' + c.mx + ';--my:' + c.my + ';--s:' + c.s + ';--sw:' + (c.sw || 0) + ';--f:' + f + ';--d:' + (c.d || 8) + 's;--dl:-' + ((i * 1.7) % (c.d || 8)).toFixed(1) + 's';
+      h += '<button type="button" class="sea-c sea-anim-' + c.kind + (c.big ? ' big' : '') + (c.y < 18 ? ' tb-d' : '') + (c.my < 18 ? ' tb-m' : '') + '" data-c="' + c.id + '" style="' + st + '" aria-label="' + esc(c.kana + '（' + c.zh + '），点一下听读音') + '">' +
+        '<span class="sea-in">' + art(c.id) + '</span>' + (isNew(c, xp) ? '<span class="sea-new" aria-hidden="true"></span>' : '') + '</button>';
+    });
+    $('#sea-creatures').innerHTML = h;
+    if (focusId) { var el = document.querySelector('.sea-c[data-c="' + focusId + '"]'); if (el) el.focus(); }
+  }
+
+  /* ---------- 渲染：成长 ---------- */
+  function renderGrowth() {
+    var xp = xpNow(), si = stageIdx(xp), st = STAGES[si], nx = STAGES[si + 1];
+    $('#sea-xp').textContent = xp;
+    $('#sea-stage-ja').textContent = st.ja;
+    $('#sea-stage-zh').textContent = st.zh + ' · 第 ' + (si + 1) + ' / ' + STAGES.length + ' 阶段';
+    var pct = nx ? Math.max(0, Math.min(100, Math.round((xp - st.xp) / (nx.xp - st.xp) * 100))) : 100;
+    $('#sea-meter-i').style.width = pct + '%';
+    $('#sea-meter').setAttribute('aria-valuenow', pct);
+    $('#sea-need').innerHTML = nx ? '还差 <b class="num">' + (nx.xp - xp) + '</b> 经验值，长成「<span lang="ja">' + esc(nx.ja) + '</span>」（' + esc(nx.zh) + '）。'
+      : 'ふわり 已经长到最大，成了这片海里的光。谢谢你一直学下来。';
+    $('#sea-steps').innerHTML = STAGES.map(function (s, i) {
+      return '<li class="' + (i <= si ? 'on' : '') + (i === si ? ' cur' : '') + '"' + (i === si ? ' aria-current="step"' : '') + '><span lang="ja">' + esc(s.ja) + '</span><br><span class="num">' + s.xp + '</span></li>';
+    }).join('');
+    var count = CREATURES.filter(function (c) { return unlocked(c, xp); }).length;
+    var nextC = CREATURES.filter(function (c) { return !unlocked(c, xp); })[0];
+    var newN = CREATURES.filter(function (c) { return isNew(c, xp); }).length;
+    $('#sea-count').textContent = count + ' / ' + CREATURES.length;
+    $('#sea-dex-count').textContent = '已解锁 ' + count + ' / ' + CREATURES.length;
+    var t = nextC ? '再得 ' + (nextC.xp - xp) + ' 经验值，海里会来一位新朋友。' : '20 位朋友都来到海里了。';
+    if (newN) t = '有 ' + newN + ' 位新朋友还没打过招呼，点它们听听名字。' + t;
+    $('#sea-next-friend').textContent = t;
+    $('#sea-guide').hidden = xp >= 30;
+  }
+
+  /* ---------- 渲染：图鉴 ---------- */
+  function renderDex() {
+    var xp = xpNow(), h = '';
+    CREATURES.forEach(function (c, i) {
+      var no = '<span class="no">' + (i < 9 ? '0' : '') + (i + 1) + '</span>';
+      if (unlocked(c, xp)) {
+        h += '<li><button type="button" class="sea-cell" data-dex="' + c.id + '" aria-label="' + esc(c.kana + '，' + c.zh + (isNew(c, xp) ? '，新来的' : '') + '，点开看卡片') + '">' + no +
+          (isNew(c, xp) ? '<span class="tag new" aria-hidden="true"></span>' : '') +
+          '<span class="pic">' + art(c.id) + '</span><span class="nm" lang="ja">' + esc(c.kana) + '</span><span class="zh">' + esc(c.zh) + '</span></button></li>';
+      } else {
+        h += '<li><div class="sea-cell lock" role="img" aria-label="' + esc('第 ' + (i + 1) + ' 位朋友还没来，还差 ' + (c.xp - xp) + ' 经验值') + '">' + no +
+          '<span class="pic">' + art(c.id) + '</span><span class="nm" aria-hidden="true">？？？</span><span class="zh" aria-hidden="true">还差 <b class="num">' + (c.xp - xp) + '</b> 经验值</span></div></li>';
+      }
+    });
+    var act = document.activeElement, fid = act && act.getAttribute && act.getAttribute('data-dex');
+    $('#sea-dex').innerHTML = h;
+    if (fid) { var el = document.querySelector('[data-dex="' + fid + '"]'); if (el) el.focus(); }
+  }
+
+  function renderAll() { renderTime(); renderFuwari(); renderCreatures(); renderGrowth(); renderDex(); renderTalkIdle(); }
+
+  /* ---------- 生物卡片 ---------- */
+  var card = $('#sea-card'), opener = null, cardId = null;
+  function openCard(id, from) {
+    var c = CREATURES.filter(function (x) { return x.id === id; })[0]; if (!c) return;
+    B.speak(c.kana);
+    opener = from || null; cardId = id;
+    card.innerHTML = '<button type="button" class="sea-x" id="sea-x" aria-label="关闭卡片"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 5 L15 15 M15 5 L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>' +
+      '<div class="sea-card-top"><div class="pic">' + art(c.id) + '</div><div>' +
+      '<h3 id="sea-card-h" tabindex="-1" lang="ja">' + esc(c.kana) + '</h3>' +
+      '<p class="meta">' + (c.kanji ? '汉字 <b lang="ja">' + esc(c.kanji) + '</b>' : '片假名词，一般不写汉字') + '<br>罗马音 <b>' + esc(c.ro) + '</b> · 中文 <b>' + esc(c.zh) + '</b></p></div></div>' +
+      '<p class="sea-ex"><span class="ja" lang="ja">' + esc(c.ex) + '</span><span class="zh">' + esc(c.exZh) + '</span></p>' +
+      '<div class="sea-row"><button type="button" class="btn btn-sky btn-small" id="sea-say-name">再听一遍名字</button><button type="button" class="btn btn-ghost btn-small" id="sea-say-ex">听例句</button></div>';
+    card.hidden = false;
+    $('#sea-x').onclick = closeCard;
+    $('#sea-say-name').onclick = function () { B.speak(c.kana); };
+    $('#sea-say-ex').onclick = function () { B.speak(c.ex); };
+    try { $('#sea-card-h').focus({ preventScroll: true }); } catch (e) { $('#sea-card-h').focus(); }
+    if (S.seen.indexOf(id) < 0) { S.seen.push(id); save(); renderCreatures(); renderDex(); renderGrowth(); }
+  }
+  function closeCard() {
+    if (card.hidden) return;
+    card.hidden = true; card.innerHTML = ''; cardId = null; B.stopAudio();
+    var back = opener && document.querySelector(opener);
+    if (back) { try { back.focus({ preventScroll: true }); } catch (e) { back.focus(); } }
+  }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !card.hidden) closeCard(); });
+  $('#sea-creatures').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-c]'); if (!b) return;
+    openCard(b.getAttribute('data-c'), '.sea-c[data-c="' + b.getAttribute('data-c') + '"]');
+  });
+  $('#sea-dex').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-dex]'); if (!b) return;
+    openCard(b.getAttribute('data-dex'), '[data-dex="' + b.getAttribute('data-dex') + '"]');
+  });
+
+  /* ---------- 和 ふわり 打招呼 ---------- */
+  var quiz = null; // {item, opts, answered}
+  var bubTimer;
+  function bubble(ja) {
+    var b = $('#sea-bub'); b.textContent = ja; b.setAttribute('lang', 'ja'); b.classList.add('on');
+    clearTimeout(bubTimer); bubTimer = setTimeout(function () { b.classList.remove('on'); }, 6000);
+    $('#sea-fu-tip').hidden = true;
+  }
+  function setSay(ja, zh) { $('#sea-say').textContent = ja; $('#sea-say-zh').textContent = zh || ''; }
+  function btns(list) {
+    var box = $('#sea-talk-btns'); box.innerHTML = '';
+    list.forEach(function (b) {
+      var el = document.createElement('button'); el.type = 'button'; el.className = 'btn ' + (b.cls || 'btn-ghost'); el.textContent = b.text; el.onclick = b.fn; box.appendChild(el);
+    });
+  }
+  function renderGreetState() {
+    var el = $('#sea-greet-state');
+    if (PREVIEW != null) { el.textContent = '预览模式：可以答题试试，但不会加经验值，也不会保存。'; return; }
+    el.textContent = greetedToday() ? '今天的问候小题已经答对了，明天再来。之后点 ふわり，它会随便和你聊一句。' : '今天的问候小题还没答对：答对 +3 经验值，每天一次。';
+  }
+  function renderTalkIdle() {
+    if (quiz) { renderGreetState(); return; }
+    var t = TIMES[timeKey()];
+    $('#sea-quiz').innerHTML = '';
+    if (!greetedToday()) {
+      setSay(t.hi, t.hiZh + '点一下 ふわり 或下面的按钮，它会出一道寒暄小题。');
+      btns([{ text: '和 ふわり 打招呼', cls: 'btn-sun', fn: tapFuwari }]);
+    } else {
+      setSay(t.hi, t.hiZh + '今天的小题做完啦，点 ふわり 听它说话。');
+      btns([{ text: '听 ふわり 说一句', cls: 'btn-ghost', fn: tapFuwari }]);
+    }
+    renderGreetState();
+  }
+  function pickQuestion() {
+    var k = timeKey(), idx = [];
+    var timed = [], general = [];
+    QUIZ.forEach(function (q, i) { if (i === S.lastQ) return; if (q.t) { if (q.t.indexOf(k) >= 0) timed.push(i); } else general.push(i); });
+    idx = (timed.length && Math.random() < .5) ? timed : general;
+    var i = idx[Math.floor(Math.random() * idx.length)];
+    S.lastQ = i; save();
+    return i;
+  }
+  function startQuiz() {
+    var t = TIMES[timeKey()], qi = pickQuestion(), item = QUIZ[qi];
+    quiz = { item: item, opts: B.shuffle([item.a].concat(item.o)), answered: false };
+    bubble(t.hi); B.speak(t.hi);
+    setSay(t.hi, t.hiZh + '来，考考你：');
+    var h = '<p class="sea-q">' + esc(item.q) + '</p><div class="sea-opts" role="group" aria-label="三个选项">';
+    quiz.opts.forEach(function (o, i) {
+      h += '<button type="button" class="sea-opt" data-o="' + i + '"><span class="ja" lang="ja">' + esc(o) + '</span><span class="ro">' + esc(RO[o] || '') + '</span></button>';
+    });
+    h += '</div>';
+    $('#sea-quiz').innerHTML = h;
+    btns([]);
+    renderGreetState();
+    var talk = $('#sea-talk'), r = talk.getBoundingClientRect();
+    if (r.top > window.innerHeight - 160) talk.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+  }
+  function answer(i) {
+    if (!quiz || quiz.answered) return;
+    quiz.answered = true;
+    var item = quiz.item, pick = quiz.opts[i], ok = pick === item.a;
+    var bs = document.querySelectorAll('.sea-opt');
+    bs.forEach(function (b, j) {
+      b.disabled = true;
+      if (quiz.opts[j] === item.a) b.classList.add('ok'); else if (j === i) b.classList.add('bad');
+    });
+    B.speak(item.a);
+    var fb = document.createElement('p'); fb.className = 'sea-fb ' + (ok ? 'ok' : 'bad');
+    var gained = false;
+    if (ok) {
+      if (PREVIEW == null && !greetedToday() && B.onceToday('sea-greet')) {
+        S.lastGreet = B.today(); S.greets++; save(); gained = true;
+      }
+      fb.innerHTML = '<b>答对了！</b>' + (gained ? '+3 经验值。' : (PREVIEW != null ? '（预览模式不加经验值）' : '')) + esc(item.n);
+      renderFuwari('right'); bubble('せいかい！');
+      setSay('せいかい！ありがとう。', '答对了！谢谢你。');
+    } else {
+      fb.innerHTML = '<b>差一点。</b>正确答案是「<span lang="ja">' + esc(item.a) + '</span>」。' + esc(item.n);
+      renderFuwari('wrong'); bubble('おしい！');
+      setSay('おしい！もう いっかい やって みよう。', '可惜！再试一次吧。');
+    }
+    $('#sea-quiz').appendChild(fb);
+    setTimeout(function () { renderFuwari('happy'); }, 1800);
+    if (ok) {
+      btns([{ text: '好的', cls: 'btn-sky', fn: function () { quiz = null; renderTalkIdle(); focusFuBtn(); } }]);
+    } else {
+      btns([{ text: '换一题再试', cls: 'btn-coral', fn: function () { quiz = null; startQuiz(); focusFirstOpt(); } }, { text: '先不做了', cls: 'btn-ghost', fn: function () { quiz = null; renderTalkIdle(); } }]);
+    }
+    renderGreetState();
+    if (gained) B.addXP(3, '和ふわり打招呼'); // 会触发 onChange → 重新渲染成长和新生物
+    var first = $('#sea-talk-btns .btn'); if (first) first.focus({ preventScroll: true });
+  }
+  function focusFirstOpt() { var o = $('.sea-opt'); if (o) o.focus({ preventScroll: true }); }
+  function focusFuBtn() { var b = $('#sea-fu-btn'); try { b.focus({ preventScroll: true }); } catch (e) { } }
+  $('#sea-quiz').addEventListener('click', function (e) { var b = e.target.closest('[data-o]'); if (b) answer(+b.getAttribute('data-o')); });
+  function chat() {
+    var k = timeKey(), pool = CHAT[k].concat(CHAT.all), c = pool[Math.floor(Math.random() * pool.length)];
+    bubble(c[0]); B.speak(c[0]); setSay(c[0], c[1]);
+  }
+  function tapFuwari() {
+    if (quiz && !quiz.answered) { var t = TIMES[timeKey()]; bubble(t.hi); B.speak(t.hi); focusFirstOpt(); return; }
+    if (quiz && quiz.answered) { quiz = null; renderTalkIdle(); }
+    if (!greetedToday() || (PREVIEW != null && !quiz)) { startQuiz(); return; }
+    chat();
+  }
+  $('#sea-fu-btn').addEventListener('click', tapFuwari);
+
+  /* ---------- 预览提示 ---------- */
+  if (PREVIEW != null || TIME_OVERRIDE) {
+    var pv = $('#sea-preview'); pv.hidden = false;
+    pv.innerHTML = '<span><b>预览模式</b>：' + (PREVIEW != null ? '页面按 <b class="num">' + PREVIEW + '</b> 经验值显示' : '') + (PREVIEW != null && TIME_OVERRIDE ? '，' : '') + (TIME_OVERRIDE ? '海按「' + TIMES[TIME_OVERRIDE].zh + '」显示' : '') + '，不会保存任何记录。</span><a href="game-sea.html">回到我的海</a>';
+  }
+
+  /* ---------- 启动 ---------- */
+  $('#sea-mini').innerHTML = B.jelly('happy', 'ふわり');
+  var prevCount = CREATURES.filter(function (c) { return unlocked(c, xpNow()); }).length, prevStage = stageIdx(xpNow());
+  renderAll();
+  B.onChange(function () {
+    if (PREVIEW != null) return;
+    var xp = xpNow(), n = CREATURES.filter(function (c) { return unlocked(c, xp); }).length, si = stageIdx(xp);
+    renderFuwari(); renderCreatures(); renderGrowth(); renderDex(); renderGreetState();
+    var msg = [];
+    if (si > prevStage) msg.push('ふわり 长大了，现在是「' + STAGES[si].ja + '」。');
+    if (n > prevCount) msg.push('海里来了新朋友：' + CREATURES.filter(function (c) { return unlocked(c, xp); }).slice(prevCount).map(function (c) { return c.kana; }).join('、') + '。');
+    if (msg.length) setTimeout(function () { B.toast(msg.join('')); }, 2700);
+    prevCount = n; prevStage = si;
+  });
+  document.addEventListener('breeze:ready', function () { if (PREVIEW == null) { renderFuwari(); renderCreatures(); renderGrowth(); renderDex(); } });
+  setInterval(renderTime, 60000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) renderTime(); });
+})();
+
+/* 图鉴、获得光：做成弹出卡片，内容节点搬进去，关闭时搬回 */
+(function () {
+  var B = window.Breeze;
+  function openSec(id) {
+    var sec = document.getElementById(id), wrap = sec.querySelector('.wrap');
+    var title = sec.querySelector('h2').textContent;
+    var moved = [];
+    B.sheet(title, function (body) {
+      while (wrap.firstChild) { moved.push(wrap.firstChild); body.appendChild(wrap.firstChild); }
+    }, function () { moved.forEach(function (n) { wrap.appendChild(n); }); });
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-sea-open]');
+    if (b) { openSec(b.getAttribute('data-sea-open')); return; }
+    var a = e.target.closest('a[href="#sea-zukan"],a[href="#sea-ways"]');
+    if (a) { e.preventDefault(); openSec(a.getAttribute('href').slice(1)); }
+  });
+  function mini() { var c = document.getElementById('sea-dex-count'), m = document.getElementById('sea-dex-mini'); if (c && m) m.textContent = c.textContent.replace('已解锁 ', ''); }
+  mini(); new MutationObserver(mini).observe(document.getElementById('sea-dex-count') || document.body, { childList: true, characterData: true, subtree: true });
+  if (location.hash === '#sea-zukan' || location.hash === '#sea-ways') openSec(location.hash.slice(1));
+})();
+</script>
+</body>
+</html>

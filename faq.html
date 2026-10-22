@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>常见问题 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="关于免费学习内容、登录、一对一课程、改期退款和口译预约的常见问题。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* 专栏 · 资料 · 帮助页 */
+.crumb{font-size:.8125rem;color:var(--text-2);letter-spacing:.06em;display:flex;gap:8px;flex-wrap:wrap}
+.crumb a{color:var(--text-2)}
+.col-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:700px){.col-list{grid-template-columns:1fr}}
+.col-card{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:var(--r-l);background:linear-gradient(160deg,rgba(255,255,255,.97),rgba(255,255,255,.84));border:1px solid rgba(255,255,255,.9);box-shadow:0 20px 44px -28px rgba(30,60,140,.45);color:var(--text);text-decoration:none;min-width:0;transition:transform .3s}
+.col-card:hover{transform:translateY(-2px)}
+.col-card h3{font-family:var(--f-mincho);font-size:1.1875rem;font-weight:900;line-height:1.5}
+.col-card p{margin:0;color:var(--text-2);font-size:.9375rem}
+.col-meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:.8125rem;color:var(--text-2);letter-spacing:.04em}
+.col-card .more{margin-top:auto;color:#2F6FD6;font-size:.875rem;font-weight:700}
+.article{max-width:42em;display:flex;flex-direction:column;gap:16px;font-size:1.0625rem;line-height:1.95}
+.article p{margin:0}
+.article h2{font-family:var(--f-mincho);font-size:1.4rem;font-weight:900;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.article h3{font-family:var(--f-mincho);font-size:1.125rem;font-weight:700;margin-top:8px;color:var(--gold-ink)}
+.article ul,.article ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.article blockquote{margin:0;border-left:2px solid var(--gold);background:#FFF7EA;border-radius:0 var(--r-s) var(--r-s) 0;padding:12px 16px}
+.article .jp{line-height:inherit}
+.article ruby rt{font-family:var(--f-body);font-size:.5em;color:var(--rose-ink);font-weight:500}
+.article .tscroll{background:#fff}
+.article .vtable td{white-space:normal;min-width:5.5em;vertical-align:top;line-height:1.7}
+.article .vtable th{white-space:nowrap}
+.article strong{color:var(--text)}
+.sources{max-width:42em;font-size:.8125rem;color:var(--text-2);line-height:1.8}
+.sources ol{margin:6px 0 0;padding-left:1.4em}
+.sources a{color:var(--text-2);overflow-wrap:anywhere}
+.dl-card{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;align-items:start}
+.dl-card img{width:100%;max-width:100%;height:auto;border-radius:8px;border:1px solid var(--line);box-shadow:0 12px 26px -18px rgba(30,60,140,.5);background:#fff}
+@media (max-width:560px){.dl-card{grid-template-columns:96px minmax(0,1fr);gap:14px}}
+.dl-card h3{margin-bottom:2px}
+.dl-card p{margin:0}
+.dl-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.faq{display:flex;flex-direction:column;gap:10px;max-width:46em}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:var(--r-m);padding:0 18px}
+.faq summary{cursor:pointer;list-style:none;padding:15px 0;font-weight:700;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:#3D7BE0;font-weight:500;font-size:1.25rem;line-height:1}
+.faq details[open] summary::after{content:"−"}
+.faq summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.faq .a{padding:0 0 16px;color:var(--text);line-height:1.9}
+.faq .a p{margin:0 0 8px}
+.faq-group{font-family:var(--f-mincho);font-size:1.25rem;font-weight:900;margin:22px 0 4px}
+.dl-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:18px;padding:16px 20px;border-radius:var(--r-m);background:linear-gradient(160deg,#FFF6E6,#FFEFF3);border:1px solid rgba(255,205,130,.5)}
+.dl-strip p{margin:0}
+.dl-strip b{font-family:var(--f-mincho)}
+.faq-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:32px;align-items:start}
+.faq-layout .faq{max-width:none}
+.faq-side{position:sticky;top:90px;margin-top:22px}
+.faq-ask{gap:10px}
+.faq-ask .btn{align-self:flex-start;min-height:44px}
+.faq-ask hr{border:0;border-top:1px solid var(--line);margin:6px 0;width:100%}
+@media (max-width:860px){.faq-layout{grid-template-columns:1fr;gap:8px}.faq-side{position:static;margin-top:16px}}
+</style>
+</head>
+<body data-page="faq">
+<header id="site-head"></header>
+<main>
+<section class="page-hero"><div class="wrap" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">よくある質問 · FAQ</span><h1>常见问题</h1><p class="lead">没找到你想问的？可以直接<a href="about.html?ask=1" data-inquiry="">给老师留言</a>。</p></div></section><section class="band" style="padding-top:0"><div class="wrap faq-layout"><div class="faq-main"><h2 class="faq-group">学习网站</h2><div class="faq"><details><summary>网站上的内容真的免费吗？</summary><div class="a"><p>是的。五十音、每日一句、文法、单词、JLPT 测验和模拟卷，以及免费资料下载，全部免费，不用注册。需要付费的只有一对一日语课和中日口译服务。</p></div></details><details><summary>一定要登录吗？</summary><div class="a"><p>不用。不登录也能正常学习，进度会保存在你自己的浏览器里。登录后，经验值、打卡和测验成绩可以在手机和电脑之间同步，还能上本周排行榜。</p></div></details><details><summary>零基础应该从哪里开始？</summary><div class="a"><p>从 <a href="kana.html">五十音</a> 开始：先看表、点一下听发音，再做「看假名选读音」的小测验。时间安排可以参考专栏 <a href="col-kana-two-weeks.html">两周记住五十音</a>。也可以下载 <a href="downloads.html">描红练习纸</a> 边写边记。</p></div></details><details><summary>JLPT 模拟卷是真题吗？</summary><div class="a"><p>不是。网站上的模拟卷是按 JLPT 题型原创的练习题，用来熟悉题型和节奏。真题请以日本国际交流基金和日本国际教育支援协会出版的官方资料为准。</p></div></details><details><summary>每日一句里的动漫台词可以随便用吗？</summary><div class="a"><p>台词的版权归原作者和版权方所有。网站只引用一句话做日语学习说明，请不要把它用于商业用途。</p></div></details><details><summary>用手机可以学吗？</summary><div class="a"><p>可以。网站在手机和电脑上都能用。如果点了发音没有声音，先看看手机是不是静音了。</p></div></details></div><h2 class="faq-group">一对一课程</h2><div class="faq"><details><summary>课程怎么上？</summary><div class="a"><p>线上一对一，用腾讯会议或 Zoom。课程内容按你的目标安排，有 JLPT 考级、商务日语、口语会话、留学准备四类。</p></div></details><details><summary>可以先试听吗？</summary><div class="a"><p>可以。先在 <a href="about.html?ask=1&amp;type=course" data-inquiry="course">课程咨询</a> 里留下联系方式和你的情况，老师会在 1–2 天内联系你，约一节 30 分钟的免费试听。试听后再决定要不要继续。</p></div></details><details><summary>课程怎么收费？</summary><div class="a"><p>网站上不公布统一价格。课时数和上课频率会按你的目标和基础来定，试听后老师会给你具体方案和报价，确认后再付款。</p></div></details><details><summary>临时有事上不了课怎么办？</summary><div class="a"><p>上课前 24 小时以上告诉老师，可以免费改期。不足 24 小时取消或者直接缺席，这节课按已上课计算。详见 <a href="policies.html#terms">服务条款</a>。</p></div></details><details><summary>不想继续上了，可以退款吗？</summary><div class="a"><p>可以。还没上的课时可以申请退款，已经上过的不退。具体算法和申请方法见 <a href="policies.html#refund">退款政策</a>。</p></div></details><details><summary>课程适合多大年龄？</summary><div class="a"><p>一对一课程面向成年学习者，主要是大学生、职场人和准备留学的同学。</p></div></details></div><h2 class="faq-group">中日口译</h2><div class="faq"><details><summary>口译服务怎么预约？</summary><div class="a"><p>在 <a href="about.html?ask=1&amp;type=interpret" data-inquiry="interpret">口译咨询</a> 里写下场景、日期、地点和大致内容，老师会在 1–2 天内回复，告诉你能不能接、需要提前准备什么。</p></div></details><details><summary>口译怎么收费？</summary><div class="a"><p>按场景、时长、专业领域和是否需要提前准备来报价，每次单独确认。网站上不公布统一价格。</p></div></details><details><summary>可以提前给资料吗？</summary><div class="a"><p>非常欢迎。提前拿到资料，老师会整理中日双语术语表，现场翻得更准。资料只用于这次口译，不会外传。</p></div></details></div></div><aside class="faq-side"><div class="card faq-ask"><h3>没找到答案？</h3><p class="muted small" style="margin:0">把你的问题写下来，老师会在 1–2 天内回复。</p><a class="btn btn-sun" href="about.html?ask=1" data-inquiry="">问问老师</a><hr><p class="small" style="margin:0"><b>免费资料</b><br><span class="muted">五十音表、平假名和片假名描红纸，可打印。</span></p><a class="btn btn-ghost btn-small" href="downloads.html">去下载</a></div></aside></div></section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/inquiry.js"></script>
+</body>
+</html>

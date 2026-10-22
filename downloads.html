@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>免费学习资料 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="免费下载五十音表、平假名和片假名描红练习纸，A4 PDF，可直接打印。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* 专栏 · 资料 · 帮助页 */
+.crumb{font-size:.8125rem;color:var(--text-2);letter-spacing:.06em;display:flex;gap:8px;flex-wrap:wrap}
+.crumb a{color:var(--text-2)}
+.col-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:700px){.col-list{grid-template-columns:1fr}}
+.col-card{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:var(--r-l);background:linear-gradient(160deg,rgba(255,255,255,.97),rgba(255,255,255,.84));border:1px solid rgba(255,255,255,.9);box-shadow:0 20px 44px -28px rgba(30,60,140,.45);color:var(--text);text-decoration:none;min-width:0;transition:transform .3s}
+.col-card:hover{transform:translateY(-2px)}
+.col-card h3{font-family:var(--f-mincho);font-size:1.1875rem;font-weight:900;line-height:1.5}
+.col-card p{margin:0;color:var(--text-2);font-size:.9375rem}
+.col-meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:.8125rem;color:var(--text-2);letter-spacing:.04em}
+.col-card .more{margin-top:auto;color:#2F6FD6;font-size:.875rem;font-weight:700}
+.article{max-width:42em;display:flex;flex-direction:column;gap:16px;font-size:1.0625rem;line-height:1.95}
+.article p{margin:0}
+.article h2{font-family:var(--f-mincho);font-size:1.4rem;font-weight:900;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.article h3{font-family:var(--f-mincho);font-size:1.125rem;font-weight:700;margin-top:8px;color:var(--gold-ink)}
+.article ul,.article ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.article blockquote{margin:0;border-left:2px solid var(--gold);background:#FFF7EA;border-radius:0 var(--r-s) var(--r-s) 0;padding:12px 16px}
+.article .jp{line-height:inherit}
+.article ruby rt{font-family:var(--f-body);font-size:.5em;color:var(--rose-ink);font-weight:500}
+.article .tscroll{background:#fff}
+.article .vtable td{white-space:normal;min-width:5.5em;vertical-align:top;line-height:1.7}
+.article .vtable th{white-space:nowrap}
+.article strong{color:var(--text)}
+.sources{max-width:42em;font-size:.8125rem;color:var(--text-2);line-height:1.8}
+.sources ol{margin:6px 0 0;padding-left:1.4em}
+.sources a{color:var(--text-2);overflow-wrap:anywhere}
+.dl-card{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;align-items:start}
+.dl-card img{width:100%;max-width:100%;height:auto;border-radius:8px;border:1px solid var(--line);box-shadow:0 12px 26px -18px rgba(30,60,140,.5);background:#fff}
+@media (max-width:560px){.dl-card{grid-template-columns:96px minmax(0,1fr);gap:14px}}
+.dl-card h3{margin-bottom:2px}
+.dl-card p{margin:0}
+.dl-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.faq{display:flex;flex-direction:column;gap:10px;max-width:46em}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:var(--r-m);padding:0 18px}
+.faq summary{cursor:pointer;list-style:none;padding:15px 0;font-weight:700;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:#3D7BE0;font-weight:500;font-size:1.25rem;line-height:1}
+.faq details[open] summary::after{content:"−"}
+.faq summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.faq .a{padding:0 0 16px;color:var(--text);line-height:1.9}
+.faq .a p{margin:0 0 8px}
+.faq-group{font-family:var(--f-mincho);font-size:1.25rem;font-weight:900;margin:22px 0 4px}
+.dl-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:18px;padding:16px 20px;border-radius:var(--r-m);background:linear-gradient(160deg,#FFF6E6,#FFEFF3);border:1px solid rgba(255,205,130,.5)}
+.dl-strip p{margin:0}
+.dl-strip b{font-family:var(--f-mincho)}
+.dl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (min-width:861px){.dl-grid .dl-card{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:14px}.dl-grid .dl-card img{width:180px;height:254px;object-fit:cover;object-position:top;justify-self:center}.dl-grid .dl-card>div{height:100%}.dl-grid .dl-actions{margin-top:auto}}
+@media (max-width:860px){.dl-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="downloads">
+<header id="site-head"></header>
+<main>
+<section class="page-hero"><div class="wrap" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">ダウンロード · Free</span><h1>免费学习资料</h1><p class="lead">五十音表和描红练习纸，A4 大小，打开就能打印。仅限个人学习使用，欢迎分享本页链接。</p></div></section><section class="band" style="padding-top:8px"><div class="wrap" style="display:flex;flex-direction:column;gap:18px"><div class="dl-grid"><article class="card dl-card"><img src="downloads/gojuon-chart.jpg" alt="五十音表第一页预览" width="331" height="468" loading="lazy"><div style="display:flex;flex-direction:column;gap:8px;min-width:0"><span class="tag open">PDF · A4 · 2 页</span><h3>五十音表</h3><p class="muted">平假名、片假名和罗马音对照，第 2 页是浊音、半浊音和拗音。贴在书桌前，随时看一眼。</p><div class="dl-actions"><a class="btn btn-sun btn-small" href="downloads/gojuon-chart.pdf" target="_blank" rel="noopener">打开 PDF</a><button class="btn btn-ghost btn-small" type="button" data-save="downloads/gojuon-chart.pdf" data-name="五十音表.pdf" hidden>保存到本机</button><a class="btn btn-ghost btn-small" data-plain href="downloads/gojuon-chart.pdf" download="五十音表.pdf" hidden>下载</a></div></div></article><article class="card dl-card"><img src="downloads/hiragana-practice.jpg" alt="平假名描红练习纸第一页预览" width="331" height="468" loading="lazy"><div style="display:flex;flex-direction:column;gap:8px;min-width:0"><span class="tag open">PDF · A4 · 4 页</span><h3>平假名描红练习纸</h3><p class="muted">46 个平假名，每个先描 3 遍，再自己写 4 遍。带十字格，方便看准比例。</p><div class="dl-actions"><a class="btn btn-sun btn-small" href="downloads/hiragana-practice.pdf" target="_blank" rel="noopener">打开 PDF</a><button class="btn btn-ghost btn-small" type="button" data-save="downloads/hiragana-practice.pdf" data-name="平假名描红练习纸.pdf" hidden>保存到本机</button><a class="btn btn-ghost btn-small" data-plain href="downloads/hiragana-practice.pdf" download="平假名描红练习纸.pdf" hidden>下载</a></div></div></article><article class="card dl-card"><img src="downloads/katakana-practice.jpg" alt="片假名描红练习纸第一页预览" width="331" height="468" loading="lazy"><div style="display:flex;flex-direction:column;gap:8px;min-width:0"><span class="tag open">PDF · A4 · 4 页</span><h3>片假名描红练习纸</h3><p class="muted">46 个片假名，格式和平假名练习纸一样。シ/ツ、ソ/ン 这些容易混的，多写几遍就分得清。</p><div class="dl-actions"><a class="btn btn-sun btn-small" href="downloads/katakana-practice.pdf" target="_blank" rel="noopener">打开 PDF</a><button class="btn btn-ghost btn-small" type="button" data-save="downloads/katakana-practice.pdf" data-name="片假名描红练习纸.pdf" hidden>保存到本机</button><a class="btn btn-ghost btn-small" data-plain href="downloads/katakana-practice.pdf" download="片假名描红练习纸.pdf" hidden>下载</a></div></div></article></div><p class="muted small" style="margin:0">打印时选「实际大小」或「100%」，描红格的比例最准。配合 <a href="kana.html">五十音页</a> 的点读发音一起练，效果更好。</p></div></section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+
+(function () {
+  var B = window.Breeze;
+  function plain() { document.querySelectorAll('[data-plain]').forEach(function (a) { a.hidden = false; }); }
+  if (!window.claude || typeof window.claude.use !== 'function') { plain(); return; }
+  window.claude.use('downloads').then(function (dl) {
+    if (!dl) return;
+    document.querySelectorAll('[data-save]').forEach(function (b) {
+      b.hidden = false;
+      b.addEventListener('click', function () {
+        b.disabled = true;
+        fetch(b.getAttribute('data-save')).then(function (r) { if (!r.ok) throw new Error('fetch'); return r.blob(); })
+          .then(function (blob) { return dl.save({ filename: b.getAttribute('data-name'), data: blob }); })
+          .then(function () { B && B.toast('已保存'); })
+          .catch(function (e) {
+            var c = e && e.code;
+            if (c === 'declined') return;
+            if (c === 'rate_limited') { B && B.toast('保存窗口已经打开了，请先处理那个窗口'); return; }
+            if (c === 'unavailable' || c === 'not_granted') b.hidden = true;
+            B && B.toast('没能保存，可以先点「打开 PDF」再从浏览器保存');
+          })
+          .then(function () { b.disabled = false; });
+      });
+    });
+  }).catch(function () { });
+})();
+
+</script>
+</body>
+</html>

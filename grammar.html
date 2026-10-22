@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>文法 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="N5 到 N1 语法路线图、助词は・が・を・に等十课精讲与小测、动词变形对照表与变形练习。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .vf-table td{cursor:pointer;line-height:2.1}
+  .vf-table td:hover{background:#F3F8FF}
+  .vf-table th[scope=row]{position:sticky;left:0;background:#F7F9FD;z-index:1}
+  .vf-table th[scope=row] small{display:block;font-size:.6875rem;color:var(--text-2);letter-spacing:.04em;font-weight:400}
+  .vf-table thead th{font-family:var(--f-mincho);font-size:1rem;letter-spacing:0;color:var(--text);font-weight:700}
+  .vf-table thead th span{display:block;font-family:var(--f-body);font-size:.75rem;color:var(--text-2);font-weight:400}
+  .vf-ex{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
+  @media (max-width:760px){.vf-ex{grid-template-columns:1fr}}
+  .vf-ex .use .lbl{width:5.5em}
+  .rule-row{display:grid;grid-template-columns:5.5em 1fr;gap:4px 12px;padding:8px 0;border-top:1px solid var(--line);line-height:2}
+  .rule-row:first-of-type{border-top:0}
+  .rule-row .k{font-size:.8125rem;color:var(--gold-ink);letter-spacing:.06em;padding-top:4px}
+  .te-row{display:grid;grid-template-columns:8em 9.5em 1fr;gap:6px 14px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line);line-height:2}
+  .te-row:first-child{border-top:0}
+  .te-row .end{font-family:var(--f-mincho);font-weight:700;font-size:1.125rem}
+  .te-row .te{font-family:var(--f-mincho);font-weight:700;color:var(--sky-ink,#2F6FD6)}
+  .te-row.warn .end,.te-row.warn .te{color:var(--rose-ink,#C2410C)}
+  @media (max-width:600px){.te-row{grid-template-columns:1fr 1fr}.te-row .exs{grid-column:1/-1}}
+  .exc{display:flex;flex-wrap:wrap;gap:8px}
+  .exc span{background:#fff;border:1px solid var(--line-strong);border-radius:999px;padding:4px 12px;line-height:2}
+  .exc span small{color:var(--text-2);margin-left:6px}
+  .vf-steps{counter-reset:s;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .vf-steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;line-height:2}
+  .vf-steps li::before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#5B9BF5,#8C7CF0);color:#fff;font-size:.8125rem;font-weight:700;margin-top:4px}
+  .no-zh .zh{display:none}
+  #vf-rules{align-items:start}
+  .g-tabwrap{padding-top:20px}
+  .g-tabwrap .tabbar{margin-bottom:0}
+  #g-body > .band{padding-top:28px}
+  .vf-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .vf-acts .btn{min-height:44px}
+  .vt-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .vt-foot{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;align-items:center}
+  .vf-sec{margin-top:26px}
+  .vf-sec > h3{margin:0 0 12px}
+  .sheet-body .vf-steps{margin-top:4px}
+  @media (max-width:600px){.vt-head .seg{width:100%}}
+  #vf-rules{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  #vf-rules .fold:last-child:nth-child(odd){grid-column:1/-1}
+  #vf-rules .fold{padding:14px 18px}
+  #vf-rules .fold > summary h3{font-size:1.0625rem;margin:0}
+  #vf-rules .fold[open]{grid-column:1/-1}
+  @media (max-width:600px){#vf-rules{gap:8px}#vf-rules .fold{padding:10px 12px;border-radius:14px}#vf-rules .fold:not([open]) > summary .muted{display:block;margin:2px 0 0!important;font-size:.75rem}#vf-rules .fold > summary h3{font-size:.9375rem}}
+</style>
+</head>
+<body data-page="grammar">
+<header id="site-head"></header>
+<main>
+  <section class="page-hero band pale">
+    <div class="wrap">
+      <span class="eyebrow">文法 · Grammar</span>
+      <h1>日语文法</h1>
+      <p class="lead">N5 到 N1 每级 20 多个核心句型，每个都有讲解、例句和小测；再把最容易混的助词和动词变形各个击破。</p>
+    </div>
+  </section>
+  <div class="wrap g-tabwrap">
+    <div class="tabbar">
+      <div class="ptabs" role="tablist" aria-label="文法栏目">
+        <button type="button" role="tab" id="tab-roadmap" aria-controls="roadmap" aria-selected="true">句型 N5–N1</button>
+        <button type="button" role="tab" id="tab-particles" aria-controls="particles" aria-selected="false">助词</button>
+        <button type="button" role="tab" id="tab-verbs" aria-controls="verbs" aria-selected="false">动词变形</button>
+      </div>
+      <div id="g-toggles"></div>
+    </div>
+  </div>
+
+  <div id="g-body">
+  <section class="band tabpanel" id="roadmap" role="tabpanel" aria-labelledby="tab-roadmap">
+    <div class="wrap">
+      <div class="band-head"><div><span class="eyebrow">ロードマップ</span><h2>语法路线图与句型精讲</h2><p class="lead">每个级别 20 个以上核心句型。点任意句型，看接续、讲解、例句和易错点，再做两道小题。学完的句型会打勾。</p></div></div>
+      <div class="chips" id="rm-tabs" role="group" aria-label="选择级别"></div>
+      <p id="rm-sum" class="muted" style="margin:12px 0 0"></p>
+      <div class="grid g2 gl-wrap" style="margin-top:14px;align-items:start" id="gl-body">
+        <div class="card" style="gap:8px"><ol class="gl-list" id="rm-list"></ol></div>
+        <div class="card" id="gl-lesson"><div class="placeholder">选左边的一个句型开始。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band tabpanel" id="particles" role="tabpanel" aria-labelledby="tab-particles" hidden>
+    <div class="wrap">
+      <div class="band-head"><div><span class="eyebrow">助詞</span><h2>助词精讲</h2><p class="lead">一个助词一课：核心规则、常见用法、中国人最容易错的地方，最后 3 道小题检验。</p></div></div>
+      <div class="chips" id="pt-tabs" role="group" aria-label="选择助词"></div>
+      <div class="grid g2" style="margin-top:16px;align-items:start" id="pt-body">
+        <div class="card" id="pt-lesson"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band tabpanel" id="verbs" role="tabpanel" aria-labelledby="tab-verbs" hidden>
+    <div class="wrap">
+      <div class="band-head"><div><span class="eyebrow">動詞の活用</span><h2>动词变形</h2><p class="lead">日语动词分三类：五段（一类）、一段（二类）、不规则（する・来る）。先判断类别，再按类别套规则。点表格里的动词或任意一格，可以听读音。</p>
+        <div class="vf-acts"><button type="button" class="btn btn-sky btn-small" id="classify">怎么判断动词类别</button><button type="button" class="btn btn-ghost btn-small" id="te">一类动词て形速查</button></div></div></div>
+
+      <div class="card">
+        <div class="vt-head"><h3>36 个常用动词对照表</h3>
+          <div class="seg" id="vt-seg" role="group" aria-label="筛选"><button type="button" data-g="0" aria-pressed="true">全部</button><button type="button" data-g="1" aria-pressed="false">一类</button><button type="button" data-g="2" aria-pressed="false">二类</button><button type="button" data-g="3" aria-pressed="false">三类</button></div></div>
+        <div class="tscroll" style="max-height:520px;overflow:auto"><table class="vtable" id="vtable"></table></div>
+        <div class="vt-foot"><button class="btn btn-coral" type="button" id="vq-open">变形练习 10 题</button><span class="muted small">点动词可以听原形发音。</span></div>
+      </div>
+
+      <details class="card fold vf-sec" id="groups">
+        <summary><h3>三类动词 · 11 种变形完整表 <span class="muted small" style="font-weight:400">每类 4 个动词，带例句</span></h3></summary>
+        <div class="chips" role="tablist" aria-label="动词类别" id="vf-gtabs" style="margin-bottom:14px"></div>
+        <div id="vf-gbody"></div>
+      </details>
+
+      <div class="vf-sec" id="rules">
+        <h3>11 种变形的规则 <span class="muted small" style="font-weight:400">点开看三类各怎么变</span></h3>
+        <div class="grid g2" id="vf-rules"></div>
+      </div>
+
+      <details class="card fold sun vf-sec" id="exc">
+        <summary><h3>长得像二类、其实是一类<span class="muted small" id="vf-exc-n" style="font-weight:400;margin-left:8px"></span></h3></summary>
+        <p class="small muted" style="margin:0">这些都是「い段/え段 + る」结尾，却按一类变：<span lang="ja" class="vf-rb">[帰|かえ]る → [帰|かえ]ります・[帰|かえ]って・[帰|かえ]らない</span>。最常用的几个要先记住。</p>
+        <div class="exc" id="vf-exc" lang="ja"></div>
+        <h3 style="margin-top:8px">同音不同类，最容易错</h3>
+        <div id="vf-pairs"></div>
+      </details>
+    </div>
+  </section>
+  </div>
+  <template id="tpl-classify"><p class="small muted" style="margin:0">按顺序问自己这几个问题，就能分出来。</p>
+<ol class="vf-steps">
+            <li><span>是「する」「<span lang="ja">[来|く]る</span>」，或者「名词 + する」（<span lang="ja">[勉強|べんきょう]する、[練習|れんしゅう]する</span>）吗？→ <b>三类</b>。</span></li>
+            <li><span>词尾不是「る」（<span lang="ja">[書|か]く、[飲|の]む、[話|はな]す、[買|か]う</span>……）→ <b>一类</b>。</span></li>
+            <li><span>是「る」结尾，但「る」前面是 あ段・う段・お段（<span lang="ja">[分|わ]かる、[作|つく]る、[怒|おこ]る</span>）→ <b>一类</b>。</span></li>
+            <li><span>是「る」结尾，「る」前面是 い段・え段（<span lang="ja">[見|み]る、[起|お]きる、[食|た]べる、[寝|ね]る</span>）→ 大多是 <b>二类</b>，但有一批例外是一类，见下方链接。</span></li>
+          </ol>
+          <div class="point"><b>拿不准时</b>看ない形：一类把「る」变成「ら」（<span lang="ja">[帰|かえ]る → [帰|かえ]らない</span>），二类直接去掉「る」（<span lang="ja">[変|か]える → [変|か]えない</span>）。查词典时，标「五段」的是一类，标「一段」的是二类。</div>
+  <p class="small" style="margin:0"><a href="#exc" data-close>看「长得像二类、其实是一类」的动词 →</a></p></template>
+  <template id="tpl-te"><p class="small" style="margin:0">一类动词的て形、た形看<b>词尾假名</b>分五组，另外只有「<span lang="ja">[行|い]く</span>」一个例外。二类、三类没有这些变化。</p><div id="vf-te"></div></template>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="audio/v/index-vocab.js" async></script>
+<script src="js/study.js"></script>
+<script src="js/grammar-data.js"></script>
+<script src="js/verb-forms.js"></script>
+<script>
+(function () {
+  var B = window.Breeze, $ = B.$, $$ = B.$$, esc = B.esc, S = B.study, G = window.GRAMMAR;
+  if (!G) return;
+
+  /* 路线图 + 句型精讲（每级数据按需载入 js/grammar/<级别>.js） */
+  var LVS = G.roadmap.map(function (r) { return r.level; }), glv = LVS[0], gi = 0, gdone = S.store('grammar-done', {});
+  var want = (location.hash.match(/N[1-5]/i) || [])[0]; if (want) glv = want.toUpperCase();
+  S.toggles($('#g-toggles'), $('#g-body'));
+  /* 注音 / 中文 开关也作用于本页所有弹出卡片（小测、练习、速查） */
+  (function () {
+    var raw = B.sheet;
+    B.sheet = function (title, build, onClose) {
+      var off = function (t) { var i = $('#g-toggles input[data-t=' + t + ']'); return i && !i.checked; };
+      var body = raw(title, function (b) { b.classList.toggle('no-rt', off('no-rt')); b.classList.toggle('no-zh', off('no-zh')); if (typeof build === 'function') build(b); else b.innerHTML = build || ''; },
+        function () { var b = document.querySelector('.sheet-body'); if (b) b.classList.remove('no-rt', 'no-zh'); if (onClose) onClose(); });
+      return body;
+    };
+  })();
+  $('#rm-tabs').innerHTML = LVS.map(function (l) { return '<button type="button" class="chip" data-tab="' + l + '" aria-pressed="' + (l === glv) + '">' + l + '</button>'; }).join('');
+  function lessons(l, cb) {
+    window.GRAMMAR_LESSONS = window.GRAMMAR_LESSONS || {};
+    if (window.GRAMMAR_LESSONS[l]) return cb(window.GRAMMAR_LESSONS[l]);
+    var sc = document.createElement('script'); sc.src = 'js/grammar/' + l.toLowerCase() + '.js';
+    sc.onload = function () { cb(window.GRAMMAR_LESSONS[l] || null); }; sc.onerror = function () { cb(null); };
+    document.body.appendChild(sc);
+  }
+  function rm(l) {
+    glv = l; gi = 0;
+    var r = G.roadmap.filter(function (x) { return x.level === l; })[0];
+    $('#rm-sum').textContent = l + '：' + r.summary;
+    $('#rm-list').innerHTML = '<li class="muted small">载入中……</li>';
+    lessons(l, function (L) {
+      if (glv !== l) return;
+      var items = L || r.points;
+      var d = gdone.get()[l] || {};
+      $('#rm-list').innerHTML = items.map(function (p, i) { return '<li><button type="button" data-gi="' + i + '"' + (i === 0 ? ' aria-current="true"' : '') + '><span class="n">' + (i + 1) + '</span><b lang="ja">' + esc(p.pattern) + '</b><span class="m">' + esc(p.meaning) + (d[p.pattern] ? ' <span class="done-mark">✓</span>' : '') + '</span></button></li>'; }).join('');
+      $$('#rm-list [data-gi]').forEach(function (b) { b.onclick = function () { $$('#rm-list [data-gi]').forEach(function (x) { x.removeAttribute('aria-current'); }); b.setAttribute('aria-current', 'true'); show(items, +b.getAttribute('data-gi')); if (window.innerWidth < 760) $('#gl-lesson').scrollIntoView({ block: 'start' }); }; });
+      if (L) show(L, 0); else $('#gl-lesson').innerHTML = '<div class="placeholder">这一级的句型讲解还没上线。</div>';
+    });
+  }
+  function show(L, i) {
+    var x = L[i], l = glv;
+    $('#gl-lesson').innerHTML = '<span class="tag">' + l + ' · 第 ' + (i + 1) + ' / ' + L.length + ' 个句型</span>' +
+      '<h3 lang="ja" style="font-size:1.5rem">' + esc(x.pattern) + '</h3><p style="margin:0;font-weight:700">' + esc(x.meaning) + '</p>' +
+      '<div class="point"><b>接续</b><span lang="ja">' + esc(x.connect) + '</span></div>' +
+      '<p style="margin:0;line-height:1.9">' + esc(x.explain) + '</p>' +
+      '<div>' + x.examples.map(function (e) { return '<div class="use"><div class="body"><div class="jp" lang="ja">' + e.ruby + ' ' + S.sayBtn(e.jp) + '</div><div class="zh">' + esc(e.zh) + '</div></div></div>'; }).join('') + '</div>' +
+      '<div class="pitfall"><b>注意</b>' + esc(x.notes) + '</div>' +
+      '<div class="open-row"><button class="btn btn-coral btn-small" type="button" id="gl-quiz">做小测（' + x.quiz.length + ' 题）</button></div>' +
+      '<div class="rec-row" style="justify-content:space-between"><button class="btn btn-ghost btn-small" type="button" id="gl-prev"' + (i ? '' : ' disabled') + '>← 上一个</button><button class="btn btn-ghost btn-small" type="button" id="gl-next"' + (i < L.length - 1 ? '' : ' disabled') + '>下一个 →</button></div>';
+    $('#gl-quiz').onclick = function () { B.sheet('句型小测 · ' + x.pattern, function (body) { S.MCQ(body, x.quiz.map(function (q) { return { q: q.qRuby || esc(q.q), options: q.options.map(esc), answer: q.answer, why: esc(q.why) }; }), {
+      xpPer: 2, bonus: 2, title: '句型小测',
+      onFinish: function (s, t) { if (s === t) { var d = gdone.get(); d[l] = d[l] || {}; d[l][x.pattern] = 1; gdone.set(d); var li = $('#rm-list [data-gi="' + i + '"] .m'); if (li && li.innerHTML.indexOf('done-mark') < 0) li.innerHTML += ' <span class="done-mark">✓</span>'; } }
+    }); }); };
+    var go = function (n) { var b = $('#rm-list [data-gi="' + n + '"]'); if (b) b.click(); };
+    $('#gl-prev').onclick = function () { go(i - 1); }; $('#gl-next').onclick = function () { go(i + 1); };
+  }
+  S.tabs($('#rm-tabs'), function (l) { rm(l); }); rm(glv);
+
+  /* 助词 */
+  var done = S.store('particles-done', {});
+  function ptTabs(cur) {
+    $('#pt-tabs').innerHTML = G.particles.map(function (p, n) { return '<button type="button" class="chip jpchip" data-tab="' + n + '" aria-pressed="' + (n === cur) + '" lang="ja">' + esc(p.p) + (done.get()[p.p] ? '<span class="done-mark">✓</span>' : '') + '</button>'; }).join('');
+    S.tabs($('#pt-tabs'), function (n) { pt(+n); });
+  }
+  function pt(n) {
+    var p = G.particles[n]; ptTabs(n);
+    $('#pt-lesson').innerHTML = '<span class="tag">读作 ' + esc(p.read) + '</span><h3 lang="ja">' + esc(p.title) + '</h3>' +
+      '<div class="point"><b>核心</b>' + esc(p.core) + '</div>' +
+      '<div>' + p.uses.map(function (u) { return '<div class="use"><span class="lbl">' + esc(u.use) + '</span><div class="body"><div class="jp" lang="ja">' + u.ruby + ' ' + S.sayBtn(u.jp) + '</div><div class="zh">' + esc(u.zh) + '</div></div></div>'; }).join('') + '</div>' +
+      '<div class="pitfall"><b>易错</b>' + esc(p.pitfall) + '</div>' +
+      '<div class="open-row"><button class="btn btn-coral btn-small" type="button" id="pt-quiz-btn">做小测（' + p.quiz.length + ' 题）</button></div>';
+    $('#pt-quiz-btn').onclick = function () { B.sheet('助词小测 · 「' + p.p + '」', function (body) { S.MCQ(body, p.quiz.map(function (q) { return { q: q.ruby || q.q, options: q.options.map(esc), answer: q.options.indexOf(q.answer), why: esc(q.why) }; }), {
+      xpPer: 2, bonus: 3, perfectBonus: 3, title: '助词小测',
+      onFinish: function (s, t) { if (s === t) { var d = done.get(); d[p.p] = 1; done.set(d); ptTabs(n); } }
+    }); }); };
+  }
+  pt(0);
+
+  /* 动词：对照表 */
+  var V = G.verbs, F = G.verbQuizForms;
+  function table(g) {
+    var rows = V.filter(function (v) { return !g || v.group === g; });
+    $('#vtable').innerHTML = '<thead><tr><th>原形</th><th>意思</th>' + F.map(function (f) { return '<th>' + f.label + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      rows.map(function (v) { return '<tr><td><button type="button" class="chip" style="font-family:var(--f-mincho);padding:3px 10px" data-say="' + esc(v.kana) + '" lang="ja">' + esc(v.dict) + '</button> <span class="grp">' + ['', '一类', '二类', '三类'][v.group] + '</span></td><td class="zhc">' + esc(v.zh) + '</td>' + F.map(function (f) { return '<td lang="ja">' + esc(v[f.key]) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody>';
+  }
+  $$('#vt-seg [data-g]').forEach(function (b) { b.onclick = function () { $$('#vt-seg [data-g]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); table(+b.getAttribute('data-g')); }; });
+  table(0);
+
+  /* 动词：练习 */
+  function vq() {
+    var fk = $('#vq-form').value, kana = $('#vq-script').value === 'kana';
+    var skip = { '死ぬ': 'volitional', '知る': 'potential' };
+    var keys = F.map(function (f) { return f.key; });
+    var pick = B.shuffle(V.filter(function (v) { return fk === 'mix' || skip[v.dict] !== fk; })).slice(0, 10).map(function (v) {
+      var key = fk === 'mix' ? B.shuffle(keys.filter(function (k) { return skip[v.dict] !== k; }))[0] : fk;
+      var label = F.filter(function (f) { return f.key === key; })[0].label;
+      var src = kana ? v.kanaForms : v;
+      var right = src[key];
+      var pool = F.map(function (f) { return src[f.key]; }).filter(function (x) { return x !== right; });
+      var uniq = []; pool.forEach(function (x) { if (uniq.indexOf(x) < 0) uniq.push(x); });
+      var opts = [right].concat(B.shuffle(uniq).slice(0, 3));
+      return { q: '<ruby>' + esc(v.dict) + '<rt>' + esc(v.kana) + '</rt></ruby>　→　【' + label + '】', say: v.kana, options: opts.map(esc), answer: 0, tag: ['', '一类 · 五段', '二类 · 一段', '三类 · 不规则'][v.group] + ' · ' + v.zh, why: '「' + esc(v.dict) + '」的' + label + '是「' + esc(v[key]) + '」' + (kana ? '（' + esc(v.kanaForms[key]) + '）' : '') };
+    });
+    S.MCQ($('#vq-box'), pick, { xpPer: 1, bonus: 5, perfectBonus: 5, title: '动词变形练习', again: vq, onFinish: function (s) { if (S.best('verbQuiz', s)) B.toast('变形练习新纪录：' + s + ' / 10'); } });
+  }
+  $('#vq-open').onclick = function () {
+    B.sheet('动词变形练习', function (body) {
+      body.innerHTML = '<div class="form" style="grid-template-columns:repeat(2,minmax(0,1fr))">' +
+        '<div class="field"><label for="vq-form">练哪种形</label><select id="vq-form"><option value="mix">随机混合</option>' + F.map(function (f) { return '<option value="' + f.key + '">' + f.label + '</option>'; }).join('') + '</select></div>' +
+        '<div class="field"><label for="vq-script">选项写法</label><select id="vq-script"><option value="kanji">汉字</option><option value="kana">全假名</option></select></div></div>' +
+        '<div id="vq-box"></div>';
+      $('#vq-form').onchange = $('#vq-script').onchange = vq;
+      vq();
+    });
+  };
+  /* ---------- 动词变形讲解（原 verb-forms 页并入「动词变形」标签） ---------- */
+  var VF = window.VERB_FORMS;
+  if (VF) {
+    var rb = S.rb, plain = function (s) { return S.plain(rb(s)); };
+    $$('.vf-rb').forEach(function (e) { e.innerHTML = rb(e.textContent); });
+    $('#vf-exc').innerHTML = VF.exceptions.map(function (x) { return '<span data-say="' + esc(plain(x[0])) + '">' + rb(x[0]) + '<small class="zh" lang="zh-CN">' + esc(x[1]) + '</small></span>'; }).join('');
+    $('#vf-exc-n').textContent = VF.exceptions.length + ' 个 · 另有同音不同类';
+    $('#vf-pairs').innerHTML = VF.pairs.map(function (p) { return '<div class="rule-row" style="grid-template-columns:1fr"><span lang="ja">' + rb(p.a) + '</span><span lang="ja">' + rb(p.b) + '</span></div>'; }).join('');
+    var groupHTML = function (g) {
+      var head = '<tr><th scope="col">变形</th>' + g.verbs.map(function (v) { return '<th scope="col" lang="ja">' + rb(v.dict) + '<span lang="zh-CN">' + esc(v.zh) + '</span></th>'; }).join('') + '</tr>';
+      var rows = VF.forms.map(function (f, fi) {
+        return '<tr><th scope="row">' + esc(f.name) + '<small>' + esc(f.zh) + '</small></th>' + g.verbs.map(function (v) { return '<td lang="ja" data-say="' + esc(plain(v.forms[fi])) + '">' + rb(v.forms[fi]) + '</td>'; }).join('') + '</tr>';
+      }).join('');
+      var ex = VF.forms.map(function (f) {
+        var e = g.examples[f.id]; if (!e) return '';
+        return '<div class="use"><span class="lbl">' + esc(f.name) + '</span><div class="body"><div class="jp" lang="ja">' + rb(e.jp) + ' ' + S.sayBtn(plain(e.jp)) + '</div><div class="zh">' + esc(e.zh) + '</div></div></div>';
+      }).join('');
+      return '<div class="card"><p class="small muted" style="margin:0">' + esc(g.intro) + '　点任意一格听读音，表格可以左右滑动。</p><div class="tscroll"><table class="vtable vf-table"><thead>' + head + '</thead><tbody>' + rows + '</tbody></table></div>' +
+        '<details class="fold" style="border-top:1px solid var(--line);padding-top:10px"><summary><h3 style="font-size:1rem">每种变形一个例句（' + Object.keys(g.examples).length + ' 句）</h3></summary><div class="vf-ex">' + ex + '</div></details></div>';
+    };
+    $('#vf-gtabs').innerHTML = VF.groups.map(function (g, gi) { return '<button type="button" class="chip" role="tab" id="g' + (gi + 1) + '" data-vg="' + gi + '" aria-pressed="' + (gi === 0) + '">' + esc(g.tag) + '</button>'; }).join('');
+    var showGroup = function (gi) {
+      $('#vf-gbody').innerHTML = groupHTML(VF.groups[gi]);
+      $$('#vf-gtabs [data-vg]').forEach(function (b) { b.setAttribute('aria-pressed', +b.getAttribute('data-vg') === gi); });
+    };
+    $$('#vf-gtabs [data-vg]').forEach(function (b) { b.onclick = function () { showGroup(+b.getAttribute('data-vg')); }; });
+    showGroup(0);
+    $('#vf-rules').innerHTML = VF.forms.map(function (f) {
+      var r = VF.rules[f.id];
+      return '<details class="card fold"><summary><h3>' + esc(f.name) + '<span class="muted small" style="font-weight:400;margin-left:8px">' + esc(f.zh) + '</span></h3></summary>' +
+        '<div class="rule-row"><span class="k">一类</span><span lang="ja">' + rb(r.g1) + '</span></div>' +
+        '<div class="rule-row"><span class="k">二类</span><span lang="ja">' + rb(r.g2) + '</span></div>' +
+        '<div class="rule-row"><span class="k">三类</span><span lang="ja">' + rb(r.g3) + '</span></div>' +
+        (r.note ? '<div class="point small"><b>提醒</b>' + rb(r.note) + '</div>' : '') + '</details>';
+    }).join('');
+    var tplSheet = function (title, id, after) {
+      B.sheet(title, function (body) {
+        body.appendChild(document.getElementById(id).content.cloneNode(true));
+        $$('[lang=ja]', body).forEach(function (e) { if (/\[/.test(e.textContent) && !e.children.length) e.innerHTML = rb(e.textContent); });
+        if (!$('#g-toggles input[data-t=no-rt]').checked) body.classList.add('no-rt');
+        if (after) after(body);
+      }, function () { $$('.sheet-body').forEach(function (b) { b.classList.remove('no-rt'); }); });
+    };
+    var openClassify = function () {
+      tplSheet('怎么判断动词属于哪一类', 'tpl-classify', function (body) {
+        var a = $('[data-close]', body); if (a) a.onclick = function (e) { e.preventDefault(); B.closeSheet(); var d = $('#exc'); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+      });
+    };
+    var openTe = function () {
+      tplSheet('一类动词て形速查', 'tpl-te', function (body) {
+        $('#vf-te', body).innerHTML = VF.teTable.map(function (r) {
+          return '<div class="te-row' + (r.warn ? ' warn' : '') + '"><span class="end" lang="ja">' + rb(r.ending) + '</span><span class="te" lang="ja">→ ' + rb(r.te) + '</span><span class="exs" lang="ja">' + r.ex.map(rb).join('　') + '</span></div>';
+        }).join('');
+      });
+    };
+    $('#classify').onclick = openClassify;
+    $('#te').onclick = openTe;
+    /* 旧链接：verb-forms.html#g1/#g2/#g3、#classify、#te、#rules */
+    document.addEventListener('DOMContentLoaded', function () {
+      var h = location.hash;
+      if (/^#g[123]$/.test(h)) { $('#groups').open = true; showGroup(+h.slice(2) - 1); setTimeout(function () { window.scrollTo({ top: $('#groups').getBoundingClientRect().top + window.scrollY - 90 }); }, 120); }
+      if (h === '#groups') $('#groups').open = true;
+      if (h === '#classify') setTimeout(openClassify, 60);
+      if (h === '#te') setTimeout(openTe, 60);
+      if (h === '#exc') $('#exc').open = true;
+    });
+  }
+})();
+</script>
+</body>
+</html>

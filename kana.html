@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>五十音 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="平假名、片假名、浊音、拗音五十音表，点一下就发音；看假名选读音、听发音选假名两种测验。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.k-best{flex-direction:row;align-items:center;gap:14px;flex-wrap:wrap}
+.k-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+.k-main{display:flex;flex-direction:column;gap:16px;max-width:720px;width:100%}
+.k-ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.k-main .ptabs{align-self:flex-start}
+.k-sub{margin:0}
+.k-side{display:flex;flex-direction:column;gap:14px;position:sticky;top:84px}
+.k-act{gap:10px}
+.k-act h3{font-size:1.0625rem}
+.k-act p{margin:4px 0 0}
+.k-act .btn{align-self:flex-start;min-height:40px}
+.kq-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){
+  .k-layout{grid-template-columns:1fr}
+  .k-side{position:static;display:grid;grid-template-columns:1fr;gap:10px}
+  .k-act{flex-direction:row;align-items:center;justify-content:space-between;padding:14px 16px}
+  .k-act p{display:none}
+  .k-act .btn{align-self:center;flex:none}
+}
+@media (max-width:560px){.kq-form{grid-template-columns:1fr 1fr}.kq-form .field:first-child{grid-column:1/-1}.k-best{padding:14px 16px;gap:10px}.k-best #k-jelly{width:44px!important}.k-best p{display:none}.k-best h3{font-size:1rem}}
+</style>
+</head>
+<body data-page="kana">
+<header id="site-head"></header>
+<main>
+  <section class="band pale" style="padding-block:32px">
+    <div class="wrap grid g2" style="align-items:center">
+      <div>
+        <span class="eyebrow">五十音図 · KANA</span>
+        <h1 class="hero-title" style="color:var(--ink);font-size:clamp(2rem,5vw,3rem);margin-top:8px">五十音</h1>
+        <p class="lead muted" style="margin:10px 0 0;max-width:32em">日语的「字母表」。先认平假名，再学片假名。点任意一个假名就能听到读音，认完一张表就做个小测验。</p>
+      </div>
+      <div class="card k-best">
+        <div id="k-jelly" style="width:72px;flex:none"></div>
+        <div style="flex:1;min-width:0"><h3>测验最高分 <span class="num" id="best">0</span> / 10</h3><p class="muted small" style="margin:0">每答对 1 题 +2 经验值，完成一轮 +5，全对再 +10。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:28px">
+    <div class="wrap k-layout">
+      <div class="k-main">
+        <div class="k-ctrl">
+          <div class="seg" role="group" aria-label="假名种类">
+            <button type="button" id="s-h" aria-pressed="true">平假名 ひらがな</button>
+            <button type="button" id="s-k" aria-pressed="false">片假名 カタカナ</button>
+          </div>
+          <label class="check" style="font-weight:700"><input type="checkbox" id="show-r" checked> 显示罗马音</label>
+        </div>
+        <div class="ptabs" role="tablist" aria-label="假名分组">
+          <button type="button" role="tab" id="t-seion" aria-controls="kg-seion" aria-selected="true">清音</button>
+          <button type="button" role="tab" id="t-dakuon" aria-controls="kg-dakuon" aria-selected="false">浊音 · 半浊音</button>
+          <button type="button" role="tab" id="t-yoon" aria-controls="kg-yoon" aria-selected="false">拗音</button>
+        </div>
+        <div class="kgroup tabpanel" id="kg-seion" role="tabpanel" aria-labelledby="t-seion"><p class="muted small k-sub">46 个 · 最基础的一组</p><div class="kgrid" id="g-seion"></div></div>
+        <div class="kgroup tabpanel" id="kg-dakuon" role="tabpanel" aria-labelledby="t-dakuon" hidden><p class="muted small k-sub">右上角加两点「゛」或一个圈「゜」</p><div class="kgrid" id="g-dakuon"></div></div>
+        <div class="kgroup tabpanel" id="kg-yoon" role="tabpanel" aria-labelledby="t-yoon" hidden><p class="muted small k-sub">い段假名 + 小写的 ゃ ゅ ょ，读成一拍</p><div class="kgrid yoon" id="g-yoon"></div></div>
+        <p class="muted small" style="margin:0">发音音频：VOICEVOX:四国めたん。个别音如果加载失败，会改用浏览器自带的日语朗读。</p>
+      </div>
+      <aside class="k-side" aria-label="练习">
+        <div class="card k-act sky"><div><h3>五十音测验</h3><p class="muted small">每轮 10 题：看假名选读音，或听发音选假名。</p></div><button class="btn btn-coral btn-small" type="button" data-kquiz>开始测验</button></div>
+        <div class="card k-act"><div><h3>假名雨</h3><p class="muted small">假名像雨一样落下，掉进海里前选出读音。</p></div><a class="btn btn-sun btn-small" href="game-kana-rain.html">去玩一局</a></div>
+        <div class="card k-act"><div><h3>打印版五十音</h3><p class="muted small">五十音表和平假名、片假名练习纸，免费下载。</p></div><a class="btn btn-ghost btn-small" href="downloads.html">去下载</a></div>
+      </aside>
+    </div>
+  </section>
+</main>
+<footer id="site-foot"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/kana-data.js"></script>
+<script src="js/app.js"></script>
+<script>
+(function () {
+  var B = window.Breeze, $ = B.$, K = window.KANA, script = 'h';
+  $('#k-jelly').innerHTML = B.jelly('happy');
+  function renderBest() { $('#best').textContent = B.P().best.kanaQuiz || 0; }
+  renderBest(); B.onChange(renderBest);
+
+  function grid(id, list) {
+    $(id).innerHTML = list.map(function (k) {
+      if (!k) return '<span class="kcell empty" aria-hidden="true"></span>';
+      return '<button type="button" class="kcell" data-f="' + k[3] + '" data-h="' + k[0] + '" aria-label="' + (script === 'h' ? k[0] : k[1]) + '，读作 ' + k[2] + '"><span class="k" lang="ja">' + (script === 'h' ? k[0] : k[1]) + '</span><span class="r">' + k[2] + '</span></button>';
+    }).join('');
+  }
+  function renderAll() { grid('#g-seion', K.seion); grid('#g-dakuon', K.dakuon); grid('#g-yoon', K.yoon); toggleR(); }
+  function toggleR() { var on = $('#show-r').checked; B.$$('.kcell .r').forEach(function (e) { e.style.visibility = on ? '' : 'hidden'; }); }
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest && e.target.closest('.kgroup .kcell'); if (!c) return;
+    B.$$('.kcell.playing').forEach(function (x) { x.classList.remove('playing'); });
+    c.classList.add('playing'); setTimeout(function () { c.classList.remove('playing'); }, 700);
+    B.playKana(c.getAttribute('data-f'), c.getAttribute('data-h'));
+  });
+  $('#s-h').onclick = function () { script = 'h'; this.setAttribute('aria-pressed', 'true'); $('#s-k').setAttribute('aria-pressed', 'false'); renderAll(); };
+  $('#s-k').onclick = function () { script = 'k'; this.setAttribute('aria-pressed', 'true'); $('#s-h').setAttribute('aria-pressed', 'false'); renderAll(); };
+  $('#show-r').onchange = toggleR;
+  renderAll();
+
+  /* 五十音测验：弹出卡片 */
+  var qMode = 'read', qRange = 'seion', qScript = 'h';
+  function openQuiz() {
+    B.sheet('五十音测验', function (body) {
+      body.innerHTML = '<div class="form kq-form">' +
+        '<div class="field"><label for="q-mode">题型</label><select id="q-mode"><option value="read">看假名，选读音</option><option value="listen">听发音，选假名</option></select></div>' +
+        '<div class="field"><label for="q-range">范围</label><select id="q-range"><option value="seion">清音</option><option value="dakuon">浊音 · 半浊音</option><option value="yoon">拗音</option><option value="all">全部</option></select></div>' +
+        '<div class="field"><label for="q-script">文字</label><select id="q-script"><option value="h">平假名</option><option value="k">片假名</option><option value="mix">混合</option></select></div></div>' +
+        '<div id="quiz-box"></div><p class="muted small" style="margin:0">想换个玩法？去<a href="games.html#kana-game">五十音泡泡</a>闯关。</p>';
+      $('#q-mode').value = qMode; $('#q-range').value = qRange; $('#q-script').value = qScript;
+      ['#q-mode', '#q-range', '#q-script'].forEach(function (id) { $(id).onchange = function () { qMode = $('#q-mode').value; qRange = $('#q-range').value; qScript = $('#q-script').value; start(); }; });
+      start();
+    }, function () { B.stopAudio && B.stopAudio(); if (location.hash === '#quiz') history.replaceState(null, '', location.pathname + location.search); });
+  }
+  function start() {
+    var pool = K.pool(qRange === 'all' ? ['seion', 'dakuon', 'yoon'] : [qRange]);
+    new B.Quiz($('#quiz-box'), {
+      pool: pool, count: 10, mode: qMode, script: qScript,
+      xpPer: 2, bonus: 5, perfectBonus: 10, title: '五十音测验',
+      onFinish: function (score) { var P = B.P(); if (score > (P.best.kanaQuiz || 0)) { P.best.kanaQuiz = score; B.save(); renderBest(); B.toast('新纪录：' + score + ' / 10'); } }
+    });
+  }
+  B.$$('[data-kquiz]').forEach(function (b) { b.onclick = openQuiz; });
+  document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href="#quiz"],a[href="kana.html#quiz"]'); if (a) { e.preventDefault(); openQuiz(); } });
+  function hashQuiz() { if (location.hash === '#quiz') openQuiz(); }
+  window.addEventListener('hashchange', hashQuiz);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(hashQuiz, 0); }); else hashQuiz();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>日语学习站 · あお老师</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="从五十音到 N1，免费学日语。五十音点读与测验、每日一句、JLPT 倒计时，あお老师的日语课程与口译服务。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home">
+<header id="site-head"></header>
+
+<main>
+  <section class="sky" id="sky">
+    <div class="raindrops" id="rain" hidden></div>
+    <p class="tategaki" aria-hidden="true">ことばは、風にのって。</p>
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Free Japanese · 五十音から N1 まで</span>
+        <h1 class="hero-title" style="margin-top:18px">日语学习站<br><span class="kana-hl">从五十音到 N1</span></h1>
+        <p class="hero-sub">点一下就会读的五十音、每天一句动漫台词、JLPT 倒计时。<br>跟着 あお老师，免费学日语。</p>
+        <div class="hero-cta">
+          <a class="btn btn-sun" href="kana.html">从五十音开始</a>
+          <a class="btn btn-ghost" href="#daily">看今天的动漫台词</a>
+        </div>
+      </div>
+      <div class="hero-mascot">
+        <div class="float" id="hero-jelly"></div>
+        <p class="bubble" id="hero-bubble">今日も一緒にがんばろう！<br><span class="small muted">今天也一起加油吧！</span></p>
+      </div>
+    </div>
+    <div class="clouds" aria-hidden="true"><svg viewBox="0 0 1200 70" preserveAspectRatio="none"><path d="M0 70 V40 q40 -30 90 -8 q30 -30 80 -6 q40 -26 90 0 q50 -30 100 -2 q40 -24 90 2 q40 -30 100 -4 q50 -26 100 0 q40 -28 90 -2 q50 -30 100 -4 q40 -22 90 4 q50 -28 100 0 q30 -20 70 6 V70z" fill="#F7FBFF"/></svg></div>
+  </section>
+
+  <section class="wrap status">
+    <div class="card status-bar">
+      <div class="st-cell st-weather">
+        <span class="big-num" id="w-icon" aria-hidden="true">雨</span>
+        <div class="st-txt"><span class="eyebrow">今日の天気</span><h3 id="w-title">今天还没打卡</h3><p class="muted small" id="w-sub">做一道题、看一句每日一句就算打卡，天会放晴。</p><div class="teru-row" id="teru" aria-label="晴天娃娃"></div></div>
+        <button class="btn btn-coral btn-small" type="button" data-open="challenge" id="ch-open">今日挑战 5 题</button>
+      </div>
+      <div class="st-cell st-jlpt">
+        <div class="st-txt"><span class="eyebrow">JLPT 倒计时</span><div><span class="big-num" id="jlpt-days">--</span><small style="font-weight:900"> 天</small></div><p class="muted small" id="jlpt-date">日本语能力考试每年 7 月和 12 月的第一个星期日举行</p></div>
+      </div>
+      <div class="st-cell st-lv">
+        <div class="st-txt"><span class="eyebrow">我的等级</span><h3 id="lv-name">五十音见习</h3><div class="bar" aria-hidden="true"><i id="lv-bar" style="width:0%"></i></div><p class="small" id="lv-next"></p></div>
+        <button class="btn btn-ghost btn-small" type="button" data-open="board">排行榜</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="study">
+    <div class="wrap">
+      <div class="band-head"><div><span class="eyebrow">学ぶ · Study</span><h2>选一个开始学</h2><p class="lead">五个学习分类，从零基础到考级都有入口，全部免费，点进去就能学。</p></div><button class="btn btn-ghost btn-small" type="button" data-open="route">从五十音到 N1 的学习路线 →</button></div>
+      <div class="cats m-swipe">
+        <article class="cat cat-kana">
+          <div class="cat-top"><span class="cat-glyph" lang="ja">あ</span><div><h3>五十音</h3><p class="muted small">平假名 · 片假名 · 浊音 · 拗音</p></div></div>
+          <ul class="cat-links">
+            <li><a href="kana.html">五十音表 · 点读发音</a></li>
+            <li><a href="game-kana-rain.html">玩游戏学五十音</a></li>
+            <li><a href="kana.html#quiz">看假名选读音</a></li>
+            <li><a href="kana.html#quiz">听发音选假名</a></li>
+            <li><a href="#challenge">每日挑战 5 题</a></li>
+          </ul>
+        </article>
+        <article class="cat cat-daily">
+          <div class="cat-top"><span class="cat-glyph" lang="ja">聴</span><div><h3>沉浸学习</h3><p class="muted small">动漫台词 · 情景会话</p></div></div>
+          <ul class="cat-links">
+            <li><a href="#daily">每日一句 · 动漫台词</a></li>
+            <li><a href="immersion.html#travel">旅行情景会话</a></li>
+            <li><a href="immersion.html#shadow">跟读练习</a></li>
+            <li><a href="game-lines.html">台词拼拼看</a></li>
+          </ul>
+        </article>
+        <article class="cat">
+          <div class="cat-top"><span class="cat-glyph" lang="ja">文</span><div><h3>文法</h3><p class="muted small">N5 → N1 共 110+ 句型精讲</p></div></div>
+          <ul class="cat-links">
+            <li><a href="grammar.html#roadmap">句型精讲 N5–N1</a></li>
+            <li><a href="grammar.html#particles">助词 は・が・を・に</a></li>
+            <li><a href="grammar.html#verbs">动词变形 · 11 种规则</a></li>
+            <li><a href="grammar.html#verbs">36 个动词对照表</a></li>
+          </ul>
+        </article>
+        <article class="cat">
+          <div class="cat-top"><span class="cat-glyph" lang="ja">語</span><div><h3>单词</h3><p class="muted small">N5–N1 全级别词表</p></div></div>
+          <ul class="cat-links">
+            <li><a href="vocab.html#jlpt-n5">N5–N1 全部词汇（8000+）</a></li>
+            <li><a href="vocab.html#n5">N5 入门精选单词卡</a></li>
+            <li><a href="vocab.html#anime">动漫高频词</a></li>
+            <li><a href="vocab.html#falsefriends">中日同形词</a></li>
+          </ul>
+        </article>
+        <article class="cat">
+          <div class="cat-top"><span class="cat-glyph" lang="ja">試</span><div><h3>JLPT 模拟</h3><p class="muted small">N5–N1 整套原创模拟卷</p></div></div>
+          <ul class="cat-links">
+            <li><a href="jlpt.html#mock">整套模拟试卷</a></li>
+            <li><a href="jlpt.html#quick">30 题快速测验</a></li>
+            <li><a href="jlpt.html#reading">阅读理解</a></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="daily">
+    <div class="wrap">
+      <div class="band-head"><div><span class="eyebrow">今日の一言 · 每日一句</span><h2 style="margin-top:8px">今天的动漫台词</h2><p class="lead">每天一句动漫里的日语，学一个能马上用上的语法点。</p></div>
+        <div class="hero-cta"><button class="btn btn-ghost btn-small" type="button" id="d-prev">← 前一天</button><button class="btn btn-ghost btn-small" type="button" id="d-today">回到今天</button></div></div>
+      <div class="daily-row">
+      <div class="daily" id="daily-box"></div>
+      <div class="more-strips" id="more">
+      <div class="strip col-strip"><p><b>あお老师的专栏</b><span class="strip-links"><a href="col-kana-two-weeks.html">两周记住五十音</a><a href="col-study-time.html">学到 N1 要多久</a><a href="col-false-friends.html">16 个中日同形词</a></span></p><a class="btn btn-ghost btn-small" href="column.html">看全部专栏 →</a></div>
+      <div class="strip dl-strip"><p><b>免费下载</b><span>五十音表 · 平假名 / 片假名描红练习纸（A4 PDF）</span></p><a class="btn btn-ghost btn-small" href="downloads.html">去下载 →</a></div>
+      <div class="strip svc-strip"><p><b>想学得更快？</b><span class="strip-links"><a href="about.html#courses">一对一课程</a><a href="about.html#interpret">中日口译</a><a href="about.html">关于 あお老师</a></span></p><a class="btn btn-sun btn-small" href="about.html?ask=1" data-inquiry="">预约 30 分钟免费试听</a></div>
+    </div>
+      </div>
+    </div>
+  </section>
+
+
+  <template id="route-tpl"><p class="muted" style="margin:0">一步一步来。每一级都有词表和整套模拟试卷，N5–N3 还有快速测验和阅读练习。</p>
+      <ol class="route route-sheet">
+        <li class="on"><span class="lvl">五十音</span><p>平假名、片假名、浊音和拗音，会认会读。</p><p class="small"><b>约 2–4 周</b></p><a class="btn btn-ghost btn-small" href="kana.html">开始学</a></li>
+        <li class="on"><span class="lvl">N5</span><p>约 800 词，自我介绍、问路、点餐等基础句型。</p><p class="small"><b>约 2–3 个月</b></p><a class="btn btn-ghost btn-small" href="vocab.html#n5">背单词</a></li>
+        <li class="on"><span class="lvl">N4</span><p>约 1500 词，动词变形、敬体会话，能聊日常话题。</p><p class="small"><b>约 3–4 个月</b></p><a class="btn btn-ghost btn-small" href="grammar.html#verbs">练变形</a></li>
+        <li class="on"><span class="lvl">N3</span><p>约 3700 词，读懂简单文章，看懂部分动漫台词。</p><p class="small"><b>约 4–6 个月</b></p><a class="btn btn-ghost btn-small" href="jlpt.html#quick">做模拟题</a></li>
+        <li class="on"><span class="lvl">N2</span><p>约 6000 词，新闻、职场邮件，日企求职的常见门槛。</p><p class="small"><b>约 6–8 个月</b></p><a class="btn btn-ghost btn-small" href="jlpt.html#mock">做模拟卷</a></li>
+        <li class="on"><span class="lvl">N1</span><p>约 10000 词，读评论和专业文章，听懂正常语速。</p><p class="small"><b>约 8–12 个月</b></p><a class="btn btn-ghost btn-small" href="jlpt.html#mock">做模拟卷</a></li>
+      </ol>
+      <p class="muted small" style="margin:12px 0 0">学习时长按每天 1 小时左右、有老师带着系统学来估算，因人而异。自学或者学得断断续续的话，花上两倍时间也很正常。</p></template>
+
+
+</main>
+
+<footer id="site-foot"></footer>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/kana-data.js"></script>
+<script src="js/lines.js"></script>
+<script src="js/app.js"></script>
+<script src="audio/v/index-vocab.js" async></script>
+<script src="js/study.js"></script>
+<script src="js/inquiry.js"></script>
+<script>
+(function () {
+  var B = window.Breeze, $ = B.$;
+  $('#hero-jelly').innerHTML = B.jelly('happy', '吉祥物水母ふわり');
+
+  /* 打卡天气 + 等级 */
+  function renderStatus(P) {
+    var on = P.checkins.indexOf(B.today()) >= 0;
+    $('#sky').classList.toggle('rainy', !on); $('#rain').hidden = on;
+    $('#w-icon').textContent = on ? '晴' : '雨';
+    $('#w-title').textContent = on ? '今天已打卡，放晴啦' : '今天还没打卡';
+    $('#w-sub').textContent = on ? ('连续打卡 ' + P.streak + ' 天。明天也来，晴天娃娃会再多一个。') : '做一道题、看一句每日一句就算打卡，天会放晴。';
+    var n = Math.max(1, Math.min(P.streak, 10)), h = '';
+    for (var i = 0; i < n; i++) h += B.teru(on || i < P.streak);
+    $('#teru').innerHTML = h;
+    var lv = B.levelOf(P.xp);
+    $('#lv-name').textContent = 'Lv.' + lv.idx + ' ' + lv.name;
+    $('#lv-bar').style.width = lv.pct + '%';
+    $('#lv-next').textContent = lv.to ? ('还差 ' + (lv.to - P.xp) + ' 经验值升到「' + lv.nextName + '」') : '已经是最高等级了！';
+    var co = $('#ch-open'); if (co) co.textContent = P.flags.challenge === B.today() ? '今日挑战 ✓ 再练一组' : '今日挑战 5 题';
+  }
+  B.onChange(renderStatus); renderStatus(B.P());
+
+  /* JLPT */
+  var j = B.nextJLPT();
+  $('#jlpt-days').textContent = j.days;
+  $('#jlpt-date').textContent = '下一场：' + j.date.getFullYear() + ' 年 ' + (j.date.getMonth() + 1) + ' 月 ' + j.date.getDate() + ' 日（星期日）';
+
+  /* 每日一句 */
+  var lines = window.DAILY_LINES || [];
+  var offset = 0;
+  function dayIndex(off) { var d = new Date(); d.setDate(d.getDate() + off); var n = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); return ((n % lines.length) + lines.length) % lines.length; }
+  function renderDaily() {
+    var box = $('#daily-box');
+    if (!lines.length) { box.innerHTML = '<div class="placeholder">每日一句正在准备中。</div>'; return; }
+    var L = lines[dayIndex(offset)];
+    box.innerHTML =
+      '<article class="card" style="gap:14px"><div class="source"><span class="tag">' + B.esc(L.level) + '</span><span>' + B.esc(L.workZh || L.work) + (L.ep ? ' · ' + B.esc(L.ep) : '') + (L.speaker ? ' · ' + B.esc(L.speaker) : '') + '</span></div>' +
+      '<p class="daily-line" lang="ja" style="margin:0">' + L.ruby + '</p>' +
+      '<p class="romaji" style="margin:0">' + B.esc(L.romaji) + '</p>' +
+      '<p style="margin:0;font-size:1.125rem;font-weight:700">' + B.esc(L.zh) + '</p>' +
+      (L.point ? '<p class="d-point"><b>语法点</b>' + B.esc(L.point) + '</p>' : '') +
+      '<div class="hero-cta"><button class="btn btn-sky btn-small" type="button" id="d-say">▶ 朗读这句</button><button class="btn btn-sun btn-small" type="button" id="d-more">看讲解</button><button class="btn btn-ghost btn-small" type="button" id="d-got">学会了 +3 XP</button></div></article>';
+    $('#d-say').onclick = function () { B.speak(L.jp); };
+    $('#d-more').onclick = function () {
+      B.sheet('这句怎么学', '<p class="daily-line" lang="ja" style="margin:0;font-size:1.5rem">' + L.ruby + '</p><p style="margin:0;font-weight:700">' + B.esc(L.zh) + '</p>' +
+        '<div class="point"><b>语法点</b>　' + B.esc(L.point) + '</div>' +
+        '<div class="point" style="border-left-color:var(--rose)"><b>例句</b>　' + B.esc(L.example) + '</div>' +
+        '<p class="muted small" style="margin:0">出处：' + B.esc(L.work) + (L.workZh ? '（' + B.esc(L.workZh) + '）' : '') + (L.ep ? '　' + B.esc(L.ep) : '') + (L.speaker ? '　' + B.esc(L.speaker) : '') + '。台词版权归原作者所有，仅用于日语学习说明。</p>');
+    };
+    var got = $('#d-got');
+    if (B.P().flags.daily === B.today() && offset === 0) { got.disabled = true; got.textContent = '今天已学 ✓'; }
+    got.onclick = function () {
+      if (offset !== 0) { B.toast('每日一句的经验值只算今天这一句'); return; }
+      if (B.onceToday('daily')) { B.addXP(3, '每日一句'); got.disabled = true; got.textContent = '今天已学 ✓'; }
+    };
+  }
+  $('#d-prev').onclick = function () { offset--; renderDaily(); };
+  $('#d-today').onclick = function () { offset = 0; renderDaily(); };
+  renderDaily();
+
+  /* 每日挑战：用日期做种子，同一天大家题目一样 */
+  /* 每日挑战：五十音 / N5–N1。难度记在本机，下次打开沿用。同一天同一难度，所有人题目相同。 */
+  var CH_LV = [['kana', '五十音'], ['N5', 'N5'], ['N4', 'N4'], ['N3', 'N3'], ['N2', 'N2'], ['N1', 'N1']], CH_KEY = 'breeze-challenge-lv';
+  var chLv = (function () { try { var v = localStorage.getItem(CH_KEY); if (CH_LV.some(function (x) { return x[0] === v; })) return v; } catch (e) { } return 'kana'; })();
+  function chRand(extra) { var seed = parseInt(B.today().replace(/-/g, ''), 10) + extra; return function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }; }
+  function chPick(arr, n, r) { var a = arr.slice(), out = []; while (out.length < n && a.length) out.push(a.splice(Math.floor(r() * a.length), 1)[0]); return out; }
+  function chLoad(src, test, cb) { if (test()) return cb(); var sc = document.createElement('script'); sc.src = src; sc.onload = cb; sc.onerror = function () { B.toast('题库加载失败，请刷新再试'); }; document.head.appendChild(sc); }
+  function chSeg() {
+    $('#ch-lv').innerHTML = CH_LV.map(function (x) { return '<button type="button" class="chip" data-lv="' + x[0] + '" aria-pressed="' + (x[0] === chLv) + '">' + x[1] + '</button>'; }).join('');
+    B.$$('#ch-lv [data-lv]').forEach(function (b) { b.onclick = function () { chLv = b.getAttribute('data-lv'); try { localStorage.setItem(CH_KEY, chLv); } catch (e) { } chSeg(); startChallenge(); }; });
+  }
+  /* 奖励在交卷时才发：先用 onceToday 占住今天的名额，同时开着两个页面也只能领一次 */
+  function chOpts() { return { title: '每日挑战', onFinish: function (score, total) {
+    if (B.onceToday('challenge')) { B.addXP(score + 15 + (score === total ? 10 : 0), '每日挑战 ' + score + ' / ' + total); }
+    else B.toast('今天的挑战奖励已经领过了，这一轮是练习');
+    renderStatus(B.P());
+  }, again: function () { startChallenge(); } }; }
+  function startChallenge() {
+    var done = B.P().flags.challenge === B.today(), box = $('#challenge-box');
+    if (chLv === 'kana') {
+      var pool = window.KANA.pool(['seion']), r = chRand(0), picked = chPick(pool, 5, r);
+      var o = chOpts(); o.pool = picked; o.count = 5; o.mode = 'read'; o.script = 'h';
+      return new B.Quiz(box, o);
+    }
+    box.innerHTML = '<div class="placeholder">正在准备 ' + chLv + ' 的题目……</div>';
+    var lvKey = chLv.toLowerCase(), want = chLv;
+    chLoad('js/jlpt-data.js', function () { return window.JLPT; }, function () {
+      chLoad('js/jlpt-more.js', function () { return window.JLPT && window.JLPT._more; }, function () {
+        if (window.JLPT) window.JLPT._more = 1;
+        chLoad('js/vocab/' + lvKey + '.js', function () { return window.VOCAB_LV && window.VOCAB_LV[lvKey]; }, function () {
+          if (chLv !== want) return; // 加载期间换了难度
+          var r = chRand(LVSEED[chLv]), esc = B.esc, S = B.study;
+          var jq = window.JLPT.quick.filter(function (q) { return q.level === chLv; });
+          var items = chPick(jq, 2, r).map(function (q) { return { q: q.qRuby || q.q, options: q.options.map(esc), answer: q.answer, why: esc(q.why), tag: q.level + ' · ' + q.type }; });
+          var short = function (z) { return String(z || '').split(/[；;，,、]/)[0].replace(/（[^）]*）|\([^)]*\)/g, '').trim(); };
+          var words = (window.VOCAB_LV[lvKey] || []).map(function (a) { return { w: a[0], k: a[1] || a[0], z: short(a[2]) }; }).filter(function (x) { return x.z; });
+          chPick(words, 3, r).forEach(function (w) {
+            var wrong = chPick(words.filter(function (x) { return x.z !== w.z; }), 12, r).reduce(function (a, x) { if (a.length < 3 && a.indexOf(x.z) < 0) a.push(x.z); return a; }, []);
+            var opts = wrong.concat([w.z]);
+            items.push({ q: (w.k !== w.w ? '<ruby>' + esc(w.w) + '<rt>' + esc(w.k) + '</rt></ruby>' : esc(w.w)) + '　是什么意思？', say: w.k, sayKey: B.wordKey(w.w, w.k), options: opts.map(esc), answer: 3, why: esc(w.w) + '（' + esc(w.k) + '）＝' + esc(w.z), tag: chLv + ' · 单词' });
+          });
+          S.MCQ(box, items, chOpts());
+        });
+      });
+    });
+  }
+  var LVSEED = { N5: 11, N4: 23, N3: 37, N2: 41, N1: 53 };
+  function openChallenge() {
+    B.sheet('每日挑战 · 5 题', function (body) {
+      body.innerHTML = '<p class="muted small" style="margin:0">选一个适合自己的难度，每天换一组题。完成奖励 15 经验值，全对再加 10；选过的难度会记住。</p>' +
+        '<div class="chips" role="group" aria-label="挑战难度" id="ch-lv"></div><div id="challenge-box"></div>';
+      chSeg(); startChallenge();
+    });
+  }
+
+  /* 排行榜 */
+  var boardOnline = false;
+  function renderBoard(online) {
+    var ol = $('#board'); if (!ol) return;
+    B.API.getLeaderboard().then(function (rows) {
+      if (online && rows.length) {
+        ol.classList.remove('example');
+        ol.innerHTML = rows.slice(0, 10).map(function (r, i) { return '<li><span class="rk">' + (i + 1) + '</span><span>' + B.esc(r.nickname) + '</span><span class="xp">' + r.weekXp + ' XP</span></li>'; }).join('');
+        $('#board-note').textContent = '';
+      } else {
+        ol.classList.add('example');
+        ol.innerHTML = [['小樱', 186], ['阿木', 152], ['Mina', 97], ['你', B.P().weekXp]].map(function (r, i) { return '<li><span class="rk">' + (i + 1) + '</span><span>' + r[0] + '</span><span class="xp">' + r[1] + ' XP</span></li>'; }).join('');
+        $('#board-note').textContent = online ? '本周还没有人上榜，第一个就是你。' : '示例数据。网站连上后端后，这里显示真实的本周排名。';
+      }
+    });
+  }
+  document.addEventListener('breeze:ready', function (e) { boardOnline = e.detail.online; });
+  function openBoard() {
+    B.sheet('本周排行榜', function (body) {
+      body.innerHTML = '<p class="muted small" style="margin:0">每周一零点重新开始。登录后，你本周获得的经验值会出现在这里。</p><ol class="board" id="board"></ol><p class="muted small" id="board-note" style="margin:0"></p>' +
+        '<div class="open-row"><button class="btn btn-sky" type="button" id="board-login">登录上榜</button></div>';
+      $('#board-login').onclick = function () { B.closeSheet(); B.openLogin(); };
+      renderBoard(boardOnline);
+    });
+  }
+  /* 页面上所有「每日挑战」「排行榜」入口都改成弹出卡片 */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-open], a[href="#challenge"], a[href="#board-sec"], a[href="#route"]'); if (!t) return;
+    var what = t.getAttribute('data-open') || (t.getAttribute('href') === '#challenge' ? 'challenge' : t.getAttribute('href') === '#route' ? 'route' : 'board');
+    e.preventDefault(); if (what === 'challenge') openChallenge(); else if (what === 'route') openRoute(); else openBoard();
+  });
+  function openRoute() { B.sheet('从五十音到 N1 的学习路线', function (b) { b.appendChild(document.getElementById('route-tpl').content.cloneNode(true)); }); }
+  if (location.hash === '#route') setTimeout(openRoute, 300);
+  if (location.hash === '#challenge') setTimeout(openChallenge, 300);
+  if (location.hash === '#board-sec') setTimeout(openBoard, 300);
+})();
+</script>
+</body>
+</html>

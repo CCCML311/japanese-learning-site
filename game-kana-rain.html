@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>玩游戏学五十音 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="假名像雨一样落下，在它落进海里之前选出读音。清音、浊音、拗音、片假名都能练，清完一关天就放晴。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="games">
+<header id="site-head"></header>
+<main>
+<style>
+/* 假名雨：舞台 = 一片下雨的天空 + 底部的海；答对的雨滴化成光，接住 30 滴天就放晴 */
+.kr-hero{padding-block:32px 18px}
+.kr-hero .wrap{display:flex;flex-direction:column;gap:6px}
+.kr-wrap{display:flex;flex-direction:column;gap:14px;max-width:880px}
+.kr-stage{--sun:.25;--d:66px;position:relative;height:clamp(440px,calc(100vh - 250px),600px);border-radius:var(--r-l);overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,.85);box-shadow:0 30px 60px -34px rgba(30,60,140,.55);touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+@media (max-width:600px){.kr-stage{--d:58px;height:clamp(380px,calc(100vh - 290px),520px)}}
+.kr-sky{position:absolute;inset:0;z-index:-3;transition:opacity 1.2s ease}
+.kr-sky.rain{background:linear-gradient(180deg,#56719F 0%,#7790BE 42%,#A9BEDD 78%,#C9D7EC 100%)}
+.kr-sky.sun{background:linear-gradient(180deg,#1F64D6 0%,#3D8AF0 34%,#86C2FF 68%,#DCEEFF 100%);opacity:var(--sun)}
+.kr-rays{position:absolute;inset:0;z-index:-2;pointer-events:none;opacity:calc(var(--sun) * var(--sun));transition:opacity 1.2s ease;
+  background:radial-gradient(30% 34% at 88% -4%,rgba(255,248,214,.95),transparent 70%),conic-gradient(from 160deg at 90% -6%,transparent 0deg,rgba(255,255,255,.22) 6deg,transparent 13deg,rgba(255,255,255,.16) 22deg,transparent 30deg,rgba(255,255,255,.12) 40deg,transparent 48deg)}
+.kr-clouds{position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(26% 12% at 14% 9%,rgba(255,255,255,.75),transparent 70%),radial-gradient(22% 10% at 32% 5%,rgba(255,255,255,.6),transparent 70%),radial-gradient(30% 12% at 70% 12%,rgba(255,255,255,.55),transparent 70%)}
+.kr-rain{position:absolute;inset:-20%;z-index:-1;pointer-events:none;opacity:calc(1 - var(--sun));transition:opacity 1.2s ease;
+  background-image:repeating-linear-gradient(104deg,transparent 0 22px,rgba(228,238,255,.5) 22px 23px,transparent 23px 60px);background-size:180px 180px;animation:kr-rain .5s linear infinite}
+@keyframes kr-rain{to{background-position:-40px 180px}}
+.kr-sea{position:absolute;left:0;right:0;bottom:0;height:58px;z-index:3;pointer-events:none;overflow:hidden}
+.kr-sea svg{position:absolute;left:0;bottom:0;width:200%;max-width:none;height:100%;display:block}
+.kr-sea svg.w1{animation:kr-wave 9s linear infinite}
+.kr-sea svg.w2{animation:kr-wave 6s linear infinite reverse;opacity:.85}
+@keyframes kr-wave{to{transform:translateX(-50%)}}
+.kr-field{position:absolute;inset:0;z-index:2}
+.kr-drop{position:absolute;left:0;top:0;width:var(--d);height:var(--d);will-change:transform;pointer-events:none}
+.kr-drop .b{position:absolute;inset:0;border-radius:50% 0 50% 50%;transform:rotate(-45deg);background:radial-gradient(circle at 38% 62%,#fff 0%,rgba(232,243,255,.96) 42%,rgba(170,212,255,.9) 100%);border:1.5px solid rgba(255,255,255,.95);box-shadow:0 10px 22px -10px rgba(25,60,150,.65),inset 0 -6px 14px rgba(90,140,230,.22)}
+.kr-drop .g{position:relative;display:grid;place-items:center;height:100%;padding-top:14%;font-family:var(--f-mincho);font-weight:700;font-size:calc(var(--d) * .46);line-height:1;color:var(--text)}
+.kr-drop.two .g{font-size:calc(var(--d) * .34);letter-spacing:-.02em}
+.kr-drop.low .b{box-shadow:0 0 0 3px rgba(243,163,184,.55),0 10px 22px -10px rgba(25,60,150,.65)}
+.kr-drop.pop{transition:transform .45s ease-out,opacity .45s ease-out;opacity:0}
+.kr-drop.pop .b{background:radial-gradient(circle,#fff,rgba(255,236,190,.95) 50%,rgba(255,205,130,.7));transition:background .2s}
+.kr-fx{position:absolute;z-index:4;pointer-events:none;font-weight:700;letter-spacing:.06em;white-space:nowrap;transform:translate(-50%,0);animation:kr-up .9s ease-out forwards}
+.kr-fx.hit{color:#fff;text-shadow:0 1px 8px rgba(20,60,140,.6)}
+.kr-fx.miss{color:#fff;background:rgba(192,79,117,.86);padding:3px 10px;border-radius:999px;font-family:var(--f-mincho);animation-duration:1.6s}
+@keyframes kr-up{from{opacity:1;transform:translate(-50%,0)}to{opacity:0;transform:translate(-50%,-38px)}}
+.kr-ring{position:absolute;z-index:3;pointer-events:none;width:var(--d);height:var(--d);border-radius:50%;border:2px solid rgba(255,240,200,.95);box-shadow:0 0 18px rgba(255,220,150,.9);animation:kr-ring .5s ease-out forwards}
+@keyframes kr-ring{from{transform:scale(.5);opacity:1}to{transform:scale(1.9);opacity:0}}
+.kr-hud{position:absolute;top:12px;left:12px;right:12px;z-index:5;display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;pointer-events:none}
+.kr-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:999px;padding:5px 12px;font-size:.8125rem;color:var(--text-2);letter-spacing:.04em;box-shadow:0 6px 16px -10px rgba(20,50,120,.5)}
+.kr-pill b{color:var(--text);font-size:1rem;font-variant-numeric:tabular-nums}
+.kr-prog{flex:1;min-width:120px}
+.kr-prog .bar{flex:1;height:5px;border-radius:999px;background:rgba(27,35,66,.1);overflow:hidden}
+.kr-prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--rose),var(--gold));border-radius:999px;transition:width .3s}
+.kr-lives{display:flex;gap:4px}
+.kr-lives i{width:11px;height:11px;border-radius:50%;background:#3D7BE0;box-shadow:inset 0 -2px 3px rgba(0,0,0,.15)}
+.kr-lives i.off{background:rgba(27,35,66,.15);box-shadow:none}
+.kr-combo{position:absolute;left:50%;top:64px;z-index:5;transform:translateX(-50%);font-family:var(--f-mincho);font-weight:900;font-size:1.375rem;color:#fff;text-shadow:0 2px 12px rgba(200,120,30,.75),0 0 2px rgba(150,80,10,.6);letter-spacing:.06em;pointer-events:none;white-space:nowrap}
+.kr-combo.bump{animation:kr-bump .3s ease-out}
+@keyframes kr-bump{from{transform:translateX(-50%) scale(1.35)}to{transform:translateX(-50%) scale(1)}}
+.kr-buffer{position:absolute;left:50%;bottom:68px;z-index:5;transform:translateX(-50%);background:rgba(255,255,255,.9);border-radius:999px;padding:4px 16px;font-weight:700;font-size:1.125rem;letter-spacing:.12em;min-width:4em;text-align:center;color:var(--text);box-shadow:0 6px 16px -10px rgba(20,50,120,.5)}
+.kr-buffer.bad{background:#FFEAF0;color:var(--rose-ink)}
+.kr-panel{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(25,45,95,.16)}
+.kr-card{background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:var(--r-l);padding:22px;width:min(520px,100%);max-height:100%;overflow:auto;display:flex;flex-direction:column;gap:14px;box-shadow:0 30px 70px -30px rgba(20,40,90,.6)}
+@media (max-width:600px){.kr-card{padding:16px;gap:11px}}
+.kr-card h2{font-size:1.375rem}
+.kr-card .lbl{font-size:.75rem;letter-spacing:.14em;color:var(--text-2);margin:0 0 6px;font-weight:500}
+.kr-card .chips{gap:6px}
+.kr-card .chip{min-height:40px;display:inline-flex;align-items:center}
+.kr-card .chip[disabled]{opacity:.4;cursor:not-allowed}
+.kr-best{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:.875rem;color:var(--text-2)}
+.kr-best b{color:var(--text);font-variant-numeric:tabular-nums}
+.kr-go{align-self:stretch;font-size:1.0625rem;padding-block:14px}
+.kr-count{font-family:var(--f-mincho);font-weight:900;font-size:clamp(2.5rem,9vw,3.75rem);color:#fff;text-shadow:0 4px 24px rgba(20,50,120,.6);letter-spacing:.08em}
+.kr-res-top{display:flex;align-items:center;gap:14px}
+.kr-res-top svg{width:64px;height:90px;flex:none}
+.kr-res-top h2{font-size:1.5rem}
+.kr-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}
+@media (max-width:420px){.kr-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kr-stats div{background:#F4F7FC;border-radius:12px;padding:8px 10px;display:flex;flex-direction:column}
+.kr-stats dt{order:2;font-size:.75rem;color:var(--text-2)}
+.kr-stats dd{order:1;margin:0;font-family:var(--f-mincho);font-weight:700;font-size:1.375rem;font-variant-numeric:tabular-nums}
+.kr-teru{display:flex;gap:4px;justify-content:center}
+.kr-teru svg{width:22px;height:40px}
+.kr-kana-list{display:flex;flex-wrap:wrap;gap:6px}
+.kr-kana-list button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:baseline;gap:6px;padding:6px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);min-height:40px}
+.kr-kana-list button:hover{border-color:#7DB9FF}
+.kr-kana-list button:focus-visible{outline:2px solid var(--gold)}
+.kr-kana-list .k{font-family:var(--f-mincho);font-weight:700;font-size:1.25rem}
+.kr-kana-list .r{font-size:.75rem;color:var(--text-2);letter-spacing:.06em}
+.kr-kana-list .n{font-size:.6875rem;color:var(--rose-ink)}
+.kr-pad{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+@media (max-width:600px){.kr-pad{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}
+.kr-key{all:unset;box-sizing:border-box;cursor:pointer;position:relative;text-align:center;min-height:58px;display:grid;place-items:center;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:0 10px 22px -18px rgba(30,60,140,.6);font-size:1.3125rem;font-weight:700;letter-spacing:.08em;color:var(--text);transition:background .15s,border-color .15s,transform .1s}
+.kr-key:hover{border-color:#7DB9FF}
+.kr-key:active{transform:scale(.96)}
+.kr-key:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.kr-key[disabled]{opacity:.45;cursor:default}
+.kr-key .kn{position:absolute;top:5px;left:9px;font-size:.625rem;font-weight:500;color:var(--text-2);letter-spacing:0}
+.kr-key.ok{background:#E3FAF3;border-color:var(--mint-ink);color:var(--mint-ink)}
+.kr-key.no{background:#FFEAF0;border-color:var(--rose-ink);color:var(--rose-ink);animation:kr-shake .3s}
+.kr-key.swap{animation:kr-fade .3s ease-out}
+@keyframes kr-shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes kr-fade{from{opacity:.2}to{opacity:1}}
+.kr-bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.kr-bar p{margin:0}
+.kr-bar .acts{display:flex;gap:8px}
+.kr-demo .kr-drop{animation:kr-bob 4s ease-in-out infinite}
+.kr-demo .kr-drop:nth-child(2){animation-delay:-1.3s}.kr-demo .kr-drop:nth-child(3){animation-delay:-2.6s}
+@keyframes kr-bob{0%,100%{margin-top:0}50%{margin-top:14px}}
+.kr-help{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
+@media (max-width:760px){.kr-help{grid-template-columns:1fr}}
+.kr-help ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px;line-height:1.8}
+.kr-more{display:flex;flex-wrap:wrap;gap:10px}
+/* 页头、舞台、下方卡片同宽对齐 */
+.kr-hero .wrap,.kr-low{max-width:880px}
+.kr-pad[hidden]{display:none}
+.kr-low{display:flex;flex-direction:column;gap:18px}
+.kr-low .card{gap:10px}
+.kr-help-btn{all:unset;box-sizing:border-box;cursor:pointer;width:36px;height:36px;border-radius:50%;display:inline-grid;place-items:center;font-weight:800;color:var(--violet);background:#fff;box-shadow:inset 0 0 0 1px var(--line-strong)}
+.kr-help-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.kr-sheet-ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px;line-height:1.8}
+@media (prefers-reduced-motion: reduce){
+  .kr-rain,.kr-sea svg,.kr-demo .kr-drop{animation:none}
+  .kr-ring{display:none}
+  .kr-fx{animation-duration:.01s}
+}
+</style>
+
+<section class="page-hero kr-hero">
+  <div class="wrap">
+    <span class="eyebrow">ゲーム · かなの雨</span>
+    <h1>玩游戏学五十音</h1>
+    <p class="lead">假名像雨一样落下，在它掉进海里之前选出它的读音。一局 30 滴，接住它们，天就会放晴。</p>
+  </div>
+</section>
+
+<section class="band" style="padding-top:0">
+  <div class="wrap kr-wrap">
+    <div class="kr-stage" id="kr-stage">
+      <div class="kr-sky rain" aria-hidden="true"></div>
+      <div class="kr-sky sun" aria-hidden="true"></div>
+      <div class="kr-rays" aria-hidden="true"></div>
+      <div class="kr-clouds" aria-hidden="true"></div>
+      <div class="kr-rain" aria-hidden="true"></div>
+
+      <div class="kr-hud" id="kr-hud" hidden>
+        <span class="kr-pill">得分 <b id="kr-score">0</b></span>
+        <span class="kr-pill kr-prog"><span class="bar"><i id="kr-prog"></i></span><b id="kr-count">0 / 30</b></span>
+        <span class="kr-pill" aria-label="还能漏掉的雨滴"><span class="kr-lives" id="kr-lives"></span></span>
+      </div>
+      <div class="kr-combo" id="kr-combo" aria-hidden="true"></div>
+
+      <div class="kr-field" id="kr-field" aria-hidden="true">
+        <div class="kr-demo" id="kr-demo"></div>
+      </div>
+      <div class="kr-buffer" id="kr-buffer" hidden></div>
+
+      <div class="kr-sea" aria-hidden="true">
+        <svg class="w2" viewBox="0 0 1200 58" preserveAspectRatio="none"><path fill="#5FA8F0" d="M0 22 q50 -14 100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 V58 H0z"/></svg>
+        <svg class="w1" viewBox="0 0 1200 58" preserveAspectRatio="none"><path fill="#2F78D6" d="M0 30 q50 12 100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 V58 H0z"/></svg>
+      </div>
+
+      <!-- 开始前：选择范围和速度 -->
+      <div class="kr-panel" id="kr-setup">
+        <div class="kr-card">
+          <h2>选一个范围开始</h2>
+          <div><p class="lbl">练哪些假名</p><div class="chips" id="kr-modes" role="group" aria-label="练哪些假名"></div></div>
+          <div><p class="lbl">雨下得多快</p><div class="chips" id="kr-speeds" role="group" aria-label="速度"></div></div>
+          <div class="kr-best"><span id="kr-best-line">这个范围的最高分：<b>0</b></span><span id="kr-plays"></span></div>
+          <button class="btn btn-sun kr-go" type="button" id="kr-start">开始下雨</button>
+        </div>
+      </div>
+
+      <!-- 倒数 -->
+      <div class="kr-panel" id="kr-ready" hidden style="background:transparent"><span class="kr-count" id="kr-ready-t">よーい</span></div>
+
+      <!-- 暂停 -->
+      <div class="kr-panel" id="kr-pause" hidden>
+        <div class="kr-card" style="align-items:center;text-align:center">
+          <h2>暂停中</h2>
+          <p class="muted" style="margin:0">雨停在半空中了。准备好就继续。</p>
+          <div class="hero-cta" style="justify-content:center"><button class="btn btn-sun" type="button" id="kr-resume">继续</button><button class="btn btn-ghost" type="button" id="kr-quit">结束这一局</button></div>
+        </div>
+      </div>
+
+      <!-- 结算 -->
+      <div class="kr-panel" id="kr-result" hidden>
+        <div class="kr-card" id="kr-result-card"></div>
+      </div>
+    </div>
+
+    <div class="kr-pad" id="kr-pad" role="group" aria-label="选择读音" hidden></div>
+
+    <div class="kr-bar">
+      <p class="muted small">点读音按钮，接住离海面最近的那一滴。电脑上可以直接打字（<b>shi</b>/<b>si</b> 都算对），Esc 暂停。</p>
+      <div class="acts">
+        <button class="kr-help-btn" type="button" id="kr-help" aria-label="怎么玩" title="怎么玩">?</button>
+        <button class="btn btn-ghost btn-small" type="button" id="kr-sound" aria-pressed="true">声音：开</button>
+        <button class="btn btn-ghost btn-small" type="button" id="kr-pausebtn" disabled>暂停</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band white" style="padding-top:36px">
+  <div class="wrap kr-low">
+    <article class="card sun">
+      <span class="eyebrow">にがてなかな</span>
+      <h3>你常漏掉的假名</h3>
+      <p class="muted small" style="margin:0">点一下听发音。漏掉的假名攒到 6 个，就可以选「专练常错」只练它们。</p>
+      <div class="kr-kana-list" id="kr-weak"></div>
+    </article>
+    <div class="kr-more">
+      <a class="btn btn-ghost btn-small" href="kana.html">五十音表 · 点读发音</a>
+      <a class="btn btn-ghost btn-small" href="games.html">← 更多小游戏</a>
+    </div>
+  </div>
+</section>
+<template id="kr-howto">
+  <ol class="kr-sheet-ol">
+    <li>选范围：先从「平假名 · 清音」开始，熟了再换片假名、浊音和拗音。</li>
+    <li>每滴雨里有一个假名。点它的读音，雨滴会化成光，同时读一遍发音。</li>
+    <li>雨滴掉进海里会读出正确答案。漏掉 5 滴这一局就结束。</li>
+    <li>接住 30 滴就放晴。连击越多得分越高，经验值会记到你的等级里。</li>
+    <li>电脑上可以直接打字，shi 和 si、tsu 和 tu 都算对；数字键 1–6 对应 6 个按钮，Esc 暂停。</li>
+  </ol>
+  <p class="muted small" style="margin:0">也可以去 <a href="kana.html#quiz">五十音测验</a> 做 10 题，或 <a href="downloads.html">下载描红练习纸</a>。</p>
+</template>
+
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/kana-data.js"></script>
+<script>
+/* 玩游戏学五十音 · 假名雨 */
+(function () {
+  'use strict';
+  var B = window.Breeze, K = window.KANA;
+  if (!B || !K) return;
+  var $ = B.$, $$ = B.$$, esc = B.esc;
+
+  /* ---------- 存储 ----------
+   * 现在全部存在浏览器本地（localStorage）。接腾讯云开发时只需替换 load() / save() 这两个函数，
+   * 经验值已经走 Breeze.addXP，会随账号自动同步，不需要在这里处理。 */
+  var KEY = 'breeze-game-kana-rain-v1';
+  function defaults() { return { mode: 'h-seion', speed: 'mid', sound: true, plays: 0, best: {}, clears: {}, missed: {} }; }
+  function load() {
+    var d = defaults();
+    try { var s = localStorage.getItem(KEY); if (s) { var o = JSON.parse(s); for (var k in o) if (o[k] != null) d[k] = o[k]; } } catch (e) { }
+    return d;
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } }
+  var S = load();
+
+  /* ---------- 规则 ---------- */
+  var TOTAL = 30, LIVES = 5, MAX_ON = 4, SLOTS = 6;
+  var MODES = [
+    { id: 'h-seion', name: '平假名 · 清音', groups: ['seion'], script: 'h' },
+    { id: 'k-seion', name: '片假名 · 清音', groups: ['seion'], script: 'k' },
+    { id: 'dakuon', name: '浊音 · 半浊音', groups: ['dakuon'], script: 'h' },
+    { id: 'yoon', name: '拗音', groups: ['yoon'], script: 'h' },
+    { id: 'mix', name: '平片混合', groups: ['seion', 'dakuon'], script: 'mix' },
+    { id: 'weak', name: '专练常错', weak: true }
+  ];
+  var SPEEDS = [
+    { id: 'slow', name: '慢 · 刚学完', fall: 9.5, gap: 2.3 },
+    { id: 'mid', name: '中 · 认得差不多', fall: 7.2, gap: 1.75 },
+    { id: 'fast', name: '快 · 挑战', fall: 5.4, gap: 1.3 }
+  ];
+  /* 训令式等常见拼法也算对 */
+  var ALT = { shi: ['si'], chi: ['ti'], tsu: ['tu'], fu: ['hu'], ji: ['zi'], n: ['nn'], sha: ['sya'], shu: ['syu'], sho: ['syo'], cha: ['tya', 'cya'], chu: ['tyu', 'cyu'], cho: ['tyo', 'cyo'], ja: ['zya', 'jya'], ju: ['zyu', 'jyu'], jo: ['zyo', 'jyo'] };
+  function spellings(r) { return [r].concat(ALT[r] || []); }
+  function modeById(id) { for (var i = 0; i < MODES.length; i++) if (MODES[i].id === id) return MODES[i]; return MODES[0]; }
+  function speedById(id) { for (var i = 0; i < SPEEDS.length; i++) if (SPEEDS[i].id === id) return SPEEDS[i]; return SPEEDS[1]; }
+  function weakList() {
+    return Object.keys(S.missed).map(function (g) { var m = S.missed[g]; return { g: g, r: m.r, f: m.f, n: m.n }; })
+      .sort(function (a, b) { return b.n - a.n; });
+  }
+  function poolFor(mode) {
+    if (mode.weak) return weakList().slice(0, 16).map(function (m) { return { h: m.g, k: m.g, r: m.r, f: m.f }; });
+    return K.pool(mode.groups);
+  }
+  function glyphOf(item, mode) {
+    if (mode.weak || mode.script === 'h') return item.h;
+    if (mode.script === 'k') return item.k;
+    return Math.random() < .5 ? item.h : item.k;
+  }
+
+  /* ---------- 元素 ---------- */
+  var stage = $('#kr-stage'), field = $('#kr-field'), pad = $('#kr-pad');
+  var reduce = false; try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { }
+  function setSun(v) { stage.style.setProperty('--sun', Math.max(0, Math.min(1, v)).toFixed(3)); }
+  function show(id, on) { $(id).hidden = !on; if (id === '#kr-hud') $('#kr-pad').hidden = !on; }
+  $('#kr-help').onclick = function () { var wasPlaying = G && !$('#kr-hud').hidden && $('#kr-pause').hidden; if (wasPlaying && $('#kr-pausebtn') && !$('#kr-pausebtn').disabled) $('#kr-pausebtn').click(); window.Breeze.sheet('怎么玩 · 假名雨', function (b) { b.appendChild($('#kr-howto').content.cloneNode(true)); }); };
+
+  /* ---------- 开始前：范围、速度、最高分 ---------- */
+  function renderSetup() {
+    var weakN = weakList().length;
+    if (S.mode === 'weak' && weakN < 6) S.mode = 'h-seion';
+    $('#kr-modes').innerHTML = MODES.map(function (m) {
+      var dis = m.weak && weakN < 6;
+      return '<button type="button" class="chip" data-mode="' + m.id + '" aria-pressed="' + (S.mode === m.id) + '"' + (dis ? ' disabled title="漏掉的假名攒到 6 个就能选"' : '') + '>' + m.name + (m.weak ? '（' + weakN + '）' : '') + '</button>';
+    }).join('');
+    $('#kr-speeds').innerHTML = SPEEDS.map(function (s) {
+      return '<button type="button" class="chip" data-speed="' + s.id + '" aria-pressed="' + (S.speed === s.id) + '">' + s.name + '</button>';
+    }).join('');
+    var key = S.mode + '/' + S.speed;
+    $('#kr-best-line').innerHTML = '这个范围和速度的最高分：<b>' + (S.best[key] || 0) + '</b>';
+    $('#kr-plays').textContent = S.plays ? ('已经玩了 ' + S.plays + ' 局，放晴 ' + sumClears() + ' 次') : '';
+    $$('[data-mode]').forEach(function (b) { b.onclick = function () { if (b.disabled) return; S.mode = b.getAttribute('data-mode'); save(); renderSetup(); renderPad(); }; });
+    $$('[data-speed]').forEach(function (b) { b.onclick = function () { S.speed = b.getAttribute('data-speed'); save(); renderSetup(); }; });
+  }
+  function sumClears() { var n = 0; for (var k in S.clears) n += S.clears[k]; return n; }
+
+  function renderDemo() {
+    var demo = $('#kr-demo'); if (!demo) return;
+    var w = field.clientWidth, d = parseFloat(getComputedStyle(stage).getPropertyValue('--d')) || 66;
+    var sample = [['あ', .1, .2], ['き', .78, .12], ['す', .62, .55]];
+    demo.innerHTML = sample.map(function (s) {
+      return '<div class="kr-drop" style="transform:translate(' + Math.round(s[1] * (w - d)) + 'px,' + Math.round(s[2] * field.clientHeight) + 'px)"><div class="b"></div><div class="g" lang="ja">' + s[0] + '</div></div>';
+    }).join('');
+  }
+
+  function renderWeak() {
+    var list = weakList(), box = $('#kr-weak');
+    if (!list.length) { box.innerHTML = '<p class="muted small" style="margin:0">还没有漏掉过假名。玩一局之后，这里会列出你最常漏掉的假名。</p>'; return; }
+    box.innerHTML = list.slice(0, 12).map(function (m) {
+      return '<button type="button" data-f="' + esc(m.f) + '" data-g="' + esc(m.g) + '" aria-label="' + esc(m.g) + '，读作 ' + esc(m.r) + '，漏掉 ' + m.n + ' 次"><span class="k" lang="ja">' + esc(m.g) + '</span><span class="r">' + esc(m.r) + '</span><span class="n">×' + m.n + '</span></button>';
+    }).join('');
+    $$('button', box).forEach(function (b) { b.onclick = function () { B.playKana(b.getAttribute('data-f'), b.getAttribute('data-g')); }; });
+  }
+
+  /* ---------- 读音按钮 ---------- */
+  function renderPad() {
+    var slots = G ? G.slots : idleSlots();
+    pad.innerHTML = slots.map(function (r, i) {
+      return '<button type="button" class="kr-key" data-i="' + i + '"' + (G && G.running ? '' : ' disabled') + '><span class="kn" aria-hidden="true">' + (i + 1) + '</span>' + esc(r) + '</button>';
+    }).join('');
+    $$('.kr-key', pad).forEach(function (b) {
+      b.addEventListener('pointerdown', function (e) { e.preventDefault(); press(+b.getAttribute('data-i')); });
+      /* 键盘和读屏软件触发的点击（detail 为 0）；鼠标和触屏已经在 pointerdown 里处理 */
+      b.addEventListener('click', function (e) { if (e.detail === 0) press(+b.getAttribute('data-i')); });
+    });
+  }
+  function idleSlots() {
+    var p = poolFor(modeById(S.mode)); return B.shuffle(p).slice(0, SLOTS).map(function (x) { return x.r; });
+  }
+  function keyEl(i) { return pad.querySelector('[data-i="' + i + '"]'); }
+  function flashKey(i, cls) {
+    var b = keyEl(i); if (!b) return;
+    b.classList.remove('ok', 'no'); void b.offsetWidth; b.classList.add(cls);
+    setTimeout(function () { b.classList.remove(cls); }, 380);
+  }
+  function setSlot(i, r) {
+    G.slots[i] = r; var b = keyEl(i); if (!b) return;
+    b.lastChild.nodeValue = r; b.classList.remove('swap'); void b.offsetWidth; b.classList.add('swap');
+  }
+
+  /* ---------- 一局 ---------- */
+  var G = null, raf = 0;
+  function newGame() {
+    var mode = modeById(S.mode), sp = speedById(S.speed), pool = poolFor(mode);
+    if (pool.length < 6) { B.toast('这个范围的假名不够，换一个吧'); return; }
+    stopLoop(); field.innerHTML = '';
+    G = {
+      mode: mode, sp: sp, pool: pool, drops: [], spawned: 0, hits: 0, misses: 0, wrong: 0, lives: LIVES, score: 0, combo: 0, maxCombo: 0,
+      missedRound: [], t: 0, next: .4, running: false, paused: false, buffer: '', bt: 0, recent: [], seq: 0, w: 0, h: 0, d: 66, seaY: 0
+    };
+    measure();
+    G.slots = B.shuffle(pool).slice(0, SLOTS).map(function (x) { return x.r; });
+    renderPad(); renderHUD(); setSun(.06);
+    show('#kr-setup', false); show('#kr-result', false); show('#kr-hud', true);
+    bringIntoView();
+    countdown(function () {
+      G.running = true; renderPad(); $('#kr-pausebtn').disabled = false;
+      var first = keyEl(0); if (first && !matchMedia('(pointer:coarse)').matches) first.focus({ preventScroll: true });
+      last = 0; raf = requestAnimationFrame(tick);
+    });
+  }
+  /* 开局时把舞台和按钮一起滚到屏幕里（手机上尤其需要） */
+  function bringIntoView() {
+    var head = document.getElementById('site-head'), off = (head ? head.offsetHeight : 64) + 8;
+    var top = stage.getBoundingClientRect().top + window.pageYOffset - off;
+    var bottom = pad.getBoundingClientRect().bottom + window.pageYOffset;
+    if (bottom - top > window.innerHeight) top = bottom - window.innerHeight + 8;
+    window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+  }
+  function countdown(done) {
+    var el = $('#kr-ready-t'); show('#kr-ready', true);
+    var steps = reduce ? ['スタート！'] : ['よーい', 'スタート！'], i = 0;
+    (function step() {
+      if (i >= steps.length) { show('#kr-ready', false); done(); return; }
+      el.textContent = steps[i++]; setTimeout(step, 650);
+    })();
+  }
+  function measure() {
+    if (!G) return;
+    G.w = field.clientWidth; G.h = field.clientHeight;
+    G.d = parseFloat(getComputedStyle(stage).getPropertyValue('--d')) || 66;
+    G.seaY = G.h - 44;
+    G.drops.forEach(function (d) { d.x = Math.min(d.x, G.w - G.d - 6); });
+  }
+  window.addEventListener('resize', function () { measure(); if (!G || !G.running) renderDemo(); });
+
+  function spawn() {
+    var active = {}; G.drops.forEach(function (d) { active[d.item.r] = 1; });
+    var cands = G.pool.filter(function (p) { return !active[p.r] && G.recent.indexOf(p.r) < 0; });
+    if (!cands.length) cands = G.pool.filter(function (p) { return !active[p.r]; });
+    if (!cands.length) return;
+    var item = cands[Math.floor(Math.random() * cands.length)];
+    G.recent.push(item.r); if (G.recent.length > 4) G.recent.shift();
+    var glyph = glyphOf(item, G.mode), x = 0, tries = 0, D = G.d;
+    do { x = 8 + Math.random() * Math.max(1, G.w - D - 16); tries++; }
+    while (tries < 10 && G.drops.some(function (d) { return d.y < D * 1.8 && Math.abs(d.x - x) < D * 1.1; }));
+    var el = document.createElement('div');
+    el.className = 'kr-drop' + (glyph.length > 1 ? ' two' : '');
+    el.innerHTML = '<div class="b"></div><div class="g" lang="ja">' + esc(glyph) + '</div>';
+    field.appendChild(el);
+    var accel = 1 + .3 * (G.spawned / TOTAL);
+    var d = { id: ++G.seq, item: item, glyph: glyph, x: x, y: -D, v: (G.seaY + D) / G.sp.fall * accel, el: el };
+    G.drops.push(d); G.spawned++;
+    ensureSlot(item.r);
+    place(d);
+  }
+  /* 新雨滴的读音一定在按钮里；同时换掉另一个干扰项，避免「刚变的按钮就是答案」 */
+  function ensureSlot(r) {
+    var need = {}; G.drops.forEach(function (d) { need[d.item.r] = 1; });
+    var free = []; G.slots.forEach(function (s, i) { if (!need[s]) free.push(i); });
+    free = B.shuffle(free);
+    var has = G.slots.indexOf(r) >= 0;
+    if (!has && free.length) setSlot(free.shift(), r);
+    if (free.length) {
+      var used = {}; G.slots.forEach(function (s) { used[s] = 1; });
+      var opts = G.pool.filter(function (p) { return !used[p.r]; });
+      if (opts.length) setSlot(free.shift(), opts[Math.floor(Math.random() * opts.length)].r);
+    }
+  }
+  function place(d) { d.el.style.transform = 'translate3d(' + d.x.toFixed(1) + 'px,' + d.y.toFixed(1) + 'px,0)'; }
+
+  var last = 0;
+  function tick(now) {
+    if (!G || !G.running) return;
+    var dt = last ? Math.min(.05, (now - last) / 1000) : 0; last = now;
+    if (!G.paused) {
+      G.t += dt;
+      if (G.spawned < TOTAL && G.t >= G.next && G.drops.length < MAX_ON) {
+        spawn(); G.next = G.t + G.sp.gap * (1 - .25 * G.spawned / TOTAL);
+      }
+      var lowest = null;
+      for (var i = G.drops.length - 1; i >= 0; i--) {
+        var d = G.drops[i]; d.y += d.v * dt; place(d);
+        if (d.y + G.d * .82 >= G.seaY) { miss(d); continue; }
+        if (!lowest || d.y > lowest.y) lowest = d;
+      }
+      G.drops.forEach(function (d) { d.el.classList.toggle('low', d === lowest && G.drops.length > 1); });
+      if (G.lives <= 0) { finish(false); return; }
+      if (G.spawned >= TOTAL && !G.drops.length) { finish(true); return; }
+    }
+    raf = requestAnimationFrame(tick);
+  }
+  function stopLoop() { if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; }
+
+  function removeDrop(d) { var i = G.drops.indexOf(d); if (i >= 0) G.drops.splice(i, 1); }
+  function fx(cls, text, x, y) {
+    var e = document.createElement('div'); e.className = 'kr-fx ' + cls; e.textContent = text;
+    e.style.left = x + 'px'; e.style.top = y + 'px'; field.appendChild(e);
+    setTimeout(function () { e.remove(); }, cls === 'miss' ? 1700 : 950);
+  }
+  function hit(d) {
+    removeDrop(d);
+    G.hits++; G.combo++; G.maxCombo = Math.max(G.maxCombo, G.combo);
+    var gain = 10 + Math.min(G.combo - 1, 10) * 2; G.score += gain;
+    if (S.sound) B.playKana(d.item.f, d.item.h);
+    var cx = d.x + G.d / 2, cy = d.y;
+    if (!reduce) { var r = document.createElement('div'); r.className = 'kr-ring'; r.style.transform = 'translate(' + d.x + 'px,' + d.y + 'px)'; r.style.left = '0'; r.style.top = '0'; field.appendChild(r); setTimeout(function () { r.remove(); }, 520); }
+    d.el.classList.add('pop'); d.el.style.transform += ' scale(1.25)';
+    setTimeout(function () { d.el.remove(); }, 460);
+    fx('hit', '+' + gain + ' ' + d.item.r, cx, cy);
+    renderHUD(true);
+  }
+  function miss(d) {
+    removeDrop(d); d.el.remove();
+    G.lives--; G.misses++; G.combo = 0;
+    G.missedRound.push({ g: d.glyph, r: d.item.r, f: d.item.f });
+    var m = S.missed[d.glyph] || { r: d.item.r, f: d.item.f, n: 0 }; m.n++; S.missed[d.glyph] = m; save();
+    if (S.sound) B.playKana(d.item.f, d.item.h);
+    fx('miss', d.glyph + ' = ' + d.item.r, Math.max(50, Math.min(G.w - 50, d.x + G.d / 2)), G.seaY - 40);
+    renderHUD();
+  }
+  function wrong(i) {
+    G.wrong++; G.combo = 0;
+    if (i != null) flashKey(i, 'no');
+    renderHUD();
+  }
+  function answer(r, i) {
+    if (!G || !G.running || G.paused || !r) return;
+    var cand = null;
+    G.drops.forEach(function (d) { if (d.item.r === r && (!cand || d.y > cand.y)) cand = d; });
+    if (i == null) i = G.slots.indexOf(r);
+    if (cand) { hit(cand); if (i >= 0) flashKey(i, 'ok'); }
+    else wrong(i >= 0 ? i : null);
+  }
+  function press(i) { if (G && G.running) answer(G.slots[i], i); }
+
+  function renderHUD(bump) {
+    if (!G) return;
+    $('#kr-score').textContent = G.score;
+    var done = G.hits + G.misses;
+    $('#kr-count').textContent = done + ' / ' + TOTAL;
+    $('#kr-prog').style.width = (done / TOTAL * 100) + '%';
+    var l = ''; for (var i = 0; i < LIVES; i++) l += '<i class="' + (i < G.lives ? '' : 'off') + '"></i>';
+    $('#kr-lives').innerHTML = l;
+    $('#kr-lives').parentNode.setAttribute('aria-label', '还能漏掉 ' + G.lives + ' 滴');
+    var c = $('#kr-combo');
+    c.textContent = G.combo >= 3 ? G.combo + ' 連続！' : '';
+    if (bump && G.combo >= 3 && !reduce) { c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
+    setSun(.06 + .7 * G.hits / TOTAL);
+  }
+
+  /* ---------- 打字输入 ---------- */
+  function showBuffer(bad) {
+    var el = $('#kr-buffer');
+    el.hidden = !G || !G.buffer && !bad;
+    el.textContent = G ? (G.buffer || '×') : '';
+    el.classList.toggle('bad', !!bad);
+    if (bad) setTimeout(function () { if (G && !G.buffer) el.hidden = true; el.classList.remove('bad'); }, 350);
+  }
+  function checkBuffer() {
+    var b = G.buffer, exact = null, longer = false;
+    G.drops.forEach(function (d) {
+      spellings(d.item.r).forEach(function (s) {
+        if (s === b && (!exact || d.y > exact.y)) exact = d;
+        else if (s.length > b.length && s.indexOf(b) === 0) longer = true;
+      });
+    });
+    clearTimeout(G.bt);
+    if (exact && !longer) { G.buffer = ''; showBuffer(); answer(exact.item.r); return; }
+    if (exact && longer) {
+      showBuffer();
+      G.bt = setTimeout(function () { if (G && G.buffer === b) { G.buffer = ''; showBuffer(); answer(exact.item.r); } }, 480);
+      return;
+    }
+    if (longer) { showBuffer(); return; }
+    G.buffer = ''; showBuffer(true); wrong(null);
+  }
+  document.addEventListener('keydown', function (e) {
+    if (!G || !G.running) return;
+    var tag = (e.target && e.target.tagName) || '';
+    if (/INPUT|SELECT|TEXTAREA/.test(tag) || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'Escape') { var sh = document.querySelector('.modal.sheet'); if (sh && !sh.hidden) return; e.preventDefault(); togglePause(); return; }
+    if (G.paused) return;
+    if (e.key === 'Backspace') { e.preventDefault(); G.buffer = G.buffer.slice(0, -1); showBuffer(); return; }
+    if (/^[a-zA-Z]$/.test(e.key)) { e.preventDefault(); G.buffer += e.key.toLowerCase(); checkBuffer(); return; }
+    if (/^[1-6]$/.test(e.key)) { e.preventDefault(); press(+e.key - 1); }
+  });
+
+  /* ---------- 暂停 / 结束 ---------- */
+  function togglePause(force) {
+    if (!G || !G.running) return;
+    G.paused = force != null ? force : !G.paused;
+    show('#kr-pause', G.paused);
+    $('#kr-pausebtn').textContent = G.paused ? '继续' : '暂停';
+    if (G.paused) $('#kr-resume').focus({ preventScroll: true }); else last = 0;
+  }
+  document.addEventListener('visibilitychange', function () { if (document.hidden && G && G.running && !G.paused) togglePause(true); });
+
+  function finish(clear) {
+    if (!G) return;
+    G.running = false; G.paused = false; stopLoop(); clearTimeout(G.bt);
+    G.drops.forEach(function (d) { d.el.remove(); }); G.drops = [];
+    $('#kr-pausebtn').disabled = true; $('#kr-pausebtn').textContent = '暂停';
+    show('#kr-pause', false); show('#kr-buffer', false); $('#kr-combo').textContent = '';
+    var key = S.mode + '/' + S.speed, prev = S.best[key] || 0, record = G.score > prev && G.score > 0;
+    if (record) S.best[key] = G.score;
+    S.plays++; if (clear) S.clears[S.mode] = (S.clears[S.mode] || 0) + 1;
+    save();
+    var xp = G.hits + (clear ? 10 : 0) + (clear && !G.misses ? 5 : 0);
+    if (xp) B.addXP(xp, '假名雨');
+    setSun(clear ? 1 : .1);
+    renderPad();
+
+    var seen = {}, missed = G.missedRound.filter(function (m) { if (seen[m.g]) return false; seen[m.g] = 1; return true; });
+    var acc = G.hits + G.wrong ? Math.round(G.hits / (G.hits + G.wrong) * 100) : 0;
+    var teru = ''; if (clear) for (var i = 0; i < 3; i++) teru += B.teru(true);
+    $('#kr-result-card').innerHTML =
+      '<div class="kr-res-top">' + B.jelly(clear ? 'right' : 'think', '水母ふわり') + '<div><h2 lang="ja">' + (clear ? '晴れた！' : 'あめ、あめ…') + '</h2><p class="muted" style="margin:4px 0 0">' +
+      (clear ? (G.misses ? '放晴了！漏掉的几个，下面点一下再听听。' : '一滴都没漏，完美的晴天。') : '雨还没停。漏掉的假名在下面，听几遍再来一局。') + '</p></div></div>' +
+      (clear ? '<div class="kr-teru">' + teru + '</div>' : '') +
+      '<dl class="kr-stats"><div><dt>得分' + (record ? ' · 新纪录' : '') + '</dt><dd>' + G.score + '</dd></div><div><dt>接住</dt><dd>' + G.hits + '<small style="font-size:.8rem"> / ' + TOTAL + '</small></dd></div><div><dt>最高连击</dt><dd>' + G.maxCombo + '</dd></div><div><dt>点对率</dt><dd>' + acc + '<small style="font-size:.8rem">%</small></dd></div></dl>' +
+      (xp ? '<p class="small" style="margin:0">本局 +' + xp + ' 经验值' + (clear ? '（含放晴奖励）' : '') + '</p>' : '') +
+      (missed.length ? '<div><p class="lbl">这一局漏掉的假名</p><div class="kr-kana-list" id="kr-res-miss">' + missed.map(function (m) {
+        return '<button type="button" data-f="' + esc(m.f) + '" data-g="' + esc(m.g) + '"><span class="k" lang="ja">' + esc(m.g) + '</span><span class="r">' + esc(m.r) + '</span></button>';
+      }).join('') + '</div></div>' : '') +
+      '<div class="hero-cta"><button class="btn btn-sun" type="button" id="kr-again">再来一局</button><button class="btn btn-ghost" type="button" id="kr-change">换个范围</button></div>';
+    $$('#kr-res-miss button').forEach(function (b) { b.onclick = function () { B.playKana(b.getAttribute('data-f'), b.getAttribute('data-g')); }; });
+    $('#kr-again').onclick = newGame;
+    $('#kr-change').onclick = function () { G = null; show('#kr-result', false); show('#kr-hud', false); setSun(.25); renderSetup(); renderPad(); show('#kr-setup', true); renderDemoIntoField(); };
+    show('#kr-hud', false); show('#kr-result', true);
+    $('#kr-again').focus({ preventScroll: true });
+    renderWeak(); renderSetup();
+  }
+  function renderDemoIntoField() { field.innerHTML = '<div class="kr-demo" id="kr-demo"></div>'; renderDemo(); }
+
+  /* ---------- 绑定 ---------- */
+  $('#kr-start').onclick = newGame;
+  $('#kr-resume').onclick = function () { togglePause(false); };
+  $('#kr-quit').onclick = function () { togglePause(false); finish(false); };
+  $('#kr-pausebtn').onclick = function () { togglePause(); };
+  var sb = $('#kr-sound');
+  function renderSound() { sb.textContent = '声音：' + (S.sound ? '开' : '关'); sb.setAttribute('aria-pressed', String(!!S.sound)); }
+  sb.onclick = function () { S.sound = !S.sound; save(); renderSound(); if (!S.sound) B.stopAudio(); };
+
+  renderSound(); renderSetup(); renderPad(); renderWeak(); setSun(.25);
+  requestAnimationFrame(renderDemo);
+})();
+
+</script>
+</body>
+</html>

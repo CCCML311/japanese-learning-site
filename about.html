@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>あお老师 · 课程与口译 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="あお老师：上海外国语大学日语语言文学硕士在读，日语 N1、专八优秀、CATTI 三级口译，教过 300+ 位学员，50+ 场中日口译。提供一对一日语课（JLPT、商务、会话、留学）和中日陪同口译。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.t-nums{padding-block:0 8px;margin-top:-6px}
+.t-nums .card{text-align:center;align-items:center;gap:4px}
+.t-nums .card h3{font-size:1rem;margin:0}
+.t-nums .card p{margin:0}
+@media (max-width:760px){.t-nums .card p{display:none}.t-nums .card h3{font-size:.8125rem}}
+.t-main{padding-top:28px}
+.t-panel{display:flex;flex-direction:column;gap:22px}
+.t-sub{font-family:var(--f-mincho);font-size:1.3rem;font-weight:900;margin:8px 0 0}
+.t-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:18px 22px;border-radius:var(--r-l);background:linear-gradient(160deg,#FFF6E6,#FFEFF3);border:1px solid rgba(255,205,130,.5)}
+.t-cta p{margin:0}
+.t-cta b{font-family:var(--f-mincho);font-size:1.125rem}
+.t-cta .btn{min-height:44px}
+.tabbar .btn{min-height:42px}
+@media (max-width:600px){.tabbar>.btn{display:none}}
+@media (min-width:761px){
+  body[data-page=about] section.sky .wrap{padding-block:40px 92px}
+  body[data-page=about] .hero-mascot{width:min(230px,40vw)}
+  body[data-page=about] .tategaki{display:none}
+  .t-nums{margin-top:-72px;position:relative;z-index:3;padding-bottom:0}
+  .t-nums .card{padding:14px 16px;flex-direction:row;justify-content:center;gap:10px;align-items:baseline}
+  .t-nums .card p{display:none}
+  .t-nums .big-num{font-size:2rem}
+  .t-main{padding-top:24px}
+}
+</style>
+</head>
+<body data-page="about">
+<header id="site-head"></header>
+<main>
+  <section class="sky">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">先生紹介 · TEACHER</span>
+        <h1 class="hero-title" style="margin-top:12px;font-size:clamp(2.25rem,6vw,3.75rem)">你好，我是<br><span class="kana-hl">あお老师</span></h1>
+        <p class="hero-sub">「あお」是日语的「青」，天空和大海的颜色，也有“刚刚起步”的意思。希望你从零开始，也能在这里学得轻松。</p>
+        <div class="creds"><span>日语 N1</span><span>专四 / 专八 优秀</span><span>CATTI 三级口译</span><span>上海日语口译证</span></div>
+      </div>
+      <p class="tategaki" aria-hidden="true">そよ風のように、やさしく。</p>
+      <div class="hero-mascot"><div class="float" id="a-jelly"></div><p class="bubble">よろしくね！<br><span class="small muted">请多关照！</span></p></div>
+    </div>
+    <div class="clouds" aria-hidden="true"><svg viewBox="0 0 1200 70" preserveAspectRatio="none"><path d="M0 70 V40 q40 -30 90 -8 q30 -30 80 -6 q40 -26 90 0 q50 -30 100 -2 q40 -24 90 2 q40 -30 100 -4 q50 -26 100 0 q40 -28 90 -2 q50 -30 100 -4 q40 -22 90 4 q50 -28 100 0 q30 -20 70 6 V70z" fill="#F7FBFF"/></svg></div>
+  </section>
+
+  <section class="band t-nums">
+    <div class="wrap grid g3 m-row3">
+      <div class="card sun"><span class="big-num">300<small>+</small></span><h3>位学员</h3><p class="small">两年日语讲师经历，学员有大学生、日企员工和留学准备生。</p></div>
+      <div class="card sky"><span class="big-num">50<small>+</small></span><h3>场中日口译</h3><p class="muted small">商务、展会、学术、旅游、医疗、法律等 7 个领域。</p></div>
+      <div class="card coral"><span class="big-num">20<small>+</small></span><h3>项省级以上奖项</h3><p class="muted small">翻译、口译、演讲类日语比赛。</p></div>
+    </div>
+  </section>
+
+  <section class="band white t-main">
+    <div class="wrap">
+      <div class="tabbar">
+        <div class="ptabs" role="tablist" aria-label="老师页">
+          <button type="button" role="tab" id="tab-me" aria-controls="me" aria-selected="true">关于我</button>
+          <button type="button" role="tab" id="tab-courses" aria-controls="courses">一对一课程</button>
+          <button type="button" role="tab" id="tab-interpret" aria-controls="interpret">中日口译</button>
+        </div>
+        <button type="button" class="btn btn-sun btn-small" data-inquiry="course">预约 / 咨询</button>
+      </div>
+
+      <div class="tabpanel t-panel" id="me" role="tabpanel" aria-labelledby="tab-me">
+        <div class="grid g2" style="align-items:start">
+      <div class="prose">
+        <span class="eyebrow" style="align-self:flex-start">プロフィール</span>
+        <h2>学历与经历</h2>
+        <h3>学历</h3>
+        <ul><li>上海外国语大学 · 日语语言文学 · 硕士在读</li><li>南昌大学 · 日语 · 本科，专业排名第一（1/25）</li></ul>
+        <h3>证书</h3>
+        <ul><li>日本语能力考试 N1</li><li>日语专业四级、八级 优秀</li><li>CATTI 三级日语口译</li><li>上海日语口译证</li></ul>
+        <h3>部分获奖</h3>
+        <ul><li>「外研社·国才杯」全国大学生外语能力大赛 日语 国赛银奖</li><li>中华杯日语演讲比赛 华东赛区二等奖</li><li>「人民中国杯」日语国际翻译大赛 二等奖</li></ul>
+      </div>
+      <div class="prose">
+        <span class="eyebrow" style="align-self:flex-start">教え方</span>
+        <h2>我怎么教日语</h2>
+        <p>我自己是从五十音一路学到 N1、专八，再到做口译的。哪里容易卡住、哪些地方背了也记不住，我都踩过坑。</p>
+        <p>上课时我会先弄清楚你的目标：考级、工作、留学还是兴趣，再从你现在的水平出发安排内容。考级就练题型和节奏；会话就多开口，从你感兴趣的话题聊起；商务日语会结合我在日企项目和口译里见过的真实场景。</p>
+        <p>这个网站上的五十音、每日一句和测验都是免费的。想要更有针对性的练习，可以约一节 30 分钟的免费试听。</p>
+        <div class="hero-cta"><button type="button" class="btn btn-sun" data-inquiry="course">预约免费试听</button><a class="btn btn-ghost" href="#courses">看看课程</a></div>
+      </div>
+    </div>
+      </div>
+
+      <div class="tabpanel t-panel" id="courses" role="tabpanel" aria-labelledby="tab-courses" hidden>
+        <div><span class="eyebrow">コース · LESSON</span><h2 class="t-sub">一对一日语课</h2><p class="lead" style="margin:8px 0 0">按你的目标定制：考级、工作、留学、日常会话。课程面向大学生、职场人士和留学准备生。学习周期按每周 2 次课估算，实际会根据你的基础调整。</p></div>
+        <div class="how">
+        <span style="color:var(--ink)">线上一对一</span><span style="color:var(--ink)">腾讯会议 / Zoom</span><span style="color:var(--ink)">30 分钟免费试听</span><span style="color:var(--ink)">价格咨询报价</span><span style="color:var(--ink)">面向成人学习者</span>
+      </div>
+      <div class="grid g2 m-swipe">
+        <article class="card course"><span class="tag">考级</span><h3>JLPT 考级（N5–N1）</h3>
+          <dl><dt>适合谁</dt><dd>要考日语能力考试的同学，零基础到冲刺 N1 都可以</dd><dt>学完能做到</dt><dd>掌握对应级别的词汇和语法，熟悉题型和答题节奏，做真题能稳定过线</dd><dt>大致周期</dt><dd>N3 冲刺 3–4 个月；N2 冲刺 3–6 个月；N1 冲刺 4–6 个月</dd></dl></article>
+        <article class="card course"><span class="tag">工作</span><h3>商务日语</h3>
+          <dl><dt>适合谁</dt><dd>在日企工作、要和日方对接，或准备日企面试的人</dd><dt>学完能做到</dt><dd>写得体的商务邮件，用敬语开会、打电话、汇报，应对日企面试</dd><dt>大致周期</dt><dd>2–4 个月（建议已有 N3 左右基础）</dd></dl></article>
+        <article class="card course"><span class="tag">会话</span><h3>口语会话</h3>
+          <dl><dt>适合谁</dt><dd>会看不会说、想去日本旅行，或想听懂动漫日剧的人</dd><dt>学完能做到</dt><dd>用自然的日语聊日常话题，敢开口，发音和语调更地道</dd><dt>大致周期</dt><dd>按次灵活安排，建议至少连续 8 次课</dd></dl></article>
+        <article class="card course"><span class="tag">留学</span><h3>留学准备</h3>
+          <dl><dt>适合谁</dt><dd>准备去日本读语言学校、本科或研究生的同学</dd><dt>学完能做到</dt><dd>应对留学面试，写研究计划书和志望理由书，了解在日生活常用表达</dd><dt>大致周期</dt><dd>2–3 个月，按申请时间倒排</dd></dl></article>
+      </div>
+        <div class="t-cta"><p><b>30 分钟免费试听</b><br><span class="muted small">先上一节再决定要不要继续，价格按课程咨询报价。</span></p><button type="button" class="btn btn-sun" data-inquiry="course">预约免费试听</button></div>
+      </div>
+
+      <div class="tabpanel t-panel" id="interpret" role="tabpanel" aria-labelledby="tab-interpret" hidden>
+        <div><span class="eyebrow">通訳 · INTERPRETING</span><h2 class="t-sub">中日陪同口译</h2><p class="lead" style="margin:8px 0 0">商务洽谈、工厂参观、展会、学术交流、旅游陪同。提前做术语准备，现场把话说准、把气氛照顾好。3 年实战，50+ 场，覆盖 7 个领域。</p></div>
+        <h3 class="t-sub" style="font-size:1.125rem">做过的领域</h3>
+      <div class="grid g3 m-swipe">
+        <article class="card"><span class="tag">旅</span><h3>旅游陪同</h3><p class="muted" style="margin:0">景德镇 8 天陪同，婺源日本团队 4 天，南昌 30 人研学 7 天。陶溪川、御窑厂、篁岭、滕王阁、海昏侯博物馆等。</p></article>
+        <article class="card"><span class="tag">商</span><h3>商务与工厂</h3><p class="muted" style="margin:0">智能电子产品工厂陪同与商务洽谈；数控机床日企团建的主持与即兴祝酒词；陶艺家商务宴会。</p></article>
+        <article class="card"><span class="tag">海</span><h3>产品出海洽谈</h3><p class="muted" style="margin:0">中方智能家电品牌与日方洽谈：产品介绍、合作模式、分红比例、本地化方案。</p></article>
+        <article class="card"><span class="tag">展</span><h3>展会</h3><p class="muted" style="margin:0">两场日本陶艺家展会（3 天、5 天）：作家风格、创作理念、制作工艺、购买规则。</p></article>
+        <article class="card"><span class="tag">学</span><h3>学术与交流</h3><p class="muted" style="margin:0">戏剧主题国际学术会议陪同与采访口译协助；日本大学研学陪同 10 天；百人访华团跟车翻译。</p></article>
+        <article class="card"><span class="tag">医</span><h3>医疗美容</h3><p class="muted" style="margin:0">2 个月全程陪同：术前面诊、术中口译、术后陪同和后续合作洽谈。</p></article>
+        <article class="card"><span class="tag">法</span><h3>法律</h3><p class="muted" style="margin:0">两起民事纠纷全案跟进口译：律师咨询、物业管理、侵权与诉讼程序。</p></article>
+        <article class="card sun span2"><h3>还有其他场景？</h3><p style="margin:0">游戏、艺术、制造业、产品出海都做过。点「咨询口译」写下你的场景，老师会告诉你能不能接、需要准备什么。</p><button type="button" class="btn btn-sun btn-small" data-inquiry="interpret" style="align-self:flex-start">咨询口译 →</button></article>
+      </div>
+        <div><h3 class="t-sub" style="font-size:1.125rem">客户怎么说</h3><p class="muted small" style="margin:6px 0 0">节选自客户的手写信和消息，称呼部分用「……」省略。</p></div>
+      <div class="grid g2 m-swipe">
+        <figure class="card quote-card" style="margin:0"><blockquote lang="ja">一週間本当にありがとう！……のおかげで、とても良いコミュニケーションをとることができました。景徳鎮の文化や歴史も学べて本当によかったです。</blockquote><p class="tr">这一周真的谢谢你！多亏了你，我们沟通得非常顺利，还学到了景德镇的文化和历史。</p><footer>景德镇旅游陪同的日本客人 · 手写信</footer></figure>
+        <figure class="card quote-card" style="margin:0"><blockquote lang="ja">今回は本当に本当に大変お世話になりました。とても頼りになりました。</blockquote><p class="tr">这次真的真的非常感谢你的照顾，你非常可靠。</p><footer>日本陶艺家 · 展会口译</footer></figure>
+        <figure class="card quote-card" style="margin:0"><blockquote lang="ja">……のおかげで、とても楽しく充実した検討会になりました。ありがとうございます。</blockquote><p class="tr">多亏了你，这次研讨会开得非常愉快、非常充实。谢谢！</p><footer>日方客户 · 研讨会口译</footer></figure>
+        <figure class="card quote-card" style="margin:0"><blockquote lang="ja">実は……は私より日本語ができる。私の知らない単語もよく知っている。</blockquote><p class="tr">其实她的日语比我还好，连我不知道的词她都知道。</p><footer>日本客户</footer></figure>
+      </div>
+        <h3 class="t-sub" style="font-size:1.125rem">合作流程</h3>
+            <ol class="steps m-swipe narrow">
+        <li><b>1</b><strong>提交咨询</strong><span class="small muted">说明场景、日期、地点</span></li>
+        <li><b>2</b><strong>确认需求与报价</strong><span class="small muted">时长、领域、是否需要提前准备</span></li>
+        <li><b>3</b><strong>术语准备</strong><span class="small muted">提前拿资料，整理双语术语表</span></li>
+        <li><b>4</b><strong>现场口译</strong><span class="small muted">线下陪同或线上会议</span></li>
+        <li><b>5</b><strong>会后跟进</strong><span class="small muted">需要时整理会议要点</span></li>
+      </ol>
+        <div class="t-cta"><p><b>有口译需求？</b><br><span class="muted small">写下场景、日期和地点，1–2 天内回复。</span></p><button type="button" class="btn btn-sun" data-inquiry="interpret">咨询口译</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/inquiry.js"></script>
+<script>document.getElementById('a-jelly').innerHTML = window.Breeze.jelly('happy', '吉祥物水母ふわり');</script>
+</body>
+</html>

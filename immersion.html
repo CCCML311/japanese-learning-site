@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>沉浸学习 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="在日本旅行和生活用得上的 18 个情景会话，逐句朗读；60 句跟读练习，分入门到高级，可以录下自己的声音对比。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.im-tabwrap{padding-top:0}
+.im-tabwrap .ptabs{width:fit-content}
+body[data-page=immersion] .page-hero{padding-bottom:20px}
+#travel.band,#shadow.band{padding-top:22px}
+.tabpanel .band-head .eyebrow,.tabpanel .band-head h2{display:none}
+.tabpanel .band-head .lead{margin-top:0}
+.sc-pick{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.sc-open{min-height:44px}
+.sc-open b{color:var(--violet)}
+.sc-step{display:flex;gap:8px;margin-left:auto}
+.sc-step .btn{min-height:40px}
+.sc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sc-item{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid var(--line);min-height:56px}
+.sc-item .num{font-size:.75rem;color:var(--text-2);flex:none}
+.sc-item b{display:block;font-size:.9375rem}
+.sc-item small{display:block;font-size:.75rem;color:var(--text-2)}
+.sc-item[aria-pressed=true]{border-color:var(--violet);box-shadow:inset 0 0 0 1px var(--violet)}
+.sc-item:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (min-width:861px){#phr-box{position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto}}
+@media (max-width:600px){.sc-step{margin-left:0;width:100%}.sc-step .btn{flex:1}}
+</style>
+</head>
+<body data-page="immersion">
+<header id="site-head"></header>
+<main>
+  <section class="page-hero band pale">
+    <div class="wrap">
+      <span class="eyebrow">没入学習 · Immersion</span>
+      <h1>沉浸学习</h1>
+      <p class="lead">把日语放进真实场景里：先听旅行会话，再一句一句跟着读，录下自己的声音和原音对比。</p>
+    </div>
+  </section>
+  <div class="wrap im-tabwrap"><div class="ptabs" role="tablist" aria-label="沉浸学习内容"><button type="button" role="tab" id="tab-travel" aria-controls="travel" aria-selected="true">旅行会话</button><button type="button" role="tab" id="tab-shadow" aria-controls="shadow" aria-selected="false">跟读练习</button></div></div>
+
+  <section class="band tabpanel" id="travel" role="tabpanel" aria-labelledby="tab-travel">
+    <div class="wrap">
+      <div class="band-head"><div><span class="eyebrow">旅行会話</span><h2>旅行情景会话</h2><p class="lead">18 个在日本旅行和生活最常遇到的场景。点 ▶ 听单句，或者「从头播放」听完整段。右边是可以直接套用的关键句。</p></div><div id="tv-toggles"></div></div>
+      <div class="sc-pick"><button type="button" class="btn btn-ghost sc-open" id="sc-open" aria-haspopup="dialog">场景：<b id="sc-cur"></b> <span aria-hidden="true">▾</span></button><span class="muted small" id="sc-pos"></span><span class="sc-step"><button type="button" class="btn btn-ghost btn-small" id="sc-prev" aria-label="上一个场景">‹ 上一个</button><button type="button" class="btn btn-ghost btn-small" id="sc-next" aria-label="下一个场景">下一个 ›</button></span></div>
+      <div class="grid g2 wide" style="margin-top:16px;align-items:start" id="tv-body">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><h3 id="sc-title"></h3><p class="muted small" id="sc-desc" style="margin:2px 0 0"></p></div><button class="btn btn-sky btn-small" type="button" id="sc-play">▶ 从头播放</button></div>
+          <div class="convo" id="convo"></div>
+        </div>
+        <details class="card sun fold" id="phr-box" open><summary><h3>关键句</h3></summary><div id="phrases"></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="band sun tabpanel" id="shadow" role="tabpanel" aria-labelledby="tab-shadow" hidden>
+    <div class="wrap">
+      <div class="band-head"><div><span class="eyebrow">シャドーイング</span><h2>跟读练习</h2><p class="lead">听一遍 → 跟着读 → 录音回放，和原音比一比长音、促音和语调。录音只在你的浏览器里播放，不会上传。</p></div></div>
+      <div class="grid g2 wide" style="align-items:start">
+        <div class="card shadow-card" id="sh-card"></div>
+        <div class="card">
+          <div class="seg" role="group" aria-label="难度" id="sh-lv" style="align-self:flex-start"></div>
+          <div class="sp-list" id="sh-list"></div>
+          <div class="field"><label for="sh-rate">原音语速</label><select id="sh-rate"><option value="0.7">慢速</option><option value="0.85" selected>正常偏慢</option><option value="1">正常</option></select></div>
+          <p class="muted small" style="margin:0">绿色的是已经跟读过的句子。每句第一次跟读完成 +2 经验值。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/study.js"></script>
+<script src="js/immersion-data.js"></script>
+<script src="js/immersion-more.js"></script>
+<script>
+(function () {
+  var B = window.Breeze, $ = B.$, $$ = B.$$, esc = B.esc, S = B.study, I = window.IMMERSION;
+  if (!I) return;
+  if (!window.matchMedia('(min-width: 861px)').matches) { var pb = document.getElementById('phr-box'); if (pb) pb.removeAttribute('open'); }
+  var ME = { '客': 1, '旅行者': 1, '患者': 1, 'お客様': 1 };
+
+  /* 朗读一句，结束时回调（用于连续播放）。有录好的音频就放音频，否则用浏览器朗读 */
+  function say(text, rate, done) {
+    rate = rate || .9;
+    B.play(text, { rate: rate >= 1 ? 1 : rate >= .85 ? .9 : .8, ttsRate: rate, onend: function (err) { if (done) done(err); } });
+  }
+
+  /* ---------- 情景会话 ---------- */
+  var cur = 0, playing = false;
+  S.toggles($('#tv-toggles'), $('#tv-body'));
+  /* 场景选择：一颗按钮，点开弹出卡片（2 列网格）选 18 个场景 */
+  function scTabs() {
+    $('#sc-cur').textContent = I.scenes[cur].title;
+    $('#sc-pos').textContent = '第 ' + (cur + 1) + ' / ' + I.scenes.length + ' 个';
+  }
+  function goScene(n) { stop(); cur = (n + I.scenes.length) % I.scenes.length; scene(); }
+  $('#sc-open').onclick = function () {
+    B.sheet('选择场景 · 共 ' + I.scenes.length + ' 个', function (b) {
+      b.innerHTML = '<div class="sc-grid">' + I.scenes.map(function (s, n) { return '<button type="button" class="sc-item" data-n="' + n + '" aria-pressed="' + (n === cur) + '"><span class="num">' + String(n + 1).padStart(2, '0') + '</span><span><b>' + esc(s.title) + '</b><small lang="ja">' + esc(s.jpTitle || '') + '</small></span></button>'; }).join('') + '</div>';
+      b.querySelector('.sc-grid').onclick = function (e) { var t = e.target.closest('.sc-item'); if (!t) return; goScene(+t.getAttribute('data-n')); B.closeSheet(); };
+    });
+  };
+  document.addEventListener('tabchange', function () { stop(); });
+  $('#sc-prev').onclick = function () { goScene(cur - 1); };
+  $('#sc-next').onclick = function () { goScene(cur + 1); };
+  function scene() {
+    var s = I.scenes[cur]; scTabs();
+    $('#sc-title').innerHTML = esc(s.title) + '　<span class="jp" lang="ja" style="font-weight:500;font-size:.9em">' + (s.jpTitleRuby || esc(s.jpTitle)) + '</span>';
+    $('#sc-desc').textContent = s.desc;
+    $('#convo').innerHTML = s.lines.map(function (l, n) {
+      return '<div class="bub' + (ME[l.who] ? ' me' : '') + '" data-n="' + n + '"><span class="who" lang="ja">' + esc(l.who) + '</span><div class="txt"><div class="jp" lang="ja">' + l.ruby + ' ' + S.sayBtn(l.jp) + '</div><div class="zh">' + esc(l.zh) + '</div></div></div>';
+    }).join('');
+    $('#phrases').innerHTML = s.phrases.map(function (p) { return '<div class="phr"><div class="jp" lang="ja" style="font-weight:700">' + p.ruby + ' ' + S.sayBtn(p.jp) + '</div><div class="zh">' + esc(p.zh) + '</div><div class="small muted">' + S.rb(p.note) + '</div></div>'; }).join('');
+    $('#sc-play').textContent = '▶ 从头播放';
+  }
+  function stop() { playing = false; B.stopAudio(); $$('.bub.playing').forEach(function (b) { b.classList.remove('playing'); }); var b = $('#sc-play'); if (b) b.textContent = '▶ 从头播放'; }
+  $('#sc-play').onclick = function () {
+    if (playing) return stop();
+    playing = true; this.textContent = '■ 停止';
+    var lines = I.scenes[cur].lines, n = 0;
+    (function step() {
+      $$('.bub.playing').forEach(function (b) { b.classList.remove('playing'); });
+      if (!playing || n >= lines.length) { if (playing && B.onceToday('scene-' + I.scenes[cur].id)) B.addXP(3, '听完一段会话'); return stop(); }
+      var el = $('.bub[data-n="' + n + '"]'); el.classList.add('playing'); el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      say(lines[n].jp, .9, function (err) { if (err) return stop(); n++; setTimeout(step, 450); });
+    })();
+  };
+  scene();
+
+  /* ---------- 跟读 ---------- */
+  var levels = I.shadowing.reduce(function (a, x) { if (a.indexOf(x.level) < 0) a.push(x.level); return a; }, []), lv = levels[0], si = 0, doneS = S.store('shadow-done', {});
+  var rec = null, chunks = [], myUrl = null;
+  $('#sh-lv').innerHTML = levels.map(function (l) { return '<button type="button" data-tab="' + l + '" aria-pressed="' + (l === lv) + '">' + l + '</button>'; }).join('');
+  S.tabs($('#sh-lv'), function (l) { lv = l; si = 0; shadow(); });
+  function list() { return I.shadowing.filter(function (x) { return x.level === lv; }); }
+  function shadow() {
+    var L = list(), s = L[si], d = doneS.get();
+    if (myUrl) { URL.revokeObjectURL(myUrl); myUrl = null; }
+    $('#sh-list').innerHTML = L.map(function (x, n) { return '<button type="button" data-i="' + n + '" aria-current="' + (n === si) + '"' + (d[x.id] ? ' class="done"' : '') + '>' + (n + 1) + '</button>'; }).join('');
+    $$('#sh-list [data-i]').forEach(function (b) { b.onclick = function () { si = +b.getAttribute('data-i'); shadow(); }; });
+    $('#sh-card').innerHTML = '<span class="tag">' + lv + ' · ' + (si + 1) + ' / ' + L.length + (d[s.id] ? '　✓ 已跟读' : '') + '</span>' +
+      '<div class="jp" lang="ja">' + s.ruby + '</div><div class="zh">' + esc(s.zh) + '</div>' +
+      '<div class="point" style="text-align:left;align-self:stretch"><b>发音</b>' + S.rb(s.tip) + '</div>' +
+      '<div class="rec-row"><button class="btn btn-sky" type="button" id="sh-hear">▶ 听原音</button><button class="btn btn-coral" type="button" id="sh-rec">● 录我的声音</button><button class="btn btn-ghost" type="button" id="sh-mine" disabled>▶ 听我的录音</button></div>' +
+      '<p class="small muted" id="sh-msg" style="margin:0" aria-live="polite"></p>' +
+      '<div class="rec-row"><button class="btn btn-ghost btn-small" type="button" id="sh-prev"' + (si === 0 ? ' disabled' : '') + '>← 上一句</button><button class="btn btn-sun" type="button" id="sh-ok">跟读完成，下一句 →</button></div>';
+    $('#sh-hear').onclick = function () { say(s.jp, +$('#sh-rate').value); };
+    $('#sh-rec').onclick = toggleRec;
+    $('#sh-mine').onclick = function () { if (myUrl) new Audio(myUrl).play(); };
+    $('#sh-prev').onclick = function () { si--; shadow(); };
+    $('#sh-ok').onclick = function () {
+      var dd = doneS.get(); if (!dd[s.id]) { dd[s.id] = 1; doneS.set(dd); B.addXP(2); }
+      if (si < L.length - 1) si++; else { var n = levels.indexOf(lv); if (n < levels.length - 1) { lv = levels[n + 1]; si = 0; $$('#sh-lv [data-tab]').forEach(function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-tab') === lv); }); B.toast('进入下一难度：' + lv); } }
+      shadow();
+    };
+  }
+  function toggleRec() {
+    var btn = $('#sh-rec'), msg = $('#sh-msg');
+    if (rec && rec.state === 'recording') { rec.stop(); return; }
+    if (!navigator.mediaDevices || !window.MediaRecorder) { msg.textContent = '这个浏览器不支持录音，可以先听原音，跟着大声读。'; return; }
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+      chunks = []; rec = new MediaRecorder(stream);
+      rec.ondataavailable = function (e) { if (e.data.size) chunks.push(e.data); };
+      rec.onstop = function () {
+        stream.getTracks().forEach(function (t) { t.stop(); });
+        if (myUrl) URL.revokeObjectURL(myUrl);
+        myUrl = URL.createObjectURL(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }));
+        btn.innerHTML = '● 重新录'; $('#sh-mine').disabled = false; msg.textContent = '录好了，点「听我的录音」和原音对比一下。';
+        new Audio(myUrl).play();
+      };
+      rec.start(); btn.innerHTML = '<span class="rec-dot"></span> 停止录音'; msg.textContent = '正在录音……读完点「停止录音」。';
+      setTimeout(function () { if (rec && rec.state === 'recording') rec.stop(); }, 15000);
+    }).catch(function () { msg.textContent = '没有拿到麦克风权限。可以在浏览器地址栏允许麦克风，或者先跟着原音大声读。'; });
+  }
+  shadow();
+})();
+</script>
+</body>
+</html>

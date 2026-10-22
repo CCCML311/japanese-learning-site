@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JLPT 模拟 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="N5–N1 原创 JLPT 风格快速测验、阅读理解和整套模拟试卷（文字词汇、语法、阅读、听力，计时作答、估算分数），带中文解析。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.j-stat{flex-direction:row;align-items:center;gap:16px}
+.j-lead{margin:0 0 16px;max-width:46em}
+.j-rhead{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.j-rpick{display:flex;flex-direction:column;gap:12px}
+.j-rpick .seg,#qlv,#pp-tabs{align-self:flex-start}
+@media (max-width:600px){.j-stat .big-num{font-size:2rem}.j-lead{font-size:.9375rem}}
+</style>
+</head>
+<body data-page="jlpt">
+<header id="site-head"></header>
+<main>
+  <section class="page-hero band pale">
+    <div class="wrap grid g2" style="align-items:center">
+      <div>
+        <span class="eyebrow">模擬試験 · JLPT</span>
+        <h1>JLPT 模拟练习</h1>
+        <p class="lead">30 题快速测验、阅读理解和整套模拟卷都在这一页。题目全部是本站原创的 JLPT 风格题，不是真题，每题都有中文解析。</p>
+      </div>
+      <div class="card j-stat">
+        <div style="flex:1"><span class="muted small">距离下一次 JLPT</span><div class="big-num"><span id="jd">—</span><small>天</small></div><p class="muted small" id="jdate" style="margin:4px 0 0"></p></div>
+        <div style="flex:1"><span class="muted small">快速测验最高分</span><div class="big-num"><span id="jbest">0</span><small>/ 30</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:28px">
+    <div class="wrap">
+      <div class="tabbar">
+        <div class="ptabs" role="tablist" aria-label="练习类型">
+          <button type="button" role="tab" id="t-quick" aria-controls="quick" aria-selected="true">快速测验</button>
+          <button type="button" role="tab" id="t-reading" aria-controls="reading" aria-selected="false">阅读理解</button>
+          <button type="button" role="tab" id="t-mock" aria-controls="mock" aria-selected="false">整套模拟卷</button>
+        </div>
+      </div>
+
+      <div class="tabpanel" id="quick" role="tabpanel" aria-labelledby="t-quick">
+        <p class="lead j-lead">文字・词汇・语法混合出题，自动计时。每个级别各 30 题，选「混合」时从 N5–N1 全部题库随机抽 30 题。</p>
+        <div class="card" style="gap:16px">
+          <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between">
+            <div class="seg" role="group" aria-label="级别" id="qlv"><button type="button" data-tab="mix" aria-pressed="true">混合</button><button type="button" data-tab="N5" aria-pressed="false">N5</button><button type="button" data-tab="N4" aria-pressed="false">N4</button><button type="button" data-tab="N3" aria-pressed="false">N3</button><button type="button" data-tab="N2" aria-pressed="false">N2</button><button type="button" data-tab="N1" aria-pressed="false">N1</button></div>
+            <button class="btn btn-coral" type="button" id="q-start">开始测验</button>
+          </div>
+          <div id="q-box"><div class="placeholder">选好级别，点「开始测验」。</div></div>
+        </div>
+      </div>
+
+      <div class="tabpanel" id="reading" role="tabpanel" aria-labelledby="t-reading" hidden>
+        <div class="j-rhead"><p class="lead j-lead" style="margin:0">先自己读，答完题再看翻译。读不懂的汉字可以打开注音。</p><div id="rd-toggles"></div></div>
+        <div class="j-rpick">
+          <div class="seg" role="group" aria-label="阅读级别" id="rd-lv"><button type="button" data-tab="N5" aria-pressed="true">N5</button><button type="button" data-tab="N4" aria-pressed="false">N4</button><button type="button" data-tab="N3" aria-pressed="false">N3</button><button type="button" data-tab="N2" aria-pressed="false">N2</button><button type="button" data-tab="N1" aria-pressed="false">N1</button></div>
+          <div class="chips" id="rd-tabs" role="group" aria-label="选择文章"></div>
+        </div>
+        <div class="grid g2" style="margin-top:16px;align-items:start" id="rd-body">
+          <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h3 id="rd-title" lang="ja"></h3><button class="btn btn-ghost btn-small" type="button" id="rd-say">▶ 朗读全文</button></div><div class="passage" id="rd-text" lang="ja"></div>
+            <details><summary class="small" style="cursor:pointer">看中文翻译</summary><p class="zh" id="rd-zh" style="line-height:1.9;white-space:pre-line"></p></details></div>
+          <div class="card"><h3>问题</h3><div id="rd-qs"></div><button class="btn btn-sun" type="button" id="rd-check" style="align-self:flex-start">交卷看答案</button><p class="form-msg" id="rd-msg" aria-live="polite" style="margin:0"></p></div>
+        </div>
+      </div>
+
+      <div class="tabpanel" id="mock" role="tabpanel" aria-labelledby="t-mock" hidden>
+        <p class="lead j-lead">五个级别各三整套，外加一套全真模拟，按真题结构出题：文字词汇、语法、阅读、听力。分数按正确率估算，仅供参考。</p>
+        <div id="mk-root"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/study.js"></script>
+<script src="js/jlpt-data.js"></script>
+<script src="js/jlpt-more.js"></script>
+<script>
+(function () {
+  var B = window.Breeze, $ = B.$, $$ = B.$$, esc = B.esc, S = B.study, J = window.JLPT;
+  var nx = B.nextJLPT(); if (nx) { $('#jd').textContent = nx.days; $('#jdate').textContent = nx.date.getFullYear() + ' 年 ' + (nx.date.getMonth() + 1) + ' 月 ' + nx.date.getDate() + ' 日（以官方公布为准）'; }
+  function rb() { $('#jbest').textContent = S.best('jlptQuick'); } rb();
+  if (!J) return;
+
+  /* 快速测验 */
+  var lv = 'mix';
+  S.tabs($('#qlv'), function (l) { lv = l; });
+  function start() {
+    var pool = J.quick.filter(function (q) { return lv === 'mix' || q.level === lv; });
+    var items = B.shuffle(pool).slice(0, 30).map(function (q) { return { q: q.qRuby || q.q, options: q.options.map(esc), answer: q.answer, why: esc(q.why), tag: q.level + ' · ' + q.type }; });
+    var total = items.length;
+    S.MCQ($('#q-box'), items, {
+      timer: true, xpPer: 1, bonus: 10, perfectBonus: 10, title: 'JLPT 快速测验', again: start,
+      onFinish: function (s) { var norm = Math.round(s * 30 / total); if (S.best('jlptQuick', norm)) { rb(); B.toast('快速测验新纪录'); } }
+    });
+  }
+  $('#q-start').onclick = function () { start(); $('#q-box').scrollIntoView({ block: 'nearest' }); };
+
+  /* 阅读理解：先选级别，再选这一级的文章 */
+  var cur = 0, rlv = 'N5', doneR = S.store('reading-done', {});
+  S.toggles($('#rd-toggles'), $('#rd-body'), { zh: false });
+  S.tabs($('#rd-lv'), function (l) { rlv = l; var f = J.reading.findIndex(function (r) { return r.level === l; }); if (f >= 0) { cur = f; read(); } });
+  function tabs() {
+    var d = doneR.get();
+    $('#rd-tabs').innerHTML = J.reading.map(function (r, n) { return r.level !== rlv ? '' : '<button type="button" class="chip" data-tab="' + n + '" aria-pressed="' + (n === cur) + '"><span lang="ja">' + esc(r.title) + '</span>' + (d[r.id] ? '<span class="done-mark">✓</span>' : '') + '</button>'; }).join('');
+    S.tabs($('#rd-tabs'), function (n) { cur = +n; read(); });
+  }
+  function read() {
+    var r = J.reading[cur]; tabs();
+    $('#rd-title').innerHTML = r.titleRuby || esc(r.title); $('#rd-text').innerHTML = r.textRuby || esc(r.text); $('#rd-zh').textContent = r.zh;
+    $('#rd-msg').textContent = ''; $('#rd-check').disabled = false;
+    $('#rd-qs').innerHTML = r.questions.map(function (q, qi) {
+      return '<div class="rq" data-q="' + qi + '"><b lang="ja" class="jp" style="line-height:2">問' + (qi + 1) + '　' + (q.qRuby || esc(q.q)) + '</b><div class="q-opts">' + q.options.map(function (o, oi) { return '<button type="button" class="opt" lang="ja" data-o="' + oi + '" aria-pressed="false">' + (oi + 1) + '. ' + (q.optionsRuby ? q.optionsRuby[oi] : esc(o)) + '</button>'; }).join('') + '</div><div class="why small muted" hidden>' + esc(q.why) + '</div></div>';
+    }).join('');
+    $$('#rd-qs .rq').forEach(function (box) {
+      $$('.opt', box).forEach(function (b) { b.onclick = function () { $$('.opt', box).forEach(function (x) { x.setAttribute('aria-pressed', x === b); x.classList.toggle('picked', x === b); }); }; });
+    });
+  }
+  $('#rd-check').onclick = function () {
+    var r = J.reading[cur], score = 0, missing = 0;
+    $$('#rd-qs .rq').forEach(function (box, qi) { if (!$('.opt.picked', box)) missing++; });
+    if (missing) { $('#rd-msg').className = 'form-msg err'; $('#rd-msg').textContent = '还有 ' + missing + ' 题没选。'; return; }
+    $$('#rd-qs .rq').forEach(function (box, qi) {
+      var a = r.questions[qi].answer, p = +$('.opt.picked', box).getAttribute('data-o');
+      $$('.opt', box).forEach(function (x) { x.disabled = true; var o = +x.getAttribute('data-o'); if (o === a) x.classList.add('right'); else if (o === p) x.classList.add('wrong'); });
+      $('.why', box).hidden = false; if (p === a) score++;
+    });
+    this.disabled = true;
+    $('#rd-msg').className = 'form-msg ok'; $('#rd-msg').textContent = '答对 ' + score + ' / ' + r.questions.length + (score === r.questions.length ? '，全对！' : '，看看下面的解析。');
+    var d = doneR.get(); if (!d[r.id] && score === r.questions.length) { d[r.id] = 1; doneR.set(d); B.addXP(8, '读懂一篇文章'); tabs(); } else if (score) B.addXP(score);
+  };
+  $('#rd-say').onclick = function () { B.speak(J.reading[cur].text); };
+  read();
+})();
+</script>
+<script>
+/* ---------- 整套模拟卷（原 mock.html） ---------- */
+(function () {
+  var B = window.Breeze, $ = B.$, $$ = B.$$, esc = B.esc, S = B.study, root = $('#mk-root');
+  var LVS = ['N5', 'N4', 'N3', 'N2', 'N1'];
+  /* 合格线（官方公布的总分合格点与基准点；本页按正确率换算，只是估算） */
+  var RULE = {
+    N1: { pass: 100, bands: [['lang', '言语知识', 60, 19], ['read', '阅读', 60, 19], ['listen', '听力', 60, 19]] },
+    N2: { pass: 90, bands: [['lang', '言语知识', 60, 19], ['read', '阅读', 60, 19], ['listen', '听力', 60, 19]] },
+    N3: { pass: 95, bands: [['lang', '言语知识', 60, 19], ['read', '阅读', 60, 19], ['listen', '听力', 60, 19]] },
+    N4: { pass: 90, bands: [['lang', '言语知识・阅读', 120, 38], ['listen', '听力', 60, 19]] },
+    N5: { pass: 80, bands: [['lang', '言语知识・阅读', 120, 38], ['listen', '听力', 60, 19]] }
+  };
+  var hm = location.hash.match(/^#(?:mock-?)?(N[1-5])(?:-([234]))?$/i), lv = hm ? hm[1].toUpperCase() : 'N5', paper = hm && hm[2] ? +hm[2] : 1, mode = 'exam', M, st;
+  function paperKey() { return paper === 1 ? lv : lv + '-' + paper; }
+
+  function load(L, cb) {
+    window.MOCK = window.MOCK || {};
+    if (window.MOCK[L]) return cb(window.MOCK[L]);
+    var s = document.createElement('script'); s.src = 'js/mock/' + L.toLowerCase() + '.js';
+    s.onload = function () { cb(window.MOCK[L]); }; s.onerror = function () { cb(null); };
+    document.body.appendChild(s);
+  }
+  function count(sec) { var n = 0; sec.mondai.forEach(function (m) { n += m.items.length; }); return n; }
+
+  /* ---------- 选级别 ---------- */
+  function home() {
+    stopTTS();
+    root.innerHTML = '<div class="chips" id="lv-tabs" role="group" aria-label="选择级别">' + LVS.map(function (l) { return '<button type="button" class="chip" data-tab="' + l + '" aria-pressed="' + (l === lv) + '">' + l + '</button>'; }).join('') + '</div><div class="seg" role="group" aria-label="选择试卷" id="pp-tabs" style="margin-top:12px">' + [1, 2, 3, 4].map(function (n) { return '<button type="button" data-tab="' + n + '" aria-pressed="' + (n === paper) + '">' + (n === 4 ? '全真' : '第' + n + '回') + '</button>'; }).join('') + '</div><div id="lv-info" style="margin-top:16px"></div>';
+    S.tabs($('#lv-tabs'), function (l) { lv = l; history.replaceState(null, '', '#mock-' + paperKey()); info(); });
+    S.tabs($('#pp-tabs'), function (n) { paper = +n; history.replaceState(null, '', '#mock-' + paperKey()); info(); });
+    info();
+  }
+  function info() {
+    $('#lv-info').innerHTML = '<div class="placeholder">载入试卷……</div>';
+    var want = paperKey();
+    load(want, function (m) {
+      if (want !== paperKey()) return;
+      M = m;
+      if (!m) { $('#lv-info').innerHTML = '<div class="placeholder">这一级的试卷还没上线。</div>'; return; }
+      var hist = S.store('mock-hist', {}).get()[paperKey()];
+      var total = 0, mins = 0; m.sections.forEach(function (s) { total += count(s); mins += s.minutes; });
+      $('#lv-info').innerHTML = '<div class="grid g2 wide" style="align-items:start"><div class="card">' +
+        '<h3>' + esc(m.title) + '</h3>' + (m.full ? '<p class="note" style="margin:0">全真模拟：题型、题量、时间都按现行真实考试安排，建议找一段完整的时间、用考试模式一次做完。</p>' : '') + '<p class="muted small" style="margin:0">共 ' + total + ' 题 · 约 ' + mins + ' 分钟 · 合格线 ' + RULE[lv].pass + ' / 180（估算）</p>' +
+        '<div class="tscroll"><table class="vtable"><thead><tr><th>科目</th><th>题数</th><th>时间</th></tr></thead><tbody>' +
+        m.sections.map(function (s) { return '<tr><td style="font-family:inherit">' + esc(s.title) + '</td><td>' + count(s) + '</td><td>' + s.minutes + ' 分</td></tr>'; }).join('') + '</tbody></table></div>' +
+        '<div class="seg" role="group" aria-label="模式" style="align-self:flex-start"><button type="button" data-m="exam" aria-pressed="' + (mode === 'exam') + '">考试模式</button><button type="button" data-m="practice" aria-pressed="' + (mode === 'practice') + '">练习模式</button></div>' +
+        '<p class="muted small" style="margin:0" id="mode-tip"></p>' +
+        '<button class="btn btn-coral" type="button" id="mk-start" style="align-self:flex-start">开始作答</button></div>' +
+        '<div class="card sun"><h3>作答说明</h3><ul class="small" style="margin:0;padding-left:1.2em;line-height:1.9">' +
+        '<li>按科目顺序作答，每个科目单独计时，时间到自动交卷进入下一科。</li><li>听力由浏览器的日语语音朗读，男声、女声用不同音调区分；建议戴耳机。</li>' +
+        '<li>分数按各部分正确率换算成官方分制，是估算，不等于真实考试分数。</li><li>题目为本站原创的模拟题，不是 JLPT 真题。</li></ul>' +
+        (hist ? '<p class="small" style="margin:6px 0 0">上次成绩：<b>' + hist.total + ' / 180</b>（' + (hist.pass ? '估算合格' : '估算未合格') + '，' + hist.date + '）</p>' : '') + '</div></div>';
+      function tip() { $('#mode-tip').textContent = mode === 'exam' ? '考试模式：计时，听力每题只能播放一次，交卷后统一看答案和解析。' : '练习模式：不计时，听力可以反复播放，每做一题马上显示对错和解析。'; }
+      $$('[data-m]').forEach(function (b) { b.onclick = function () { mode = b.getAttribute('data-m'); $$('[data-m]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); tip(); }; });
+      tip();
+      $('#mk-start').onclick = function () { st = { sec: 0, ans: {}, played: {}, start: Date.now() }; section(); };
+    });
+  }
+
+  /* ---------- 听力朗读 ---------- */
+  var ttsToken = 0;
+  function voices() {
+    var v = (window.speechSynthesis && speechSynthesis.getVoices() || []).filter(function (x) { return /ja/i.test(x.lang); });
+    var male = v.filter(function (x) { return /otoya|hattori|ichiro|keita|daichi|male|男/i.test(x.name); })[0];
+    var female = v.filter(function (x) { return /kyoko|o-ren|nanami|haruka|ayumi|female|女/i.test(x.name); })[0];
+    return { M: male || v[0], F: female || v[0], N: female || v[0] };
+  }
+  function stopTTS() { ttsToken++; B.stopAudio(); }
+  /* 逐句播放：有录好的真人风格音频（VOICEVOX）就放音频，没有就用浏览器朗读 */
+  function playScript(lines, onDone, onLine) {
+    stopTTS(); var tok = ttsToken, i = 0, V = voices();
+    (function next() {
+      if (tok !== ttsToken) return;
+      if (i >= lines.length) { if (onDone) onDone(); return; }
+      var l = lines[i];
+      if (onLine) onLine(i);
+      B.play(l.jp, { ttsRate: .95, pitch: l.sp === 'M' ? .75 : l.sp === 'F' ? 1.3 : 1, voice: V[l.sp], onend: function () { if (tok !== ttsToken) return; i++; setTimeout(next, l.sp === 'N' ? 700 : 350); } });
+    })();
+  }
+
+  function isSpoken(m, it) { return it.options.length === 3 || /概要理解|即時応答|発話表現/.test(m.type || ''); }
+  /* ---------- 作答 ---------- */
+  var timer;
+  function key(si, mi, ii) { return si + '-' + mi + '-' + ii; }
+  function section() {
+    stopTTS(); clearInterval(timer);
+    var si = st.sec, sec = M.sections[si], listen = sec.id === 'choukai', practice = mode === 'practice';
+    var html = '<div class="card" style="gap:18px"><div class="fc-meta"><div><span class="tag">' + esc(M.title) + ' · 第 ' + (si + 1) + ' / ' + M.sections.length + ' 科</span><h2 style="margin-top:8px;font-size:1.5rem">' + esc(sec.title) + '</h2></div>' +
+      (practice ? '<span class="tag">练习模式</span>' : '<div class="big-num" style="font-size:2rem" aria-live="off"><span id="mk-clock" class="clock">' + sec.minutes + ':00</span></div>') + '</div>';
+    sec.mondai.forEach(function (m, mi) {
+      html += '<div class="mondai">' + (mi && sec.mondai[mi - 1].instr === m.instr ? '' : '<p class="instr" lang="ja">' + esc(m.instr) + '</p>');
+      if (m.passage) html += '<div class="passage" lang="ja">' + (m.passage.title ? '<b>' + esc(m.passage.title) + '</b>\n' : '') + (m.passage.textRuby || esc(m.passage.text)) + '</div>';
+      m.items.forEach(function (it, ii) {
+        var k = key(si, mi, ii), n = ii + 1;
+        html += '<div class="rq" data-k="' + k + '">';
+        if (listen) html += '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><b>' + n + '番</b><button class="btn btn-sky btn-small" type="button" data-play="' + k + '">▶ 播放</button><span class="small muted" data-pst="' + k + '"></span></div>' + (it.q ? '<b lang="ja" class="jp" style="line-height:1.9">' + esc(it.q) + '</b>' : '');
+        else html += '<b lang="ja" class="jp" style="line-height:2.1">' + n + '　' + S.mark(it.qRuby || esc(it.q)) + '</b>';
+        var spoken = listen && isSpoken(m, it), hideTxt = spoken && !practice;
+        html += '<div class="q-opts">' + it.options.map(function (o, oi) { return '<button type="button" class="opt" lang="ja" data-o="' + oi + '" data-txt="' + esc((oi + 1) + '. ' + o) + '">' + (hideTxt ? (oi + 1) : (oi + 1) + '. ' + S.mark(esc(o))) + '</button>'; }).join('') + '</div>' +
+          '<div class="why small muted" hidden></div></div>';
+      });
+      html += '</div>';
+    });
+    html += '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center"><button class="btn btn-sun" type="button" id="mk-next">' + (si + 1 < M.sections.length ? '交卷，进入下一科' : '交卷，看成绩') + '</button><span class="small muted" id="mk-left"></span><button class="btn btn-ghost btn-small" type="button" id="mk-quit" style="margin-left:auto">退出</button></div></div>';
+    root.innerHTML = html;
+    root.scrollIntoView({ block: 'start' });
+
+    function left() { var n = 0; $$('.rq', root).forEach(function (r) { if (st.ans[r.getAttribute('data-k')] == null) n++; }); $('#mk-left').textContent = n ? '还有 ' + n + ' 题没答' : '本科全部答完'; }
+    function reveal(r) {
+      var k = r.getAttribute('data-k').split('-'), it = M.sections[+k[0]].mondai[+k[1]].items[+k[2]], p = st.ans[r.getAttribute('data-k')];
+      $$('.opt', r).forEach(function (x) { var o = +x.getAttribute('data-o'); x.disabled = true; x.textContent = x.getAttribute('data-txt'); if (o === it.answer) x.classList.add('right'); else if (o === p) x.classList.add('wrong'); });
+      var w = $('.why', r); w.hidden = false;
+      w.innerHTML = (listen ? '<details><summary style="cursor:pointer">听力原文</summary><div class="jp" lang="ja" style="line-height:1.9">' + it.script.map(function (l) { return '<div>' + ({ N: '', M: '男：', F: '女：' })[l.sp] + esc(l.jp) + '</div>'; }).join('') + '</div></details>' : '') + esc(it.why);
+    }
+    $$('.rq', root).forEach(function (r) {
+      var k = r.getAttribute('data-k');
+      $$('.opt', r).forEach(function (b) {
+        b.onclick = function () {
+          st.ans[k] = +b.getAttribute('data-o');
+          $$('.opt', r).forEach(function (x) { x.classList.toggle('picked', x === b); });
+          if (practice) reveal(r);
+          left();
+        };
+      });
+    });
+    $$('[data-play]', root).forEach(function (b) {
+      b.onclick = function () {
+        var k = b.getAttribute('data-play').split('-'), it = M.sections[+k[0]].mondai[+k[1]].items[+k[2]], pst = $('[data-pst="' + b.getAttribute('data-play') + '"]', root);
+        if (!practice && st.played[b.getAttribute('data-play')]) return;
+        st.played[b.getAttribute('data-play')] = 1;
+        $$('[data-play]', root).forEach(function (x) { x.disabled = true; });
+        pst.textContent = '播放中……';
+        var lines = it.script.slice();
+        if (isSpoken(M.sections[+k[0]].mondai[+k[1]], it)) it.options.forEach(function (o, oi) { lines.push({ sp: 'N', jp: (oi + 1) + '番。' }); lines.push({ sp: 'F', jp: o }); });
+        playScript(lines, function () {
+          pst.textContent = practice ? '播放完毕，可以再听' : '播放完毕';
+          $$('[data-play]', root).forEach(function (x) { x.disabled = !practice && !!st.played[x.getAttribute('data-play')]; });
+        });
+      };
+    });
+    left();
+    if (!practice) {
+      var end = Date.now() + sec.minutes * 60000;
+      timer = setInterval(function () {
+        var s = Math.max(0, Math.round((end - Date.now()) / 1000)), e = $('#mk-clock'); if (!e) return clearInterval(timer);
+        e.textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); e.style.color = s < 60 ? 'var(--rose-ink)' : '';
+        if (!s) { clearInterval(timer); B.toast('时间到，自动交卷'); next(); }
+      }, 1000);
+    }
+    var armed = false;
+    function next() { stopTTS(); clearInterval(timer); if (st.sec + 1 < M.sections.length) { st.sec++; section(); } else report(); }
+    $('#mk-next').onclick = function () {
+      var miss = $$('.rq', root).filter(function (r) { return st.ans[r.getAttribute('data-k')] == null; }).length;
+      if (miss && !armed && !practice) { armed = true; $('#mk-left').textContent = '还有 ' + miss + ' 题没答，再点一次确认交卷'; return; }
+      next();
+    };
+    $('#mk-quit').onclick = function () { clearInterval(timer); home(); };
+  }
+
+  /* ---------- 成绩 ---------- */
+  function report() {
+    var R = RULE[lv], raw = {}, max = {}, secRows = [];
+    M.sections.forEach(function (s, si) {
+      var ok = 0, n = 0;
+      s.mondai.forEach(function (m, mi) { m.items.forEach(function (it, ii) { n++; if (st.ans[key(si, mi, ii)] === it.answer) ok++; }); });
+      var g = (lv === 'N4' || lv === 'N5') && s.scoreGroup === 'read' ? 'lang' : s.scoreGroup;
+      raw[g] = (raw[g] || 0) + ok; max[g] = (max[g] || 0) + n; secRows.push([s.title, ok, n]);
+    });
+    var total = 0, allBase = true;
+    var bands = R.bands.map(function (b) { var sc = max[b[0]] ? Math.round(raw[b[0]] / max[b[0]] * b[2]) : 0; total += sc; var okb = sc >= b[3]; if (!okb) allBase = false; return [b[1], sc, b[2], b[3], okb]; });
+    var pass = total >= R.pass && allBase;
+    var xp = Math.round(total / 6) + (pass ? 20 : 0);
+    B.addXP(xp, lv + ' 模拟试卷');
+    var h = S.store('mock-hist', {}), hv = h.get(); var d = new Date();
+    hv[paperKey()] = { total: total, pass: pass, date: (d.getMonth() + 1) + '月' + d.getDate() + '日' }; h.set(hv);
+    S.best('mock' + paperKey(), total);
+    root.innerHTML = '<div class="grid g2 wide" style="align-items:start"><div class="card" style="align-items:center;text-align:center">' +
+      B.jelly(pass ? 'right' : 'think').replace('<svg', '<svg style="width:84px;height:118px"') +
+      '<span class="tag">' + esc(M.title) + '</span><div class="big-num">' + total + '<small>/ 180</small></div>' +
+      '<h3>' + (pass ? '估算合格 🎉' : '估算未合格，再加把劲') + '</h3><p class="muted small" style="margin:0">合格线 ' + R.pass + ' 分，且每个分项都要达到基准分。本次 +' + xp + ' 经验值。</p>' +
+      '<div class="tscroll" style="align-self:stretch"><table class="vtable"><thead><tr><th>分项</th><th>得分</th><th>基准</th></tr></thead><tbody>' +
+      bands.map(function (b) { return '<tr><td style="font-family:inherit">' + b[0] + '</td><td>' + b[1] + ' / ' + b[2] + '</td><td style="color:' + (b[4] ? 'var(--mint-ink)' : 'var(--rose-ink)') + '">' + b[3] + (b[4] ? ' ✓' : ' ✗') + '</td></tr>'; }).join('') + '</tbody></table></div>' +
+      '<div class="hero-cta" style="justify-content:center"><button class="btn btn-sun" type="button" id="rv">看答案和解析 ↓</button><button class="btn btn-ghost" type="button" id="again">返回试卷列表</button></div></div>' +
+      '<div class="card"><h3>各科正确率</h3>' + secRows.map(function (r) { var p = Math.round(r[1] / r[2] * 100); return '<div><div style="display:flex;justify-content:space-between" class="small"><span>' + esc(r[0]) + '</span><span class="num">' + r[1] + ' / ' + r[2] + '（' + p + '%）</span></div><div class="bar" style="margin-top:6px"><i style="width:' + p + '%"></i></div></div>'; }).join('') +
+      '<p class="muted small" style="margin:0">真实 JLPT 采用等化计分，分数不是简单按正确率换算的，这里只能做参考。</p></div></div><div id="review" style="margin-top:22px"></div>';
+    $('#again').onclick = home;
+    review();
+    $('#rv').onclick = function () { $('#review').scrollIntoView({ block: 'start' }); };
+    window.scrollTo({ top: root.getBoundingClientRect().top + window.scrollY - 140 });
+  }
+  function review() {
+    var html = '';
+    M.sections.forEach(function (s, si) {
+      html += '<div class="card" style="margin-bottom:18px"><h3>' + esc(s.title) + '</h3>';
+      s.mondai.forEach(function (m, mi) {
+        html += (mi && s.mondai[mi - 1].instr === m.instr ? '' : '<p class="instr" lang="ja">' + esc(m.instr) + '</p>') + (m.passage ? '<details><summary class="small" style="cursor:pointer">展开文章</summary><div class="passage" lang="ja">' + (m.passage.textRuby || esc(m.passage.text)) + '</div></details>' : '');
+        m.items.forEach(function (it, ii) {
+          var p = st.ans[key(si, mi, ii)], ok = p === it.answer;
+          html += '<div class="rv"><div lang="ja" class="jp" style="line-height:2">' + (ok ? '✅ ' : '❌ ') + (s.id === 'choukai' ? it.script.map(function (l) { return ({ N: '', M: '男：', F: '女：' })[l.sp] + esc(l.jp); }).join('<br>') + (it.q ? '<br><b>' + esc(it.q) + '</b>' : '') : S.mark(it.qRuby || esc(it.q))) + '</div>' +
+            '<div class="small"><span class="bad">你的答案：' + (p == null ? '未作答' : (p + 1) + '. ' + esc(it.options[p])) + '</span>　<span class="good">正确：' + (it.answer + 1) + '. ' + esc(it.options[it.answer]) + '</span></div><div class="muted small">' + esc(it.why) + '</div></div>';
+        });
+      });
+      html += '</div>';
+    });
+    $('#review').innerHTML = html;
+  }
+  window.addEventListener('hashchange', function () {
+    var h = location.hash.match(/^#(?:mock-?)?(N[1-5])(?:-([234]))?$/i); if (!h) return;
+    B.selectTab('mock'); if (!started) { started = true; }
+    var nl = h[1].toUpperCase(), np = h[2] ? +h[2] : 1;
+    if (nl === lv && np === paper && $('#lv-info')) return;
+    lv = nl; paper = np; clearInterval(timer); home();
+  });
+  /* 只在打开「整套模拟卷」标签时才载入试卷；离开标签时停掉听力朗读 */
+  var started = false;
+  document.addEventListener('tabchange', function (e) {
+    if (e.detail && e.detail.panel === 'mock') { if (!started) { started = true; home(); } }
+    else stopTTS();
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    if (hm) B.selectTab('mock');
+    if (!started && !$('#mock').hidden) { started = true; home(); }
+  });
+})();
+</script>
+</body>
+</html>

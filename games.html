@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>闯关小游戏 · 日语学习站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="两个日语闯关小游戏：听音戳泡泡练五十音，限时连连看练 N5–N1 单词。每关三颗星，过关解锁下一关。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .lv-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+  .lv-btn{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:0 10px 24px -20px rgba(30,60,140,.5);min-height:92px;transition:transform .2s,border-color .2s}
+  .lv-btn:hover{transform:translateY(-2px);border-color:#9DC1FF}
+  .lv-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .lv-btn .no{font-family:var(--f-mincho);font-weight:900;font-size:1.25rem;color:#2F6FD6}
+  .lv-btn .nm{font-size:.8125rem;color:var(--text-2);line-height:1.5}
+  .lv-btn .st{margin-top:auto;letter-spacing:2px;color:#E8A33D;font-size:.9375rem}
+  .lv-btn .st i{font-style:normal;color:rgba(27,35,66,.18)}
+  .lv-btn[aria-disabled="true"]{cursor:not-allowed;opacity:.5;background:#F6F8FC}
+  .lv-btn[aria-disabled="true"] .no{color:var(--text-2)}
+  .lv-map.compact{grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+  .lv-map.compact .lv-btn{min-height:70px;padding:8px 10px;gap:2px}
+  .lv-map.compact .lv-btn .no{font-size:1.0625rem}
+  .lv-map.compact .lv-btn .nm{font-size:.75rem}
+  .lv-map.compact .lv-btn .st{font-size:.8125rem;letter-spacing:1px}
+  .lv-btn.cur{border-color:#5B9BF5;box-shadow:0 0 0 3px rgba(91,155,245,.18)}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+  .hud .lives{letter-spacing:3px;font-size:1.125rem;color:var(--rose-ink)}
+  .hud .lives i{font-style:normal;color:rgba(27,35,66,.15)}
+  .pond{position:relative;height:440px;border-radius:var(--r-l);overflow:hidden;border:1px solid var(--line);
+    background:radial-gradient(60% 50% at 50% 110%,rgba(255,255,255,.6),transparent 70%),linear-gradient(180deg,#2F6FD6 0%,#4C95F2 45%,#8CC4FF 100%);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  @media (max-width:600px){.pond{height:380px}}
+  .bub-k{all:unset;box-sizing:border-box;position:absolute;left:0;top:0;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+    font-family:var(--f-mincho);font-weight:700;font-size:1.875rem;color:#123;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.98),rgba(255,255,255,.75) 38%,rgba(190,225,255,.55) 70%,rgba(255,255,255,.3));
+    box-shadow:inset 0 -6px 14px rgba(80,140,230,.35),0 8px 22px -10px rgba(10,40,120,.6);will-change:transform}
+  .bub-k.sm{font-size:1.5rem}
+  .bub-k:focus-visible{outline:3px solid var(--gold)}
+  .bub-k.hit{background:radial-gradient(circle at 32% 28%,#fff,#C8FFF0 60%,#7FE6CC);transition:opacity .35s,transform .35s}
+  .bub-k.bad{background:radial-gradient(circle at 32% 28%,#fff,#FFD0DC 60%,#F3A3B8);transition:opacity .35s}
+  .pond-msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;padding:16px;pointer-events:none}
+  .pond-msg b{font-family:var(--f-mincho);font-size:1.5rem;text-shadow:0 2px 12px rgba(10,40,120,.5)}
+  .pond-jelly{position:absolute;left:50%;bottom:-6px;width:84px;transform:translateX(-50%);opacity:.9;pointer-events:none}
+  .result{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:10px 0}
+  .result .big-st{font-size:2.25rem;letter-spacing:6px;color:#E8A33D}
+  .result .big-st i{font-style:normal;color:rgba(27,35,66,.15)}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mcol{display:flex;flex-direction:column;gap:8px}
+  .mcard{all:unset;box-sizing:border-box;cursor:pointer;min-height:56px;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;transition:background .2s,border-color .2s,opacity .3s,transform .2s;line-height:1.35}
+  .mcard:hover{border-color:#7DB9FF}
+  .mcard:focus-visible{outline:2px solid var(--gold)}
+  .mcard .w{font-family:var(--f-mincho);font-weight:700;font-size:1.1875rem}
+  .mcard .k{font-size:.75rem;color:var(--rose-ink)}
+  .mcard .z{font-size:.9375rem}
+  .mcard.sel{border-color:#5B9BF5;background:#EEF4FF;box-shadow:0 0 0 3px rgba(91,155,245,.2)}
+  .mcard.ok{background:#E3FAF3;border-color:var(--mint-ink);opacity:.45;pointer-events:none}
+  .mcard.no{animation:shake .35s;border-color:var(--rose-ink);background:#FFEAF0}
+  @keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .tbar{height:6px;border-radius:999px;background:rgba(27,35,66,.08);overflow:hidden;flex:1;min-width:120px}
+  .tbar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),#5B9BF5);transition:width .25s linear}
+  .tbar.low i{background:linear-gradient(90deg,var(--rose),#F59A8C)}
+  @media (prefers-reduced-motion: reduce){.mcard.no{animation:none}}
+  @media (max-width:600px){.pond{height:340px}}
+  /* 选关弹窗：每页 12 关，4×3 */
+  .lv-map.pg,.lv-map.pg.compact{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media (max-width:380px){.lv-map.pg .lv-btn{padding:8px 6px}.lv-map.pg .lv-btn .nm{font-size:.6875rem}}
+  .pager{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .st-note{margin:0;padding-top:12px;border-top:1px solid var(--line)}
+  /* 游戏卡 */
+  .game-stage{max-width:820px;margin-inline:auto;display:flex;flex-direction:column;gap:14px}
+  .pick-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+  .pick-btn{min-height:44px}
+  .pick-btn .cv{font-size:.75rem;opacity:.7}
+  .game-lead{margin:0;color:var(--text-2);font-size:.9375rem;line-height:1.8}
+  /* 顶部游戏菜单 */
+  .gm-menu{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  @media (max-width:900px){.gm-menu{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+  .gm-mini{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:var(--r-m);background:#fff;border:1px solid var(--line);box-shadow:0 12px 30px -24px rgba(30,60,140,.55);text-decoration:none;color:var(--text);transition:transform .2s,border-color .2s}
+  a.gm-mini:hover{transform:translateY(-2px);border-color:#9DC1FF}
+  a.gm-mini:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .gm-mini b{font-size:1rem}
+  .gm-mini .d{font-size:.8125rem;color:var(--text-2);line-height:1.5}
+  .gm-mini .gm-art{height:72px}
+  .gm-mini .gm-drop{width:40px;height:40px;font-size:1.125rem;padding-top:6px}
+  .gm-mini .gm-drop.s2{margin-top:-22px}
+  .gm-mini .gm-tile{padding:5px 7px;font-size:.8125rem}
+  .gm-mini .gm-jelly svg{width:46px;height:64px}
+  .gm-prog{background:linear-gradient(170deg,#FFFBF1,#FFF3F6)}
+  .gm-prog .row{display:flex;justify-content:space-between;gap:8px;font-size:.8125rem;color:var(--text-2)}
+  .gm-prog .row b{color:var(--text);font-size:.875rem}
+  @media (max-width:600px){.gm-mini .d{display:none}.gm-mini .gm-art{height:58px}.gm-mini .gm-jelly svg{width:38px;height:52px}}
+  #play .tabbar{justify-content:center}
+
+</style>
+</head>
+<body data-page="games">
+<header id="site-head"></header>
+<main>
+  <section class="page-hero band pale">
+    <div class="wrap">
+      <span class="eyebrow">ゲーム · Games</span>
+      <h1>闯关小游戏</h1>
+      <p class="lead">学累了就来玩一局。每关最多三颗星，拿到一颗星就解锁下一关；第一次过关 +10 经验值，刷新星数 +5。</p>
+    </div>
+  </section>
+<style>
+.gm-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:900px){.gm-list{grid-template-columns:1fr}}
+.gm-card{text-decoration:none;gap:14px;transition:transform .3s}
+.gm-card:hover{transform:translateY(-2px)}
+.gm-art{height:120px;border-radius:var(--r-m);display:flex;align-items:center;justify-content:center;gap:12px;overflow:hidden;position:relative}
+.gm-art.sun{background:linear-gradient(180deg,#6E8BC0,#A9C1E4)}
+.gm-art.coral{background:linear-gradient(160deg,#FFF1F5,#F1ECFF)}
+.gm-art.sky{background:linear-gradient(180deg,#2F78D6,#86C2FF)}
+.gm-drop{width:54px;height:54px;position:relative;isolation:isolate;display:grid;place-items:center;font-family:var(--f-mincho);font-weight:700;font-size:1.5rem;color:var(--text);padding-top:8px}
+.gm-drop::before{content:"";position:absolute;inset:0;border-radius:50% 0 50% 50%;transform:rotate(-45deg);background:radial-gradient(circle at 38% 62%,#fff,#E8F3FF 45%,#AAD4FF);border:1.5px solid #fff;z-index:-1}
+.gm-drop.s2{margin-top:-30px}
+.gm-tile{background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:8px 10px;font-family:var(--f-mincho);font-weight:700;box-shadow:0 8px 18px -14px rgba(30,60,140,.6)}
+.gm-jelly svg{width:72px;height:100px}
+.gm-card h3{font-size:1.25rem}
+.gm-card .go{margin-top:auto;align-self:flex-start}
+</style>
+  <section class="band" id="game-menu" style="padding-top:28px;padding-bottom:0">
+    <div class="wrap">
+      <div class="gm-menu">
+        <a class="gm-mini" href="game-kana-rain.html"><div class="gm-art sun" aria-hidden="true"><span class="gm-drop" lang="ja">す</span><span class="gm-drop s2" lang="ja">か</span></div><b>假名雨</b><span class="d">接住落下的假名，选出读音。</span></a>
+        <a class="gm-mini" href="game-lines.html"><div class="gm-art coral" aria-hidden="true"><span class="gm-tile" lang="ja">ここで</span><span class="gm-tile" lang="ja">働かせて</span></div><b>台词拼拼看</b><span class="d">把词块拼回一句台词，N5–N1。</span></a>
+        <a class="gm-mini" href="game-sea.html"><div class="gm-art sky" aria-hidden="true"><span class="gm-jelly" data-jelly></span></div><b>ふわり的海</b><span class="d">经验值变成光，让水母长大。</span></a>
+        <div class="gm-mini gm-prog" id="gm-prog" aria-live="polite"><b>我的闯关进度</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="play" style="padding-top:28px">
+    <div class="wrap">
+      <div class="tabbar"><div class="ptabs" role="tablist" aria-label="选择游戏"><button type="button" role="tab" aria-controls="kana-game" aria-selected="true">五十音泡泡</button><button type="button" role="tab" aria-controls="word-game">单词连连看</button></div></div>
+
+      <div class="tabpanel" id="kana-game" role="tabpanel" aria-label="五十音泡泡">
+        <div class="game-stage">
+          <p class="game-lead">水母吐出一串泡泡。听读音，在泡泡飘走之前戳中对的那一个。点错或者让它飘走都会扣一颗心，三颗心用完就闯关失败。</p>
+          <div class="pick-row"><button type="button" class="btn btn-ghost pick-btn" id="kg-pick" aria-haspopup="dialog"></button><span class="small muted" id="kg-sum"></span></div>
+          <div class="card" id="kg-play"></div>
+        </div>
+      </div>
+
+      <div class="tabpanel" id="word-game" role="tabpanel" aria-label="单词连连看" hidden>
+        <div class="game-stage">
+          <p class="game-lead">左边日语、右边中文，限时一对一配起来，配错扣 3 秒。N5 到 N1 每一级的全部词汇都切成了关卡，每个词出现一次，闯完一级就把这一级的词全过了一遍。</p>
+          <div class="pick-row"><button type="button" class="btn btn-ghost pick-btn" id="wg-pick" aria-haspopup="dialog"></button><span class="small muted" id="wg-sum"></span></div>
+          <div class="card" id="wg-play"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer id="site-foot"></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/kana-data.js"></script>
+<script src="js/app.js"></script>
+<script src="audio/v/index-vocab.js" async></script>
+<script src="js/study.js"></script>
+<script>
+(function () {
+  var B = window.Breeze, $ = B.$, $$ = B.$$, esc = B.esc, S = B.study, K = window.KANA;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function shuffle(a, r) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor((r ? r() : Math.random()) * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function stars(n) { var s = ''; for (var i = 0; i < 3; i++) s += i < n ? '★' : '<i>★</i>'; return s; }
+  /* 选关：stars 存在本机，拿到 1 星解锁下一关。关卡放在弹出卡片里，每页 12 关 */
+  var PER = 12;
+  function lvGrid(body, o) {
+    /* o: n, cur, page, open(i), name(i), stars(i), pick(i), compact, onPage(p) */
+    var pages = Math.ceil(o.n / PER), from = o.page * PER, to = Math.min(o.n, from + PER), h = '';
+    for (var i = from; i < to; i++) {
+      var op = o.open(i);
+      h += '<button type="button" class="lv-btn' + (i === o.cur ? ' cur' : '') + '" data-i="' + i + '" aria-disabled="' + !op + '"><span class="no">' + (i + 1) + '</span><span class="nm">' + esc(o.name(i)) + '</span><span class="st" aria-label="' + o.stars(i) + ' 颗星">' + (op ? stars(o.stars(i)) : '🔒') + '</span></button>';
+    }
+    body.innerHTML = '<div class="lv-map pg' + (o.compact ? ' compact' : '') + '">' + h + '</div>' +
+      (pages > 1 ? '<div class="pager"><button class="btn btn-ghost btn-small" type="button" data-pg="-1"' + (o.page ? '' : ' disabled') + '>← 上一页</button><span class="small muted">第 ' + (from + 1) + '–' + to + ' 关 · 共 ' + o.n + ' 关</span><button class="btn btn-ghost btn-small" type="button" data-pg="1"' + (o.page < pages - 1 ? '' : ' disabled') + '>下一页 →</button></div>' : '');
+    $$('[data-i]', body).forEach(function (b) { b.onclick = function () { if (b.getAttribute('aria-disabled') === 'true') { B.toast('先在上一关拿到一颗星'); return; } o.pick(+b.getAttribute('data-i')); }; });
+    $$('[data-pg]', body).forEach(function (b) { b.onclick = function () { o.onPage(o.page + +b.getAttribute('data-pg')); }; });
+  }
+  function reward(st, i, n, name) {
+    var got = st.get(), old = got[i] || 0;
+    if (n > old) { got[i] = n; st.set(got); B.addXP(old ? 5 : 10, (old ? '刷新星数 · ' : '过关 · ') + name); return true; }
+    return false;
+  }
+
+  /* ================= 五十音泡泡 ================= */
+  var seion = K.seion.filter(Boolean), dakuon = K.dakuon.filter(Boolean), yoon = K.yoon.filter(Boolean);
+  function rows(from, to) { return seion.slice(from, to); }
+  /* snd：按实际读音判重（ぢ=じ、づ=ず、を=お、平假名和片假名同音），同一波里不会出现两个读音一样的泡泡 */
+  function snd(r) { r = String(r).split(' ')[0]; return r === 'wo' ? 'o' : r; }
+  function H(list) { return list.map(function (x) { return { ch: x[0], f: x[3], r: x[2], s: snd(x[2]) }; }); }
+  function Kt(list) { return list.map(function (x) { return { ch: x[1], f: x[3], r: x[2], s: snd(x[2]) }; }); }
+  function dk(a, b) { return dakuon.slice(a, b); }
+  function yo(a, b) { return yoon.slice(a, b); }
+  var KL = [
+    { name: 'あ行', pool: H(rows(0, 5)), n: 3, speed: 38 },
+    { name: 'か行', pool: H(rows(5, 10)), n: 3, speed: 40 },
+    { name: '复习 あ〜こ', pool: H(rows(0, 10)), n: 4, speed: 44 },
+    { name: 'さ行', pool: H(rows(10, 15)), n: 3, speed: 42 },
+    { name: 'た行', pool: H(rows(15, 20)), n: 3, speed: 42 },
+    { name: '复习 あ〜と', pool: H(rows(0, 20)), n: 4, speed: 48 },
+    { name: 'な行', pool: H(rows(20, 25)), n: 3, speed: 44 },
+    { name: 'は行', pool: H(rows(25, 30)), n: 3, speed: 44 },
+    { name: 'ま行', pool: H(rows(30, 35)), n: 3, speed: 46 },
+    { name: 'や・ら行', pool: H(rows(35, 43)), n: 4, speed: 48 },
+    { name: 'わ・を・ん', pool: H(rows(43, 46)).concat(H(rows(0, 5))), n: 3, speed: 46 },
+    { name: '复习 な〜ん', pool: H(rows(20, 46)), n: 4, speed: 52 },
+    { name: '平假名清音总复习', pool: H(seion), n: 5, speed: 56 },
+    { name: '片假名 ア〜コ', pool: Kt(rows(0, 10)), n: 4, speed: 46 },
+    { name: '片假名 サ〜ト', pool: Kt(rows(10, 20)), n: 4, speed: 48 },
+    { name: '片假名 ナ〜ホ', pool: Kt(rows(20, 30)), n: 4, speed: 50 },
+    { name: '片假名 マ〜ン', pool: Kt(rows(30, 46)), n: 4, speed: 52 },
+    { name: '片假名清音总复习', pool: Kt(seion), n: 5, speed: 58 },
+    { name: '平片混合', pool: H(seion).concat(Kt(seion)), n: 5, speed: 60 },
+    { name: '浊音 が・ざ行', pool: H(dk(0, 10)), n: 4, speed: 50 },
+    { name: '浊音 だ・ば・ぱ行', pool: H(dk(10, 25)), n: 4, speed: 52 },
+    { name: '浊音（片假名）', pool: Kt(dakuon), n: 5, speed: 56 },
+    { name: '浊音平片混合', pool: H(dakuon).concat(Kt(dakuon)), n: 5, speed: 60 },
+    { name: '拗音 きゃ〜にょ', pool: H(yo(0, 12)), n: 4, speed: 50 },
+    { name: '拗音 ひゃ〜りょ', pool: H(yo(12, 21)), n: 4, speed: 52 },
+    { name: '拗音 ぎゃ〜ぴょ', pool: H(yo(21, 33)), n: 4, speed: 54 },
+    { name: '拗音（片假名）', pool: Kt(yoon), n: 5, speed: 58 },
+    { name: '拗音平片混合', pool: H(yoon).concat(Kt(yoon)), n: 5, speed: 62 },
+    { name: '五十音大考', pool: H(seion).concat(Kt(seion), H(dakuon), Kt(dakuon), H(yoon), Kt(yoon)), n: 6, speed: 66 },
+    { name: '终极挑战', pool: H(seion).concat(Kt(seion), H(dakuon), Kt(dakuon), H(yoon), Kt(yoon)), n: 6, speed: 80 }
+  ];
+  var kst = S.store('game-kana2', {}), kg = null, kpage = 0;
+  var kcur = (function () { var g = kst.get(); for (var i = 0; i < KL.length; i++) if (!(g[i] > 0)) return i; return KL.length - 1; })();
+  function kOpen(i) { var g = kst.get(); return i === 0 || (g[i - 1] || 0) > 0; }
+  function kMap() {
+    var g = kst.get(), st = 0, done = 0; KL.forEach(function (L, i) { st += g[i] || 0; if (g[i] > 0) done++; });
+    $('#kg-pick').innerHTML = '选关：第 ' + (kcur + 1) + ' 关 · ' + esc(KL[kcur].name) + ' <span class="cv">▾</span>';
+    $('#kg-sum').textContent = '已过 ' + done + ' / ' + KL.length + ' 关 · ★ ' + st + ' / ' + KL.length * 3;
+    progCard();
+  }
+  function kSheet() {
+    kpage = Math.floor(kcur / PER);
+    B.sheet('选关 · 五十音泡泡', function (body) { kDraw(body); });
+  }
+  function kDraw(body) {
+    var g = kst.get(), box = document.createElement('div'); box.style.cssText = 'display:flex;flex-direction:column;gap:12px';
+    body.innerHTML = ''; body.appendChild(box);
+    lvGrid(box, { n: KL.length, cur: kcur, page: kpage, open: kOpen, name: function (i) { return KL[i].name; }, stars: function (i) { return g[i] || 0; },
+      pick: function (i) { kcur = i; B.closeSheet(); kIntro(); }, onPage: function (p) { kpage = p; kDraw(body); } });
+    var n = document.createElement('p'); n.className = 'small muted st-note'; n.textContent = '⭐⭐⭐ 一颗心都没丢　⭐⭐ 丢一颗　⭐ 过关就行'; body.appendChild(n);
+  }
+  $('#kg-pick').onclick = kSheet;
+  function kIntro() {
+    kStop(); kMap();
+    var L = KL[kcur];
+    $('#kg-play').innerHTML = '<div class="hud"><h3>第 ' + (kcur + 1) + ' 关 · ' + esc(L.name) + '</h3><span class="tag">共 10 波 · 每波 ' + L.n + ' 个泡泡</span></div>' +
+      '<div class="pond" id="pond"><div class="pond-jelly">' + B.jelly('happy') + '</div><div class="pond-msg"><div><b>准备好了吗？</b><p style="margin:8px 0 0">开始后会先播放读音，戳中对应的假名泡泡。</p></div></div></div>' +
+      '<div class="rec-row"><button class="btn btn-coral" type="button" id="kg-go">开始第 ' + (kcur + 1) + ' 关</button></div>';
+    $('#kg-go').onclick = kStart;
+  }
+  function kStop() { if (kg) { kg.over = true; cancelAnimationFrame(kg.raf); } kg = null; }
+  function kStart() {
+    kStop();
+    var L = KL[kcur];
+    kg = { wave: 0, lives: 3, hits: 0, bubs: [], over: false, raf: 0, target: null, last: 0 };
+    $('#kg-play').innerHTML = '<div class="hud"><h3>第 ' + (kcur + 1) + ' 关 · ' + esc(L.name) + '</h3><span class="lives" id="kg-lives"></span><span class="muted small" id="kg-wave"></span></div>' +
+      '<div class="pond" id="pond"><div class="pond-jelly">' + B.jelly('think') + '</div></div>' +
+      '<div class="rec-row"><button class="btn btn-sky" type="button" id="kg-hear">🔊 再听一次</button><button class="btn btn-ghost btn-small" type="button" id="kg-quit">退出本关</button></div>';
+    $('#kg-hear').onclick = function () { if (kg && kg.target) B.playKana(kg.target.f, kg.target.ch); };
+    $('#kg-quit').onclick = kIntro;
+    kHud(); kWave();
+  }
+  function kHud() { $('#kg-lives').innerHTML = [0, 1, 2].map(function (i) { return i < kg.lives ? '♥' : '<i>♥</i>'; }).join(''); $('#kg-wave').textContent = '第 ' + Math.min(kg.wave + 1, 10) + ' / 10 波'; }
+  function kWave() {
+    var L = KL[kcur], pond = $('#pond');
+    if (!kg || kg.over) return;
+    if (kg.wave >= 10) return kEnd(true);
+    kHud();
+    $$('.bub-k', pond).forEach(function (b) { b.remove(); });
+    var pool = shuffle(L.pool), target = pool[0], picks = [target];
+    for (var i = 1; i < pool.length && picks.length < L.n; i++) if (!picks.some(function (p) { return p.ch === pool[i].ch || p.f === pool[i].f || p.s === pool[i].s; })) picks.push(pool[i]);
+    picks = shuffle(picks);
+    var W = pond.clientWidth, Hh = pond.clientHeight, gap = W / (picks.length + 1);
+    kg.target = target; kg.bubs = picks.map(function (p, n) {
+      var el = document.createElement('button'); el.type = 'button'; el.className = 'bub-k' + (p.ch.length > 1 ? ' sm' : ''); el.lang = 'ja'; el.textContent = p.ch; el.setAttribute('aria-label', p.ch);
+      pond.appendChild(el);
+      var b = { el: el, p: p, x: gap * (n + 1), y: Hh + 40 + Math.random() * 60, ph: Math.random() * 6.28, v: L.speed * (0.85 + Math.random() * 0.3), done: false };
+      el.onclick = function () { kTap(b); };
+      return b;
+    });
+    B.playKana(target.f, target.ch);
+    kg.last = performance.now(); cancelAnimationFrame(kg.raf); kg.raf = requestAnimationFrame(kTick);
+  }
+  function kTick(t) {
+    if (!kg || kg.over) return;
+    var dt = Math.min(0.05, (t - kg.last) / 1000); kg.last = t;
+    var escaped = false;
+    kg.bubs.forEach(function (b) {
+      if (b.done) return;
+      b.y -= b.v * dt; b.ph += dt * 2;
+      var x = b.x + (reduce ? 0 : Math.sin(b.ph) * 10);
+      b.el.style.transform = 'translate(' + x + 'px,' + b.y + 'px)';
+      if (b.p === kg.target && b.y < -40) escaped = true;
+    });
+    if (escaped) { kMiss('飘走了！是「' + kg.target.ch + '」'); return; }
+    kg.raf = requestAnimationFrame(kTick);
+  }
+  function kTap(b) {
+    if (!kg || kg.over || b.done) return;
+    if (b.p === kg.target) {
+      b.done = true; b.el.classList.add('hit'); b.el.style.opacity = '0';
+      kg.hits++; kg.wave++; cancelAnimationFrame(kg.raf);
+      setTimeout(kWave, 450);
+    } else {
+      b.done = true; b.el.classList.add('bad'); b.el.style.opacity = '0.35';
+      kg.lives--; kHud(); B.toast('那是「' + b.p.ch + '」（' + b.p.r + '）');
+      if (kg.lives <= 0) { kg.over = true; cancelAnimationFrame(kg.raf); var g0 = kg; setTimeout(function () { if (kg === g0) kEnd(false); }, 500); }
+    }
+  }
+  function kMiss(msg) {
+    cancelAnimationFrame(kg.raf); kg.lives--; B.toast(msg);
+    if (kg.lives <= 0) return kEnd(false);
+    kg.wave++; setTimeout(kWave, 600);
+  }
+  function kEnd(win) {
+    if (!kg) return;
+    var L = KL[kcur], n = win ? kg.lives : 0; kg.over = true; cancelAnimationFrame(kg.raf);
+    var up = win && reward(kst, kcur, n, '五十音泡泡 ' + (kcur + 1));
+    $('#kg-play').innerHTML = '<div class="result">' + B.jelly(win ? 'right' : 'wrong').replace('<svg', '<svg style="width:80px;height:110px"') +
+      '<b class="jp" style="font-size:1.375rem">' + (win ? '第 ' + (kcur + 1) + ' 关通过！' : '这次没过关') + '</b>' +
+      (win ? '<div class="big-st">' + stars(n) + '</div>' : '') +
+      '<p class="muted" style="margin:0">戳中 ' + kg.hits + ' / 10' + (up ? '　· 新纪录' : '') + '</p>' +
+      '<div class="rec-row"><button class="btn btn-ghost" type="button" id="kg-again">再玩一次</button>' + (win && kcur < KL.length - 1 ? '<button class="btn btn-coral" type="button" id="kg-next">下一关 →</button>' : '') + '</div></div>';
+    kMap();
+    $('#kg-again').onclick = kStart;
+    var nx = $('#kg-next'); if (nx) nx.onclick = function () { kcur++; kIntro(); };
+  }
+  kIntro();
+
+  /* ================= 单词连连看 =================
+     每个级别的全部词汇按固定顺序打散后切成若干关（每词只出现一次），所以闯完一个级别就把这一级的词都过了一遍。 */
+  var LVS = ['N5', 'N4', 'N3', 'N2', 'N1'], PAIRS = { N5: 6, N4: 6, N3: 8, N2: 8, N1: 8 };
+  var wst = S.store('game-word2', {}), wpref = S.store('game-word-lv', 'N5');
+  var wlv = wpref.get(), wcur = 0, wg = null, loaded = {}, stagesOf = {}, wpage = 0;
+  function shortZh(z) { return String(z || '').split(/[；;，,、]/)[0].replace(/（[^）]*）|\([^)]*\)/g, '').trim(); }
+  function loadLv(lv, cb) {
+    var key = lv.toLowerCase();
+    if (loaded[key]) return cb(loaded[key]);
+    window.VOCAB_LV = window.VOCAB_LV || {};
+    if (window.VOCAB_LV[key]) return done();
+    var sc = document.createElement('script'); sc.src = 'js/vocab/' + key + '.js'; sc.onload = done; sc.onerror = function () { B.toast('词库加载失败，请刷新再试'); }; document.head.appendChild(sc);
+    function done() {
+      loaded[key] = (window.VOCAB_LV[key] || []).map(function (a) { return { w: a[0], k: a[1] || a[0], z: shortZh(a[2]) || String(a[2] || '') }; }).filter(function (x) { return x.z; });
+      cb(loaded[key]);
+    }
+  }
+  /* 切关：同一关里中文意思和写法都不重复；最后不足 3 个的并进前一关 */
+  function buildStages(lv, list) {
+    if (stagesOf[lv]) return stagesOf[lv];
+    var P = PAIRS[lv], queue = shuffle(list, rng(9173 + LVS.indexOf(lv) * 101)), out = [];
+    while (queue.length) {
+      var st = [], uz = {}, uw = {}, rest = [];
+      queue.forEach(function (x) { if (st.length < P && !uz[x.z] && !uw[x.w]) { st.push(x); uz[x.z] = uw[x.w] = 1; } else rest.push(x); });
+      out.push(st); queue = rest;
+    }
+    if (out.length > 1 && out[out.length - 1].length < 3) { var last = out.pop(); out[out.length - 1] = out[out.length - 1].concat(last); }
+    return (stagesOf[lv] = out);
+  }
+  function got() { var g = wst.get(); return g[wlv] || {}; }
+  function firstOpen(n) { var g = got(); for (var i = 0; i < n; i++) if (!(g[i] > 0)) return i; return n - 1; }
+  function wOpen(i) { var g = got(); return i === 0 || (g[i - 1] || 0) > 0; }
+  /* wMap：更新选关按钮；词库没加载时先加载 */
+  function wMap() {
+    var stg = stagesOf[wlv];
+    if (!stg) {
+      $('#wg-pick').innerHTML = '选关：' + wlv + ' 加载中… <span class="cv">▾</span>';
+      loadLv(wlv, function (list) { buildStages(wlv, list); wcur = firstOpen(stagesOf[wlv].length); wpage = Math.floor(wcur / PER); wMap(); wIntro(); wDraw(); });
+      return;
+    }
+    var g = got(), done = Object.keys(g).filter(function (k) { return g[k] > 0; }).length, words = stg.reduce(function (a, s) { return a + s.length; }, 0);
+    $('#wg-pick').innerHTML = '选关：' + wlv + ' · 第 ' + (wcur + 1) + ' 关 <span class="cv">▾</span>';
+    $('#wg-sum').textContent = wlv + ' 共 ' + words + ' 词 · ' + stg.length + ' 关 · 已过 ' + done;
+    progCard();
+  }
+  var wBody = null;
+  function wSheet() {
+    wpage = Math.floor(wcur / PER);
+    B.sheet('选关 · 单词连连看', function (body) { wBody = body; wDraw(); }, function () { wBody = null; });
+  }
+  function wDraw() {
+    var body = wBody; if (!body) return;
+    var all = wst.get();
+    var tabs = '<div class="chips" role="group" aria-label="级别">' + LVS.map(function (lv) {
+      var gg = all[lv] || {}, n = Object.keys(gg).filter(function (k) { return gg[k] > 0; }).length;
+      return '<button type="button" class="chip" data-lv="' + lv + '" aria-pressed="' + (lv === wlv) + '">' + lv + (n ? ' · ' + n : '') + '</button>';
+    }).join('') + '</div>';
+    var stg = stagesOf[wlv];
+    body.innerHTML = tabs + '<div id="wg-map"></div><p class="small muted st-note">⭐⭐⭐ 剩一半以上时间　⭐⭐ 剩四分之一以上　⭐ 时间内配完</p>';
+    $$('[data-lv]', body).forEach(function (b) { b.onclick = function () { var lv = b.getAttribute('data-lv'); if (lv === wlv) return; wStop(); wlv = lv; wpref.set(lv); wcur = 0; wpage = 0; if (stagesOf[lv]) { wcur = firstOpen(stagesOf[lv].length); wpage = Math.floor(wcur / PER); wIntro(); } else wMap(); wDraw(); }; });
+    var root = $('#wg-map', body);
+    if (!stg) { root.innerHTML = '<p class="muted small">正在加载 ' + wlv + ' 词库……</p>'; return; }
+    var g = got(), total = stg.length, done = Object.keys(g).filter(function (k) { return g[k] > 0; }).length, words = stg.reduce(function (a, s) { return a + s.length; }, 0);
+    var info = document.createElement('p'); info.className = 'small'; info.style.margin = '0 0 10px';
+    info.innerHTML = wlv + ' 共 <b>' + words + '</b> 个词，分成 <b>' + total + '</b> 关；已过 <b>' + done + '</b> 关。';
+    var box = document.createElement('div'); box.style.cssText = 'display:flex;flex-direction:column;gap:12px';
+    root.appendChild(info); root.appendChild(box);
+    lvGrid(box, { n: total, cur: wcur, page: wpage, compact: true, open: wOpen, name: function (i) { return stg[i].length + ' 个词'; }, stars: function (i) { return g[i] || 0; },
+      pick: function (i) { wcur = i; B.closeSheet(); wIntro(); }, onPage: function (p) { wpage = p; wDraw(); } });
+  }
+  $('#wg-pick').onclick = wSheet;
+  function wTime(n) { return n * 10; }
+  function wIntro() {
+    wStop();
+    var stg = stagesOf[wlv]; if (!stg) return wMap();
+    wMap();
+    var words = stg[wcur], t = wTime(words.length);
+    $('#wg-play').innerHTML = '<div class="hud"><h3>' + wlv + ' · 第 ' + (wcur + 1) + ' 关</h3><span class="tag">' + words.length + ' 对 · ' + t + ' 秒</span></div>' +
+      '<div class="placeholder">先点一个日语词，再点它的中文意思。配对成功会读出这个词。<br>本级一共 ' + stg.length + ' 关，闯完就把 ' + wlv + ' 的词全部过了一遍。</div>' +
+      '<div class="rec-row"><button class="btn btn-coral" type="button" id="wg-go">开始第 ' + (wcur + 1) + ' 关</button></div>';
+    $('#wg-go').onclick = function () { wStart(words); };
+  }
+  function wStop() { if (wg) { clearInterval(wg.tick); wg.over = true; } wg = null; }
+  function wStart(words) {
+    wStop();
+    var T = wTime(words.length);
+    wg = { words: words, T: T, end: Date.now() + T * 1000, sel: null, got: 0, miss: 0, over: false };
+    var jp = shuffle(words.map(function (w, i) { return i; })), zh = shuffle(words.map(function (w, i) { return i; }));
+    $('#wg-play').innerHTML = '<div class="hud"><h3>' + wlv + ' · 第 ' + (wcur + 1) + ' 关</h3><div class="tbar" id="wg-bar"><i style="width:100%"></i></div><span class="clock small" id="wg-t"></span></div>' +
+      '<div class="mgrid"><div class="mcol">' + jp.map(function (i) { var w = words[i]; return '<button type="button" class="mcard" data-side="j" data-i="' + i + '" lang="ja"><span class="w">' + esc(w.w) + '</span>' + (w.k !== w.w ? '<span class="k">' + esc(w.k) + '</span>' : '') + '</button>'; }).join('') + '</div>' +
+      '<div class="mcol">' + zh.map(function (i) { return '<button type="button" class="mcard" data-side="z" data-i="' + i + '"><span class="z">' + esc(words[i].z) + '</span></button>'; }).join('') + '</div></div>' +
+      '<div class="rec-row"><button class="btn btn-ghost btn-small" type="button" id="wg-quit">退出本关</button></div>';
+    $('#wg-quit').onclick = wIntro;
+    $$('#wg-play .mcard').forEach(function (c) { c.onclick = function () { wTap(c); }; });
+    wg.tick = setInterval(wClock, 200); wClock();
+  }
+  function wClock() {
+    if (!wg || wg.over) return;
+    var left = Math.max(0, wg.end - Date.now()), pct = left / (wg.T * 1000);
+    var bar = $('#wg-bar'); if (!bar) return;
+    bar.querySelector('i').style.width = (pct * 100) + '%'; bar.classList.toggle('low', pct < 0.25);
+    $('#wg-t').textContent = Math.ceil(left / 1000) + ' 秒';
+    if (left <= 0) wEnd(false);
+  }
+  function wTap(c) {
+    if (!wg || wg.over || c.classList.contains('ok')) return;
+    var s = wg.sel;
+    if (!s || s.getAttribute('data-side') === c.getAttribute('data-side')) {
+      if (s) s.classList.remove('sel');
+      wg.sel = c; c.classList.add('sel');
+      if (c.getAttribute('data-side') === 'j') { var w = wg.words[+c.getAttribute('data-i')]; B.speak(w.k, B.wordKey(w.w, w.k)); }
+      return;
+    }
+    s.classList.remove('sel'); wg.sel = null;
+    if (s.getAttribute('data-i') === c.getAttribute('data-i')) {
+      s.classList.add('ok'); c.classList.add('ok'); wg.got++;
+      var w2 = wg.words[+c.getAttribute('data-i')]; if (s.getAttribute('data-side') === 'z') B.speak(w2.k, B.wordKey(w2.w, w2.k));
+      if (wg.got === wg.words.length) setTimeout(function () { wEnd(true); }, 500);
+    } else {
+      wg.miss++; wg.end -= 3000; [s, c].forEach(function (x) { x.classList.remove('no'); void x.offsetWidth; x.classList.add('no'); setTimeout(function () { x.classList.remove('no'); }, 400); });
+      wClock();
+    }
+  }
+  function wEnd(win) {
+    clearInterval(wg.tick); wg.over = true;
+    var stg = stagesOf[wlv], pct = Math.max(0, wg.end - Date.now()) / (wg.T * 1000), n = win ? (pct >= 0.5 ? 3 : pct >= 0.25 ? 2 : 1) : 0, up = false;
+    if (win) {
+      var all = wst.get(), g = all[wlv] || {}, old = g[wcur] || 0;
+      if (n > old) { g[wcur] = n; all[wlv] = g; wst.set(all); up = true; B.addXP(old ? 5 : 10, (old ? '刷新星数 · ' : '过关 · ') + '单词连连看 ' + wlv + '-' + (wcur + 1)); }
+    }
+    $('#wg-play').innerHTML = '<div class="result">' + B.jelly(win ? 'right' : 'wrong').replace('<svg', '<svg style="width:80px;height:110px"') +
+      '<b class="jp" style="font-size:1.375rem">' + (win ? wlv + ' 第 ' + (wcur + 1) + ' 关通过！' : '时间到了') + '</b>' +
+      (win ? '<div class="big-st">' + stars(n) + '</div>' : '') +
+      '<p class="muted" style="margin:0">配对 ' + wg.got + ' / ' + wg.words.length + '　· 配错 ' + wg.miss + ' 次' + (up ? '　· 新纪录' : '') + '</p>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">' + wg.words.map(function (w) { return '<span class="tag" lang="ja" style="letter-spacing:.02em">' + esc(w.w) + (w.k !== w.w ? '（' + esc(w.k) + '）' : '') + ' = ' + esc(w.z) + '</span>'; }).join('') + '</div>' +
+      '<div class="rec-row"><button class="btn btn-ghost" type="button" id="wg-again">再玩一次</button>' + (win && wcur < stg.length - 1 ? '<button class="btn btn-coral" type="button" id="wg-next">下一关 →</button>' : '') + '</div></div>';
+    wMap();
+    var words = wg.words;
+    $('#wg-again').onclick = function () { wStart(words); };
+    var nx = $('#wg-next'); if (nx) nx.onclick = function () { wcur++; wIntro(); };
+  }
+  wMap();
+
+  /* 我的闯关进度（菜单第 4 张卡） */
+  function progCard() {
+    var el = $('#gm-prog'); if (!el || !wst) return;
+    var g = kst.get(), ks = 0, kd = 0; KL.forEach(function (L, i) { ks += g[i] || 0; if (g[i] > 0) kd++; });
+    var all = wst.get(), wd = LVS.map(function (lv) { var gg = all[lv] || {}; return Object.keys(gg).filter(function (k) { return gg[k] > 0; }).length; });
+    var wsum = wd.reduce(function (a, b) { return a + b; }, 0);
+    el.innerHTML = '<b>我的闯关进度</b><span class="row">五十音泡泡<b>' + kd + ' / ' + KL.length + ' 关</b></span><span class="row">泡泡星星<b>★ ' + ks + '</b></span><span class="row">连连看已过<b>' + wsum + ' 关</b></span>';
+  }
+  progCard();
+  /* 切标签时停掉另一个游戏，免得在看不见的地方扣心、走表 */
+  document.addEventListener('tabchange', function (e) {
+    var id = e.detail && e.detail.panel;
+    if (id !== 'kana-game' && kg) kIntro();
+    if (id !== 'word-game' && wg) wIntro();
+  });
+})();
+</script>
+<script>document.querySelectorAll('[data-jelly]').forEach(function(e){e.innerHTML=window.Breeze.jelly('happy','水母ふわり');});</script>
+</body>
+</html>
